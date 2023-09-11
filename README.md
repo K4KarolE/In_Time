@@ -1,2 +1,1 @@
-# Learning JavaScript
-## Future project
+# Clock, Time, Future, Past and Lottery Numbers
