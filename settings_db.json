@@ -1,0 +1,21 @@
+{
+  "skin_selected": "terminator",
+  "skins": {
+    "back_to_the_future": {
+      "background_color": "#F0F0F0",
+      "field_background_color": "#F0F0F0",
+      "window_background_color": "#F0F0F0",
+      "font_style": "Georgia",
+      "font_color": "#003975",
+      "window_title": "Jesus Marty, that is your mom!"
+    },
+    "terminator": {
+      "background_color": "#202020",
+      "field_background_color": "#202020",
+      "window_background_color": "#202020",
+      "font_style": "Georgia",
+      "font_color": "#E3A830",
+      "window_title": "The very first thumbs up from a time traveller, killer robot"
+    }
+  }
+}
