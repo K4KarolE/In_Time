@@ -1,21 +1,32 @@
 {
   "skin_selected": "terminator",
+  "skin_selected_": "back_to_the_future",
   "music_on": true,
   "skins": {
     "back_to_the_future": {
-      "background_color": "#F0F0F0",
-      "field_background_color": "#F0F0F0",
-      "window_background_color": "#F0F0F0",
+      "background_color": "#202020",
+      "field_background_color": "#202020",
+      "window_background_color": "#202020",
       "font_style": "Georgia",
       "font_color": "#003975",
-      "window_title": "Jesus Marty, that's your mom!"
+      "time_font_color": "#675C7C",
+      "time_hm_font": "MSGothic 50 bold",
+      "time_sec_font": "MSGothic 25 bold",
+      "time_hm_position": 475,
+      "time_sec_position": 650,
+      "window_title": "I know Marty, believe me. But, it is your mom, okay?!"
     },
     "terminator": {
       "background_color": "#202020",
       "field_background_color": "#202020",
       "window_background_color": "#202020",
       "font_style": "Georgia",
-      "font_color": "#E3A830",
+      "font_color": "#003975",
+      "time_font_color": "#760000",
+      "time_hm_font": "MSGothic 80 bold",
+      "time_sec_font": "MSGothic 50 bold",
+      "time_hm_position": 20,
+      "time_sec_position": 295,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!"
     }
   }

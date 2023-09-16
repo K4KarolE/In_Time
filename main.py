@@ -7,7 +7,7 @@
 # Need CANVAS to be able to display text with clear transparent background
 
 
-from tkinter import *
+from tkinter import Tk, PhotoImage, Canvas
 from time import strftime
 
 import json
@@ -45,11 +45,19 @@ def load_music():
     pygame.mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
 
 def play_music():
-    pygame.mixer.music.play(loops=0)
+    pygame.mixer.music.play(loops=-1)       # -1: repeat
 
 def stop_music():
     pygame.mixer.music.fadeout(1500)
 
+def volume_music(value):
+    pygame.mixer.music.set_volume(value)         # 0.0-1.0
+
+def load_and_play():
+    if  music_on:
+        load_music()
+        volume_music(0.2)
+        play_music()
 
 
 working_directory = os.path.dirname(__file__)
@@ -67,14 +75,17 @@ field_background_color = selected_skin_folder['field_background_color']
 font_style = selected_skin_folder['font_style']
 font_color = selected_skin_folder['font_color']
 window_background_color = selected_skin_folder['window_background_color']
+# TIME
+time_font_color = selected_skin_folder['time_font_color']
+time_hm_font = selected_skin_folder['time_hm_font']
+time_sec_font = selected_skin_folder['time_sec_font']
+time_hm_position = selected_skin_folder['time_hm_position']
+time_sec_position = selected_skin_folder['time_sec_position']
+
 
 # MUSIC
 music_on = settings_data['music_on']
 
-def load_and_play():
-    if  music_on:
-        load_music()
-        play_music()
 
 # WINDOW
 window = Tk()
@@ -100,7 +111,7 @@ anim = None
 animation_speed = 80      # 1000 = 1 sec
 def animation(count):
     image_next = images_list[count]
-    canvas.itemconfig(image_display, image=image_next, anchor=NW)
+    canvas.itemconfig(image_display, image=image_next, anchor='nw')
 
     count += 1
     if count == frames_count_all-1:     # -1: the last frame/image is not usable, too noisy
@@ -121,8 +132,8 @@ canvas = Canvas(window, width=window_width, height=window_high)
 canvas.place(x=0,y=0)
 
 image_display = canvas.create_image((0,0))
-hours_and_mins_display = canvas.create_text((20, window_high), text=strftime('%H:%M'), font="MSGothic 80 bold", fill="#FF423E", anchor=SW)
-seconds_display = canvas.create_text((295, window_high-10), text=strftime(':%S'), font="MSGothic 50 bold", fill="#FF423E", anchor=SW)
+hours_and_mins_display = canvas.create_text((time_hm_position, window_high), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='sw')
+seconds_display = canvas.create_text((time_sec_position, window_high-10), text=strftime(':%S'), font=time_sec_font, fill=time_font_color, anchor='sw')
 
 time_display()
 animation(count)
