@@ -10,7 +10,7 @@
 from tkinter import Tk, PhotoImage, Canvas
 from time import strftime
 
-import json
+from json import load, dump
 from pathlib import Path
 
 from PIL import Image
@@ -18,19 +18,19 @@ from PIL import Image
 import platform
 import os
 
-import pygame       # for playing music
-pygame.init()
+from pygame import mixer
+mixer.init()
 
 
 
 def open_settings():
     f = open(path_json)
-    settings_data = json.load(f)
+    settings_data = load(f)
     return settings_data
 
 def save_settings(settings_data):
     with open(path_json, 'w') as f:
-        json.dump(settings_data, f, indent=2)
+        dump(settings_data, f, indent=2)
     return
 
 def time_display():
@@ -46,16 +46,16 @@ def time_display():
 
 
 def load_music():
-    pygame.mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
+    mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
 
 def play_music():
-    pygame.mixer.music.play(loops=-1)       # -1: repeat
+    mixer.music.play(loops=-1)       # -1: repeat
 
 def stop_music():
-    pygame.mixer.music.fadeout(1500)
+    mixer.music.fadeout(1500)
 
 def volume_music(value):
-    pygame.mixer.music.set_volume(value)         # 0.0-1.0
+    mixer.music.set_volume(value)         # 0.0-1.0
 
 def load_and_play():
     if  music_on:
@@ -63,17 +63,15 @@ def load_and_play():
         volume_music(0.2)
         play_music()
 
-
+# JSON / SETTINGS
 working_directory = os.path.dirname(__file__)
 path_json = Path(working_directory, "settings_db.json")
 settings_data = open_settings()
-
-
-# COLORS - FONT STYLE
-# original tkinter grey: #F0F0F0 - FYI
 skin_selected = settings_data['skin_selected']                                  
 selected_skin_folder = settings_data['skins'][skin_selected]
 
+# COLORS - FONT STYLE
+# original tkinter grey: #F0F0F0 - FYI
 background_color = selected_skin_folder['background_color']    
 field_background_color = selected_skin_folder['field_background_color'] 
 font_style = selected_skin_folder['font_style']
@@ -92,6 +90,9 @@ time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
 
 # MUSIC
 music_on = settings_data['music_on']
+
+# ANIMATION
+animation_speed = selected_skin_folder['animation_speed']  # 1000 = 1 sec
 
 
 # WINDOW
@@ -115,7 +116,6 @@ images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in rang
 
 count = 0
 anim = None
-animation_speed = 80      # 1000 = 1 sec
 def animation(count):
     image_next = images_list[count]
     canvas.itemconfig(image_display, image=image_next, anchor='nw')
@@ -139,12 +139,13 @@ canvas = Canvas(window, width=window_width, height=window_high)
 canvas.place(x=0,y=0)
 
 image_display = canvas.create_image((0,0))
-# BACK
 re_pos = 4
-hours_and_mins_display_2nd = canvas.create_text((time_hm_pos_x + re_pos, time_hm_pos_y + re_pos), text=strftime('%H:%M'), font=time_hm_font, fill='black', anchor='sw')
+# BACK
+# anchor = se/sw -> changing time/numbers size: will no overlapping
+hours_and_mins_display_2nd = canvas.create_text((time_hm_pos_x + re_pos, time_hm_pos_y + re_pos), text=strftime('%H:%M'), font=time_hm_font, fill='black', anchor='se')
 seconds_display_2nd = canvas.create_text((time_sec_pos_x + re_pos, time_sec_pos_y + re_pos), text=strftime(':%S'), font=time_sec_font, fill="black", anchor='sw')
 # TOP
-hours_and_mins_display = canvas.create_text((time_hm_pos_x, time_hm_pos_y), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='sw')
+hours_and_mins_display = canvas.create_text((time_hm_pos_x, time_hm_pos_y), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='se')
 seconds_display = canvas.create_text((time_sec_pos_x, time_sec_pos_y), text=strftime(':%S'), font=time_sec_font, fill=time_font_color, anchor='sw')
 
 time_display()
