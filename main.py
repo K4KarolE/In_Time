@@ -36,8 +36,12 @@ def save_settings(settings_data):
 def time_display():
     hours_and_mins = strftime('%H:%M')
     seconds = strftime(':%S')
+    # TOP
     canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
     canvas.itemconfig(seconds_display, text=seconds)
+    # BACK
+    canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
+    canvas.itemconfig(seconds_display_2nd, text=seconds)
     canvas.after(1000, time_display)
 
 
@@ -79,9 +83,12 @@ window_background_color = selected_skin_folder['window_background_color']
 time_font_color = selected_skin_folder['time_font_color']
 time_hm_font = selected_skin_folder['time_hm_font']
 time_sec_font = selected_skin_folder['time_sec_font']
-time_hm_position = selected_skin_folder['time_hm_position']
-time_sec_position = selected_skin_folder['time_sec_position']
-
+# HOURS & MINUTES
+time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
+time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
+# SECONDS
+time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
+time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
 
 # MUSIC
 music_on = settings_data['music_on']
@@ -132,8 +139,13 @@ canvas = Canvas(window, width=window_width, height=window_high)
 canvas.place(x=0,y=0)
 
 image_display = canvas.create_image((0,0))
-hours_and_mins_display = canvas.create_text((time_hm_position, window_high), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='sw')
-seconds_display = canvas.create_text((time_sec_position, window_high-10), text=strftime(':%S'), font=time_sec_font, fill=time_font_color, anchor='sw')
+# BACK
+re_pos = 4
+hours_and_mins_display_2nd = canvas.create_text((time_hm_pos_x + re_pos, time_hm_pos_y + re_pos), text=strftime('%H:%M'), font=time_hm_font, fill='black', anchor='sw')
+seconds_display_2nd = canvas.create_text((time_sec_pos_x + re_pos, time_sec_pos_y + re_pos), text=strftime(':%S'), font=time_sec_font, fill="black", anchor='sw')
+# TOP
+hours_and_mins_display = canvas.create_text((time_hm_pos_x, time_hm_pos_y), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='sw')
+seconds_display = canvas.create_text((time_sec_pos_x, time_sec_pos_y), text=strftime(':%S'), font=time_sec_font, fill=time_font_color, anchor='sw')
 
 time_display()
 animation(count)
