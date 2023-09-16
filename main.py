@@ -1,10 +1,10 @@
-# Thank you "CodeLoop - By Ritik" for the GIF - Tkinter code:
+# Thank you "CodeLoop - By Ritik" for the GIF display - Tkinter code:
 # https://youtu.be/ZX-5XQ1Q8Zg?si=juxoU-Z9WFK-St6J
 
 # What did we learn?
-# The tkinter label generation sequence -> what will be on the top
-# Not the ..label1.place(x,y), ..label2.place(x,y) sequence
-# Need CANVAS to be able to display text with clear transparent background
+# - The labels placement - the last one will be on the top
+# - Need CANVAS to be able to display text with clear transparent background
+# - Be able to save/hold a sequence of tkinter widgets we need class instance sequence (/docs/tkinter_fonts.py)
 
 
 from tkinter import Tk, PhotoImage, Canvas

@@ -1,7 +1,7 @@
 {
   "skin_selectedd": "terminator",
-  "skin_selected": "back_to_the_future",
-  "skin_selectedd": "donnie_darko",
+  "skin_selectedd": "back_to_the_future",
+  "skin_selected": "donnie_darko",
   "music_on": true,
   "skins": {
     "back_to_the_future": {
@@ -27,12 +27,12 @@
       "font_style": "Georgia",
       "font_color": "#003975",
       "time_font_color": "#3E4E6A",
-      "time_hm_font": "Harrington 60 bold",
-      "time_sec_font": "Harrington 35 bold",
+      "time_hm_font": "Chiller 60 bold",
+      "time_sec_font": "Chiller 35 bold",
       "time_hm_pos_x": 630,
       "time_hm_pos_y": 478,
-      "time_sec_pos_x": 635,
-      "time_sec_pos_y": 471,
+      "time_sec_pos_x": 630,
+      "time_sec_pos_y": 465,
       "animation_speed": 48,
       "window_title": "Back, in time, to pie"
     },
