@@ -3,7 +3,7 @@ Tkinter fonts
 Original from jimmiesrustled - Thank you mate!
 https://stackoverflow.com/questions/39614027/list-available-font-families-in-tkinter
 
-Just made it clickable
+Just made it clickable (copies the name of the font style to clipboard)
 '''
 
 from tkinter import Tk, font, Canvas, Frame, Scrollbar, Button
