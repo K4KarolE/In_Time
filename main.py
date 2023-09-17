@@ -65,7 +65,7 @@ def load_and_play():
 
 # JSON / SETTINGS
 working_directory = os.path.dirname(__file__)
-path_json = Path(working_directory, "settings_db.json")
+path_json = Path(working_directory, 'settings_db.json')
 settings_data = open_settings()
 skin_selected = settings_data['skin_selected']                                  
 selected_skin_folder = settings_data['skins'][skin_selected]
@@ -107,12 +107,24 @@ window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width*0.2, scree
 window.resizable(0,0)   # locks the main window
 
 ## BG GIF
-path_gif = Path(working_directory, "skins", skin_selected, "GIF.GIF")
+path_gif = Path(working_directory, 'skins', skin_selected, 'GIF.GIF')
 get_frames_count_all = Image.open(path_gif)
 frames_count_all = get_frames_count_all.n_frames  # gives total number of frames that gif contains
 
 
-images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]  # creating list of PhotoImage objects for each frames
+# images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]
+# # original code snippet - creating list of PhotoImage objects for each frames
+
+
+# the returning part of the animation coming from:
+# allocating the same image object for 2 mirrored position in the list
+# -> smaller GIF, faster load time
+images_list = []
+[images_list.append(t) for t in range(frames_count_all*2)]
+for i in range(frames_count_all):
+    images_list[i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
+    images_list[(frames_count_all*2-1)-i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
+
 
 count = 0
 anim = None
@@ -121,18 +133,18 @@ def animation(count):
     canvas.itemconfig(image_display, image=image_next, anchor='nw')
 
     count += 1
-    if count == frames_count_all-1:     # -1: the last frame/image is not usable, too noisy
+    if count == frames_count_all*2:
         count = 0
     canvas.after(animation_speed, lambda :animation(count))
 
 
 # BG IMAGE
-# path_image = Path(working_directory, "skins", skin_selected, "BG.PNG")      # Path functions makes the path OS independent
+# path_image = Path(working_directory, 'skins', skin_selected, 'BG.PNG')      # Path functions makes the path OS independent
 # backgound_image = PhotoImage(file = path_image)
 
 
 if platform.system() == 'Windows':      # will not be visible on Linux, macOS
-    path_icon = Path(working_directory, "skins", skin_selected, "icon.ico")
+    path_icon = Path(working_directory, 'skins', skin_selected, 'icon.ico')
     window.iconbitmap(path_icon)        # window icon - left, top corner
 
 canvas = Canvas(window, width=window_width, height=window_high)
@@ -141,9 +153,9 @@ canvas.place(x=0,y=0)
 image_display = canvas.create_image((0,0))
 re_pos = 4
 # BACK
-# anchor = se/sw -> changing time/numbers size: will no overlapping
+# anchor = se/sw -> changing time size(11<55): will no overlapping or too far from eachother
 hours_and_mins_display_2nd = canvas.create_text((time_hm_pos_x + re_pos, time_hm_pos_y + re_pos), text=strftime('%H:%M'), font=time_hm_font, fill='black', anchor='se')
-seconds_display_2nd = canvas.create_text((time_sec_pos_x + re_pos, time_sec_pos_y + re_pos), text=strftime(':%S'), font=time_sec_font, fill="black", anchor='sw')
+seconds_display_2nd = canvas.create_text((time_sec_pos_x + re_pos, time_sec_pos_y + re_pos), text=strftime(':%S'), font=time_sec_font, fill='black', anchor='sw')
 # TOP
 hours_and_mins_display = canvas.create_text((time_hm_pos_x, time_hm_pos_y), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='se')
 seconds_display = canvas.create_text((time_sec_pos_x, time_sec_pos_y), text=strftime(':%S'), font=time_sec_font, fill=time_font_color, anchor='sw')
