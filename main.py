@@ -95,6 +95,7 @@ settings_data = open_settings()
 skin_selected = settings_data['skin_selected']                                  
 selected_skin_folder = settings_data['skins'][skin_selected]
 
+
 # COLORS - FONT STYLE
 # original tkinter grey: #F0F0F0 - FYI
 background_color = selected_skin_folder['background_color']    
@@ -102,11 +103,16 @@ field_background_color = selected_skin_folder['field_background_color']
 font_style = selected_skin_folder['font_style']
 font_color = selected_skin_folder['font_color']
 window_background_color = selected_skin_folder['window_background_color']
-icon_bg_color = selected_skin_folder['icon_bg_color']
+# BUTTONS
+button_bg_color = selected_skin_folder['button_bg_color']
+button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
+button_pos_x = selected_skin_folder['button_pos_x']
+button_pos_y = selected_skin_folder['button_pos_y']
 # TIME
 time_font_color = selected_skin_folder['time_font_color']
-time_hm_font = selected_skin_folder['time_hm_font']
-time_sec_font = selected_skin_folder['time_sec_font']
+time_font_style = selected_skin_folder['time_font_style']
+time_hm_font_size = selected_skin_folder['time_hm_font_size']
+time_sec_font_size = selected_skin_folder['time_sec_font_size']
 # HOURS & MINUTES
 time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
 time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
@@ -118,6 +124,7 @@ music_on = settings_data['music_on']
 music_volume = settings_data['music_volume']
 # ANIMATION
 animation_speed = selected_skin_folder['animation_speed']  # 1000 = 1 sec
+
 
 # WINDOW
 window = Tk()
@@ -169,11 +176,43 @@ if platform.system() == 'Windows':      # will not be visible on Linux, macOS
 re_pos = 4  # for the "shadow"
 # BACK
 # anchor = se/sw -> changing time size(11<55): will no overlapping or too far from eachother
-hours_and_mins_display_2nd = canvas.create_text((time_hm_pos_x + re_pos, time_hm_pos_y + re_pos), text=strftime('%H:%M'), font=time_hm_font, fill='black', anchor='se')
-seconds_display_2nd = canvas.create_text((time_sec_pos_x + re_pos, time_sec_pos_y + re_pos), text=strftime(':%S'), font=time_sec_font, fill='black', anchor='sw')
+hours_and_mins_display_2nd = canvas.create_text(
+    (time_hm_pos_x + re_pos, time_hm_pos_y + re_pos),
+    text=strftime('%H:%M'),
+    font=(time_font_style, time_hm_font_size, 'bold'),
+    fill='black',
+    anchor='se')
+seconds_display_2nd = canvas.create_text(
+    (time_sec_pos_x + re_pos, time_sec_pos_y + re_pos),
+    text=strftime(':%S'),
+    font=(time_font_style, time_sec_font_size, 'bold'),
+    fill='black',
+    anchor='sw')
 # TOP
-hours_and_mins_display = canvas.create_text((time_hm_pos_x, time_hm_pos_y), text=strftime('%H:%M'), font=time_hm_font, fill=time_font_color, anchor='se')
-seconds_display = canvas.create_text((time_sec_pos_x, time_sec_pos_y), text=strftime(':%S'), font=time_sec_font, fill=time_font_color, anchor='sw')
+hours_and_mins_display = canvas.create_text(
+    (time_hm_pos_x, time_hm_pos_y),
+    text=strftime('%H:%M'),
+    font=(time_font_style, time_hm_font_size, 'bold'),
+    fill=time_font_color,
+    anchor='se')
+seconds_display = canvas.create_text(
+    (time_sec_pos_x, time_sec_pos_y),
+    text=strftime(':%S'),
+    font=(time_font_style, time_sec_font_size, 'bold'),
+    fill=time_font_color,
+    anchor='sw')
+
+## BUTTONS
+pos_y_diff = 33
+
+# SETTINGS BUTTON
+button_image_settings = button_image(21, 'icon_settings.png')
+settings_button = Button(canvas, text = 'test',
+            command=lambda:[print('test')], 
+            image = button_image_settings,
+            background=button_bg_color,
+            activebackground=button_bg_color_clicked)
+settings_button.place(x=button_pos_x, y=button_pos_y)
 
 # SOUND BUTTON
 button_image_start = button_image(20, 'start.png')
@@ -185,8 +224,10 @@ else:
 sound_button = Button(canvas, text = 'test',
             command=lambda:[music_switch()], 
             image = music_start_stop_img,
-            background=icon_bg_color)
-sound_button.place(x=window_width-50, y=50)
+            background=button_bg_color,
+            activebackground=button_bg_color_clicked)
+sound_button.place(x=button_pos_x, y=button_pos_y + pos_y_diff)
+
 
 # FUNCTIONS
 time_display()
