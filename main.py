@@ -4,6 +4,7 @@
 # What did we learn?
 # - The labels placement - the last one will be on the top
 # - Need CANVAS to be able to display text with clear transparent background
+# - canvas.create_text() style
 # - Be able to save/hold a sequence of tkinter widgets we need class instance sequence (/docs/tkinter_fonts.py)
 
 
@@ -124,7 +125,9 @@ music_on = settings_data['music_on']
 music_volume = settings_data['music_volume']
 # ANIMATION
 animation_speed = selected_skin_folder['animation_speed']  # 1000 = 1 sec
-
+# CANVAS 2nd - SETTINGS
+canvas_settings_orentation = selected_skin_folder['canvas_settings_orentation']
+canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
 
 # WINDOW
 window = Tk()
@@ -133,7 +136,7 @@ window_width = 720 + 2
 window_high = 486 + 2
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
-window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width*0.2, screen_height*0.6))
+window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width/2-window_width, screen_height-window_high-80))
 window.resizable(0,0)   # locks the main window
 # CANVAS
 canvas = Canvas(window, width=window_width, height=window_high)
@@ -208,15 +211,15 @@ pos_y_diff = 33
 # SETTINGS BUTTON
 button_image_settings = button_image(21, 'icon_settings.png')
 settings_button = Button(canvas, text = 'test',
-            command=lambda:[print('test')], 
+            command=lambda:[display_canvas_settings()], 
             image = button_image_settings,
             background=button_bg_color,
             activebackground=button_bg_color_clicked)
 settings_button.place(x=button_pos_x, y=button_pos_y)
 
 # SOUND BUTTON
-button_image_start = button_image(20, 'start.png')
-button_image_stop = button_image(20, 'stop.png')
+button_image_start = button_image(20, 'icon_start.png')
+button_image_stop = button_image(20, 'icon_stop.png')
 if music_on:
     music_start_stop_img = button_image_stop
 else:
@@ -229,7 +232,40 @@ sound_button = Button(canvas, text = 'test',
 sound_button.place(x=button_pos_x, y=button_pos_y + pos_y_diff)
 
 
-# FUNCTIONS
+## CANVAS 2nd - SETTINGS
+def display_canvas_settings():
+    # CANVAS
+    canvas_settings_width = 300
+    canvas_settings_height = 250
+    canvas_settings = Canvas(
+        window,
+        background=button_bg_color,
+        highlightthickness=2,
+        highlightbackground=button_bg_color_clicked,
+        width=canvas_settings_width,
+        height=canvas_settings_height)
+    
+    canvas_settings.place(
+        x=button_pos_x+canvas_settings_pos_x_diff,
+        y=button_pos_y,
+        anchor=canvas_settings_orentation)
+    
+    # CLOSE BUTTON
+    close_button = Button(canvas_settings,
+        text='X',
+        image=button_image_close,
+        command=lambda:[close_canvas_settings()],
+        background=button_bg_color,
+        activebackground=button_bg_color_clicked)
+    close_button.place(x=canvas_settings_width-30, y=15)
+
+    # CLOSE CANVAS
+    def close_canvas_settings():
+        canvas_settings.destroy()
+
+button_image_close = button_image(15, 'icon_close.png')
+
+## FUNCTIONS
 time_display()
 animation(count)
 load_play_music()
