@@ -4,11 +4,12 @@
 # What did we learn?
 # - The labels placement - the last one will be on the top
 # - Need CANVAS to be able to display text with clear transparent background
-# - canvas.create_text() style
+# - canvas.create_text() parameters` style
 # - Be able to save/hold a sequence of tkinter widgets we need class instance sequence (/docs/tkinter_fonts.py)
+# - how to loop a function (animation, volume slider)
 
 
-from tkinter import Tk, PhotoImage, Canvas, Button
+from tkinter import Tk, PhotoImage, Canvas, Button, Scale
 from time import strftime
 
 from json import load, dump
@@ -51,6 +52,7 @@ def music_load():
 
 def music_play():
     music_load()
+    music_volume = settings_data['music_volume']
     mixer.music.set_volume(music_volume)
     mixer.music.play(loops=-1)              # -1: repeat
 
@@ -136,7 +138,7 @@ window_width = 720 + 2
 window_high = 486 + 2
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
-window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width/2-window_width, screen_height-window_high-80))
+window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width/2, screen_height-window_high-80))
 window.resizable(0,0)   # locks the main window
 # CANVAS
 canvas = Canvas(window, width=window_width, height=window_high)
@@ -144,20 +146,24 @@ canvas.place(x=0,y=0)
 image_display = canvas.create_image((0,0))
 
 ## ANIMATION
-path_gif = Path(working_directory, 'skins', skin_selected, 'GIF.GIF')
-get_frames_count_all = Image.open(path_gif)
-frames_count_all = get_frames_count_all.n_frames  # gives total number of frames that gif contains
-# images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]
-# # original code snippet - creating list of PhotoImage objects for each frames
+def img_seq_creation():
+    path_gif = Path(working_directory, 'skins', skin_selected, 'GIF.GIF')
+    get_frames_count_all = Image.open(path_gif)
+    frames_count_all = get_frames_count_all.n_frames  # gives total number of frames that gif contains
+    # images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]
+    # # original code snippet - creating list of PhotoImage objects for each frames
 
-# the returning part of the animation coming from:
-# allocating the same image object for 2 mirrored position in the list
-# -> smaller GIF, faster load time
-images_list = []
-[images_list.append(t) for t in range(frames_count_all*2)]
-for i in range(frames_count_all):
-    images_list[i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
-    images_list[(frames_count_all*2-1)-i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
+    # the returning part of the animation coming from:
+    # allocating the same image object for 2 mirrored position in the list
+    # -> smaller GIF, faster load time
+    images_list = []
+    [images_list.append(t) for t in range(frames_count_all*2)]
+    for i in range(frames_count_all):
+        images_list[i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
+        images_list[(frames_count_all*2-1)-i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
+    return images_list, frames_count_all
+
+images_list, frames_count_all = img_seq_creation()
 
 count = 0
 anim = None
@@ -234,6 +240,8 @@ sound_button.place(x=button_pos_x, y=button_pos_y + pos_y_diff)
 
 ## CANVAS 2nd - SETTINGS
 def display_canvas_settings():
+    settings_data = open_settings()
+    music_volume = settings_data['music_volume']
     # CANVAS
     canvas_settings_width = 300
     canvas_settings_height = 250
@@ -259,8 +267,51 @@ def display_canvas_settings():
         activebackground=button_bg_color_clicked)
     close_button.place(x=canvas_settings_width-30, y=15)
 
+    # VOLUME SLIDER
+    volume_slider = Scale(
+        canvas_settings,
+        from_=0,
+        to=10,
+        length=200,
+        width=10,
+        background=button_bg_color,
+        activebackground=button_bg_color_clicked,
+        troughcolor=button_bg_color_clicked,
+        highlightthickness=0,
+        orient='horizontal',
+        showvalue=False,
+        command=('test')
+        )
+    volume_slider.set(music_volume*10)
+    volume_slider.place(x=canvas_settings_width-250, y=15)
+    def volume_slider_update():
+        volume = volume_slider.get()/10     # 1-10 --> 0.1 - 1.0
+        music_volume_set(volume)
+        canvas_settings.after(300, lambda:volume_slider_update())
+    volume_slider_update()
+
+    # # Test BUTTON
+    # def music_volume():
+    #     # music_volume_set(1.0)
+    #     # settings_data['music_volume'] = 1.0
+        
+    #     music_volume_set(0.0)
+    #     settings_data['music_volume'] = 0.0
+    #     save_settings(settings_data)
+
+    # music_volume_button = Button(canvas_settings,
+    #     text='V',
+    #     # image=button_image_close,
+    #     command=lambda:[music_volume()],
+    #     background=button_bg_color,
+    #     activebackground=button_bg_color_clicked)
+    # music_volume_button.place(x=canvas_settings_width-100, y=15)
+
     # CLOSE CANVAS
     def close_canvas_settings():
+        settings_data = open_settings()
+        settings_data['music_volume'] = volume_slider.get()/10
+        save_settings(settings_data)
         canvas_settings.destroy()
 
 button_image_close = button_image(15, 'icon_close.png')
