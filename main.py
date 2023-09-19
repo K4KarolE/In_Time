@@ -29,6 +29,20 @@ class Music:
         self.on = on
         self.volume = volume
 
+count = 0
+class Animation:
+    def __init__(self, speed):
+        self.speed = speed
+    
+    def animation_func(animation_param, count):
+        image_next = images_list[count]
+        canvas.itemconfig(image_display, image=image_next, anchor='nw')
+
+        count += 1
+        if count == frames_count_all*2:
+            count = 0
+        canvas.after(animation.speed, lambda :Animation.animation_func(animation_param, count))
+
 def open_settings():
     f = open(path_json)
     settings_data = load(f)
@@ -75,18 +89,18 @@ def load_play_music():
 
 def music_switch_on_off():
     settings_data = open_settings()
+    skin_selected = settings_data['skin_selected']                                  
+    selected_skin_folder = settings_data['skins'][skin_selected]
     if settings_data['music_on']:
         music_stop()
-        settings_data['music_volume'] = music.volume
         settings_data['music_on'] = False
-        save_settings(settings_data)
         sound_button.configure(image=button_image_start)
     else:
         music_play()
-        settings_data['music_volume'] = music.volume
         settings_data['music_on'] = True
-        save_settings(settings_data)
         sound_button.configure(image=button_image_stop)
+    selected_skin_folder['music_volume'] = music.volume
+    save_settings(settings_data)
 
 # IMAGE CREATION - resizable
 def image_generate(image_size, picture_name):       # (24, 'icon_close.png')
@@ -107,13 +121,9 @@ skin_selected = settings_data['skin_selected']
 selected_skin_folder = settings_data['skins'][skin_selected]
 
 
-# COLORS - FONT STYLE
-# original tkinter grey: #F0F0F0 - FYI
-background_color = selected_skin_folder['background_color']    
-field_background_color = selected_skin_folder['field_background_color'] 
+# FONT
 font_style = selected_skin_folder['font_style']
 font_color = selected_skin_folder['font_color']
-window_background_color = selected_skin_folder['window_background_color']
 # BUTTONS
 button_bg_color = selected_skin_folder['button_bg_color']
 button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
@@ -130,11 +140,13 @@ time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
 # SECONDS
 time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
 time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
+
 # MUSIC
-music = Music(settings_data['music_on'], settings_data['music_volume'])
+music = Music(settings_data['music_on'], selected_skin_folder['music_volume'])
 
 # ANIMATION
-animation_speed = selected_skin_folder['animation_speed']  # 1000 = 1 sec
+animation = Animation(selected_skin_folder['animation_speed'])  # 1000 = 1 sec
+
 # CANVAS 2nd - SETTINGS
 canvas_settings_orentation = selected_skin_folder['canvas_settings_orentation']
 canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
@@ -157,34 +169,22 @@ image_display = canvas.create_image((0,0))
 def img_seq_creation():
     path_gif = Path(working_directory, 'skins', skin_selected, 'GIF.GIF')
     get_frames_count_all = Image.open(path_gif)
-    frames_count_all = get_frames_count_all.n_frames  # gives total number of frames that gif contains
+    frames_count_all = get_frames_count_all.n_frames
     # images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]
     # # original code snippet - creating list of PhotoImage objects for each frames
 
-    # the returning part of the animation coming from:
-    # allocating the same image object for 2 mirrored position in the list
-    # -> half size GIF, faster load time
     images_list = []
     [images_list.append(t) for t in range(frames_count_all*2)]
     for i in range(frames_count_all):
         images_list[i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
         images_list[(frames_count_all*2-1)-i] = PhotoImage(file=path_gif, format=f'gif -index {i}')
     return images_list, frames_count_all
+    # the returning part of the animation coming from:
+    # allocating the same image object for 2 mirrored position in the list
+    # -> half size GIF, faster load time
 
 images_list, frames_count_all = img_seq_creation()
 
-count = 0
-anim = None
-def animation(count):
-    # settings_data = open_settings()
-    # animation_speed = settings_data['skins'][skin_selected]['animation_speed']
-    image_next = images_list[count]
-    canvas.itemconfig(image_display, image=image_next, anchor='nw')
-
-    count += 1
-    if count == frames_count_all*2:
-        count = 0
-    canvas.after(animation_speed, lambda :animation(count))
 
 # WINDOW ICON - left, top corner - window loading better when this is after animation section
 if platform.system() == 'Windows':      # will not be visible on Linux, macOS
@@ -305,12 +305,39 @@ def display_canvas_settings():
     
     volume_slider_update(music.volume)
 
+    # ANIMATION SPEED SLIDER
+    animation_slider = Scale(
+        canvas_settings,
+        from_=10,
+        to=200,
+        length=190,
+        width=10,
+        background=button_bg_color,
+        activebackground=button_bg_color,
+        troughcolor=button_bg_color_clicked,
+        highlightthickness=0,
+        orient='horizontal',
+        showvalue=False
+        )
+    animation_slider.set(animation.speed)
+    animation_slider.place(x=60, y=90)
+
+    def animation_speed_update():
+        animation.speed=animation_slider.get()
+        canvas_settings.after(50, lambda:animation_speed_update())
+    
+    animation_speed_update()
 
     # CLOSE CANVAS
     def close_canvas_settings():
+        # SAVE VOLUME, ANIMATION SPEED
         settings_data = open_settings()
-        settings_data['music_volume'] = volume_slider.get()/10
+        skin_selected = settings_data['skin_selected']
+        selected_skin_folder = settings_data['skins'][skin_selected]
+        selected_skin_folder['music_volume'] = music.volume
+        selected_skin_folder['animation_speed'] = animation.speed
         save_settings(settings_data)
+        # CLOSE CANVAS
         canvas_settings.destroy()
 
 # IMAGE GENERATION
@@ -319,7 +346,7 @@ button_image_close = image_generate(15, 'icon_close.png')
 
 ## FUNCTIONS
 time_display()
-animation(count)
+Animation.animation_func(animation.speed, count)
 load_play_music()
 
 window.mainloop()
