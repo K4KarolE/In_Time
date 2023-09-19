@@ -24,7 +24,10 @@ import os
 from pygame import mixer
 mixer.init()
 
-
+class Music:
+    def __init__(self, on, volume):
+        self.on = on
+        self.volume = volume
 
 def open_settings():
     f = open(path_json)
@@ -47,13 +50,15 @@ def time_display():
     canvas.itemconfig(seconds_display_2nd, text=seconds)
     canvas.after(1000, time_display)
 
+# MUSIC
+# saving the music`s ON/OFF and VOLUME parameters to DB when:
+# 1.start playing 2.stop playing 3.closing the settings window
 def music_load():
     mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
 
 def music_play():
     music_load()
-    music_volume = settings_data['music_volume']
-    mixer.music.set_volume(music_volume)
+    mixer.music.set_volume(music.volume)
     mixer.music.play(loops=-1)              # -1: repeat
 
 def music_stop():
@@ -63,25 +68,28 @@ def music_volume_set(value):
     mixer.music.set_volume(value)         # 0.0-1.0
 
 def load_play_music():
-    if  music_on:
+    if  music.on:
         music_load()
-        mixer.music.set_volume(music_volume)
+        mixer.music.set_volume(music.volume)
         mixer.music.play(loops=-1)
 
-def music_switch():
+def music_switch_on_off():
     settings_data = open_settings()
     if settings_data['music_on']:
         music_stop()
+        settings_data['music_volume'] = music.volume
         settings_data['music_on'] = False
         save_settings(settings_data)
         sound_button.configure(image=button_image_start)
     else:
         music_play()
+        settings_data['music_volume'] = music.volume
         settings_data['music_on'] = True
         save_settings(settings_data)
         sound_button.configure(image=button_image_stop)
 
-def button_image(image_size, picture_name):       # (24, 'icon_close.png')
+# IMAGE CREATION - resizable
+def image_generate(image_size, picture_name):       # (24, 'icon_close.png')
     my_img_path = Path(working_directory, 'skins', '_icons', picture_name)
     my_img = Image.open(my_img_path)
     width = int(image_size)
@@ -123,8 +131,8 @@ time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
 time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
 time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
 # MUSIC
-music_on = settings_data['music_on']
-music_volume = settings_data['music_volume']
+music = Music(settings_data['music_on'], settings_data['music_volume'])
+
 # ANIMATION
 animation_speed = selected_skin_folder['animation_speed']  # 1000 = 1 sec
 # CANVAS 2nd - SETTINGS
@@ -155,7 +163,7 @@ def img_seq_creation():
 
     # the returning part of the animation coming from:
     # allocating the same image object for 2 mirrored position in the list
-    # -> smaller GIF, faster load time
+    # -> half size GIF, faster load time
     images_list = []
     [images_list.append(t) for t in range(frames_count_all*2)]
     for i in range(frames_count_all):
@@ -217,7 +225,7 @@ seconds_display = canvas.create_text(
 pos_y_diff = 33
 
 # SETTINGS BUTTON
-button_image_settings = button_image(21, 'icon_settings.png')
+button_image_settings = image_generate(21, 'icon_settings.png')
 settings_button = Button(canvas, text = 'test',
             command=lambda:[display_canvas_settings()], 
             image = button_image_settings,
@@ -226,14 +234,14 @@ settings_button = Button(canvas, text = 'test',
 settings_button.place(x=button_pos_x, y=button_pos_y)
 
 # SOUND BUTTON
-button_image_start = button_image(20, 'icon_start.png')
-button_image_stop = button_image(20, 'icon_stop.png')
-if music_on:
+button_image_start = image_generate(20, 'icon_start.png')
+button_image_stop = image_generate(20, 'icon_stop.png')
+if music.on:
     music_start_stop_img = button_image_stop
 else:
     music_start_stop_img = button_image_start
 sound_button = Button(canvas, text = 'test',
-            command=lambda:[music_switch()], 
+            command=lambda:[music_switch_on_off()], 
             image = music_start_stop_img,
             background=button_bg_color,
             activebackground=button_bg_color_clicked)
@@ -242,8 +250,6 @@ sound_button.place(x=button_pos_x, y=button_pos_y + pos_y_diff)
 
 ## CANVAS 2nd - SETTINGS
 def display_canvas_settings():
-    settings_data = open_settings()
-    music_volume = settings_data['music_volume']
     # CANVAS
     canvas_settings_width = 300
     canvas_settings_height = 250
@@ -278,7 +284,7 @@ def display_canvas_settings():
         canvas_settings,
         from_=0,
         to=10,
-        length=180,
+        length=190,
         width=10,
         background=button_bg_color,
         activebackground=button_bg_color,
@@ -287,16 +293,17 @@ def display_canvas_settings():
         orient='horizontal',
         showvalue=False
         )
-    volume_slider.set(music_volume*10)
-    volume_slider.place(x=50, y=40)
-    def volume_slider_update(music_volume):         # update volume, when there is a change in slider position/value
+    volume_slider.set(music.volume*10)
+    volume_slider.place(x=60, y=40)
+    def volume_slider_update(music_volume_param):       # update volume, when there is a change in slider position/value
         volume_slider_value = volume_slider.get()/10
-        if volume_slider_value != music_volume:      
+        if volume_slider_value != music_volume_param:   # checking any change in volume      
             music_volume_set(volume_slider_value)
-            music_volume = volume_slider_value
-        canvas_settings.after(50, lambda:volume_slider_update(music_volume))    # 1000 = 1 sec
+            music_volume_param = volume_slider_value
+            music.volume = volume_slider_value
+        canvas_settings.after(50, lambda:volume_slider_update(music_volume_param))    # 1000 = 1 sec
     
-    volume_slider_update(music_volume)
+    volume_slider_update(music.volume)
 
 
     # CLOSE CANVAS
@@ -307,8 +314,8 @@ def display_canvas_settings():
         canvas_settings.destroy()
 
 # IMAGE GENERATION
-image_volume = button_image(30, 'icon_volume.png')
-button_image_close = button_image(15, 'icon_close.png')
+image_volume = image_generate(30, 'icon_volume.png')
+button_image_close = image_generate(15, 'icon_close.png')
 
 ## FUNCTIONS
 time_display()
