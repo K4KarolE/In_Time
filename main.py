@@ -9,7 +9,7 @@
 # - how to loop a function (animation, volume slider)
 
 
-from tkinter import Tk, PhotoImage, Canvas, Button, Scale
+from tkinter import Tk, PhotoImage, Canvas, Button, Scale, Label
 from time import strftime
 
 from json import load, dump
@@ -168,6 +168,8 @@ images_list, frames_count_all = img_seq_creation()
 count = 0
 anim = None
 def animation(count):
+    # settings_data = open_settings()
+    # animation_speed = settings_data['skins'][skin_selected]['animation_speed']
     image_next = images_list[count]
     canvas.itemconfig(image_display, image=image_next, anchor='nw')
 
@@ -267,45 +269,35 @@ def display_canvas_settings():
         activebackground=button_bg_color_clicked)
     close_button.place(x=canvas_settings_width-30, y=15)
 
+    # VOLUME IMAGE
+    image_volume_label = Label(canvas_settings,image=image_volume, background=button_bg_color)
+    image_volume_label.place(x=15, y=30)
+
     # VOLUME SLIDER
     volume_slider = Scale(
         canvas_settings,
         from_=0,
         to=10,
-        length=200,
+        length=180,
         width=10,
         background=button_bg_color,
-        activebackground=button_bg_color_clicked,
+        activebackground=button_bg_color,
         troughcolor=button_bg_color_clicked,
         highlightthickness=0,
         orient='horizontal',
-        showvalue=False,
-        command=('test')
+        showvalue=False
         )
     volume_slider.set(music_volume*10)
-    volume_slider.place(x=canvas_settings_width-250, y=15)
-    def volume_slider_update():
-        volume = volume_slider.get()/10     # 1-10 --> 0.1 - 1.0
-        music_volume_set(volume)
-        canvas_settings.after(300, lambda:volume_slider_update())
-    volume_slider_update()
+    volume_slider.place(x=50, y=40)
+    def volume_slider_update(music_volume):         # update volume, when there is a change in slider position/value
+        volume_slider_value = volume_slider.get()/10
+        if volume_slider_value != music_volume:      
+            music_volume_set(volume_slider_value)
+            music_volume = volume_slider_value
+        canvas_settings.after(50, lambda:volume_slider_update(music_volume))    # 1000 = 1 sec
+    
+    volume_slider_update(music_volume)
 
-    # # Test BUTTON
-    # def music_volume():
-    #     # music_volume_set(1.0)
-    #     # settings_data['music_volume'] = 1.0
-        
-    #     music_volume_set(0.0)
-    #     settings_data['music_volume'] = 0.0
-    #     save_settings(settings_data)
-
-    # music_volume_button = Button(canvas_settings,
-    #     text='V',
-    #     # image=button_image_close,
-    #     command=lambda:[music_volume()],
-    #     background=button_bg_color,
-    #     activebackground=button_bg_color_clicked)
-    # music_volume_button.place(x=canvas_settings_width-100, y=15)
 
     # CLOSE CANVAS
     def close_canvas_settings():
@@ -314,6 +306,8 @@ def display_canvas_settings():
         save_settings(settings_data)
         canvas_settings.destroy()
 
+# IMAGE GENERATION
+image_volume = button_image(30, 'icon_volume.png')
 button_image_close = button_image(15, 'icon_close.png')
 
 ## FUNCTIONS
