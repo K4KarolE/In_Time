@@ -43,6 +43,11 @@ class Animation:
             count = 0
         canvas.after(animation.speed, lambda :Animation.animation_func(animation_param, count))
 
+class Params:
+    def __init__(self, value):
+        self.value = value
+
+
 def open_settings():
     f = open(path_json)
     settings_data = load(f)
@@ -120,23 +125,22 @@ settings_data = open_settings()
 skin_selected = settings_data['skin_selected']                                  
 selected_skin_folder = settings_data['skins'][skin_selected]
 
-
-# FONT
-# font_style = selected_skin_folder['font_style']
-# font_color = selected_skin_folder['font_color']
 # BUTTONS
 button_bg_color = selected_skin_folder['button_bg_color']
 button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
 button_pos_x = selected_skin_folder['button_pos_x']
 button_pos_y = selected_skin_folder['button_pos_y']
+
 # TIME
 time_font_color = selected_skin_folder['time_font_color']
 time_font_style = selected_skin_folder['time_font_style']
 time_hm_font_size = selected_skin_folder['time_hm_font_size']
 time_sec_font_size = selected_skin_folder['time_sec_font_size']
+
 # HOURS & MINUTES
 time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
 time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
+
 # SECONDS
 time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
 time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
@@ -161,7 +165,10 @@ screen_height = window.winfo_screenheight()
 window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width/2, screen_height-window_high-80))
 window.resizable(0,0)   # locks the main window
 # CANVAS
-canvas = Canvas(window, width=window_width, height=window_high)
+canvas = Canvas(
+    window,
+    width=window_width,
+    height=window_high)
 canvas.place(x=0,y=0)
 image_display = canvas.create_image((0,0))
 
@@ -171,7 +178,7 @@ def img_seq_creation():
     get_frames_count_all = Image.open(path_gif)
     frames_count_all = get_frames_count_all.n_frames
     # images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]
-    # # original code snippet - creating list of PhotoImage objects for each frames
+    # # prev.line = original code snippet - creating list of PhotoImage objects for each frames
 
     images_list = []
     [images_list.append(t) for t in range(frames_count_all*2)]
@@ -226,11 +233,13 @@ pos_y_diff = 33
 
 # SETTINGS BUTTON
 button_image_settings = image_generate(21, 'icon_settings.png')
-settings_button = Button(canvas, text = 'test',
-            command=lambda:[display_canvas_settings()], 
-            image = button_image_settings,
-            background=button_bg_color,
-            activebackground=button_bg_color_clicked)
+settings_button = Button(
+    canvas,
+    text = 'test',
+    command=lambda:[canvas_launcher()], 
+    image = button_image_settings,
+    background=button_bg_color,
+    activebackground=button_bg_color_clicked)
 settings_button.place(x=button_pos_x, y=button_pos_y)
 
 # SOUND BUTTON
@@ -249,25 +258,35 @@ sound_button.place(x=button_pos_x, y=button_pos_y + pos_y_diff)
 
 
 ## CANVAS 2nd - SETTINGS
+canvas_launched = Params(False)
+def canvas_launcher():
+    if canvas_launched.value:
+        pass
+    else:
+        display_canvas_settings()
+        canvas_launched.value = True
+
+
 def display_canvas_settings():
     # CANVAS
     canvas_settings_width = 300
-    canvas_settings_height = 250
+    canvas_settings_height = 180
     canvas_settings = Canvas(
         window,
         background=button_bg_color,
-        highlightthickness=2,
-        highlightbackground=button_bg_color_clicked,
+        highlightthickness=3,
+        highlightbackground='black',
         width=canvas_settings_width,
         height=canvas_settings_height)
     
     canvas_settings.place(
         x=button_pos_x+canvas_settings_pos_x_diff,
-        y=button_pos_y,
+        y=button_pos_y-3,
         anchor=canvas_settings_orentation)
     
     # CLOSE BUTTON
-    close_button = Button(canvas_settings,
+    close_button = Button(
+        canvas_settings,
         text='X',
         image=button_image_close,
         command=lambda:[close_canvas_settings()],
@@ -304,10 +323,6 @@ def display_canvas_settings():
     
     volume_slider_update(music.volume)
 
-    # VOLUME IMAGE
-    image_volume_label = Label(canvas_settings,image=image_volume, background=button_bg_color)
-    image_volume_label.place(x=15, y=30)
-
     
     # ANIMATION SPEED SLIDER
     animation_slider = Scale(
@@ -321,8 +336,7 @@ def display_canvas_settings():
         troughcolor=button_bg_color_clicked,
         highlightthickness=0,
         orient='horizontal',
-        showvalue=False
-        )
+        showvalue=False)
     animation_slider.set(animation.speed)
     animation_slider.place(x=60, y=90)
 
@@ -332,18 +346,15 @@ def display_canvas_settings():
     
     animation_speed_update()
 
-    # ANIMATION SPEED IMAGE
-    animation_speed_label = Label(canvas_settings,image=image_animation_speed, background=button_bg_color)
-    animation_speed_label.place(x=15, y=80)
-
-
+    
     # SKINS
     def change_skin(__):
         for selected_title in skins_dic:
             if skins_dic[selected_title] == skins_roll_down_clicked.get():
+                settings_data = open_settings()
                 settings_data['skin_selected'] = selected_title  # updating & saving the "skin_selected" value in settings_db.json with every click/skin change
                 save_settings(settings_data)
-                # skin_selected = selected_title
+                
 
     skins_dic = {'back_to_the_future': 'Back to the Future I.',
                  'donnie_darko': 'Donnie Darko',
@@ -353,11 +364,35 @@ def display_canvas_settings():
     skins_options = [i for i in skins_dic.values()]
     skins_roll_down_clicked = StringVar()
     skins_roll_down_clicked.set(skins_dic[skin_selected])
-    skins_roll_down = OptionMenu(canvas_settings, skins_roll_down_clicked, *skins_options, command=change_skin)     
-    skins_roll_down.configure(font=(None, 10, 'bold'), foreground=button_bg_color_clicked, background=button_bg_color, activeforeground = button_bg_color, activebackground=button_bg_color_clicked, highlightbackground='black')
-    skins_roll_down['menu'].configure(font=(None, 10, 'bold'), foreground=button_bg_color_clicked, background=button_bg_color, activebackground=button_bg_color_clicked, activeforeground=button_bg_color)
-
-    skins_roll_down.place(x=60, y=150)
+    skins_roll_down = OptionMenu(
+        canvas_settings,
+        skins_roll_down_clicked,
+        *skins_options,
+        command=change_skin)
+    # ROLL DOWN
+    if skin_selected == 'terminator': # color correction just for this skin
+        foreground='black'
+        activeforeground = 'white'     
+    else:
+        foreground = button_bg_color_clicked
+        activeforeground=button_bg_color  
+    # BUTTON   
+    skins_roll_down.configure(
+        font=(None, 10, 'bold'),
+        foreground=foreground,
+        activeforeground = activeforeground,
+        background=button_bg_color,
+        activebackground=button_bg_color_clicked,
+        highlightbackground=button_bg_color)
+    # MENU
+    skins_roll_down['menu'].configure(
+        font=(None, 10, 'bold'),
+        activeborderwidth=9,
+        foreground=foreground,
+        activeforeground=activeforeground,
+        background=button_bg_color,
+        activebackground=button_bg_color_clicked)
+    skins_roll_down.place(x=60, y=130)
 
 
     # CLOSE CANVAS
@@ -369,12 +404,28 @@ def display_canvas_settings():
         selected_skin_folder['music_volume'] = music.volume
         selected_skin_folder['animation_speed'] = animation.speed
         save_settings(settings_data)
+        # CANVAS LAUNCH COUNTER
+        canvas_launched.value = False
         # CLOSE CANVAS
         canvas_settings.destroy()
+    
+    ## DISPLAY IMAGES
+    # VOLUME IMAGE
+    image_volume_label = Label(canvas_settings,image=image_volume, background=button_bg_color)
+    image_volume_label.place(x=15, y=30)
+
+    # ANIMATION SPEED IMAGE
+    animation_speed_label = Label(canvas_settings,image=image_animation_speed, background=button_bg_color)
+    animation_speed_label.place(x=15, y=80)
+
+    # SKIN SWITCH IMAGE
+    image_skin_switch_label = Label(canvas_settings,image=image_skin_switch, background=button_bg_color)
+    image_skin_switch_label.place(x=13, y=125)
 
 # IMAGE GENERATION
 image_volume = image_generate(30, 'icon_volume.png')
 image_animation_speed = image_generate(30, 'icon_animation_speed.png')
+image_skin_switch = image_generate(37, 'icon_skin_switch.png')
 button_image_close = image_generate(15, 'icon_close.png')
 
 ## FUNCTIONS
