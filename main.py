@@ -34,14 +34,7 @@ class Animation:
     def __init__(self, speed):
         self.speed = speed
     
-    def animation_func(animation_param, count):
-        image_next = images_list[count]
-        canvas.itemconfig(image_display, image=image_next, anchor='nw')
 
-        count += 1
-        if count == frames_count_all*2:
-            count = 0
-        canvas.after(animation.speed, lambda :Animation.animation_func(animation_param, count))
 
 class Params:
     def __init__(self, value):
@@ -72,25 +65,13 @@ def time_display():
 # MUSIC
 # saving the music`s ON/OFF and VOLUME parameters to DB when:
 # 1.start playing 2.stop playing 3.closing the settings window
-def music_load():
-    mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
-
-def music_play():
-    music_load()
-    mixer.music.set_volume(music.volume)
-    mixer.music.play(loops=-1)              # -1: repeat
-
 def music_stop():
     mixer.music.fadeout(500)
-    
-def music_volume_set(value):
-    mixer.music.set_volume(value)         # 0.0-1.0
 
-def load_play_music():
-    if  music.on:
-        music_load()
-        mixer.music.set_volume(music.volume)
-        mixer.music.play(loops=-1)
+def music_load_play(skin_selected):
+    mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
+    mixer.music.set_volume(music.volume)
+    mixer.music.play(loops=-1)
 
 def music_switch_on_off():
     settings_data = open_settings()
@@ -101,7 +82,7 @@ def music_switch_on_off():
         settings_data['music_on'] = False
         sound_button.configure(image=button_image_start)
     else:
-        music_play()
+        music_load_play(skin_selected)
         settings_data['music_on'] = True
         sound_button.configure(image=button_image_stop)
     selected_skin_folder['music_volume'] = music.volume
@@ -173,8 +154,9 @@ canvas.place(x=0,y=0)
 image_display = canvas.create_image((0,0))
 
 ## ANIMATION
-def img_seq_creation():
+def img_seq_creation(skin_selected):
     path_gif = Path(working_directory, 'skins', skin_selected, 'GIF.GIF')
+    print(path_gif)
     get_frames_count_all = Image.open(path_gif)
     frames_count_all = get_frames_count_all.n_frames
     # images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]
@@ -189,8 +171,16 @@ def img_seq_creation():
     # the returning part of the animation coming from:
     # allocating the same image object for 2 mirrored position in the list
     # -> half size GIF, faster load time
+images_list, frames_count_all = img_seq_creation(skin_selected)
 
-images_list, frames_count_all = img_seq_creation()
+def animation_func(animation_param, count, images_list, frames_count_all):
+    image_next = images_list[count]
+    canvas.itemconfig(image_display, image=image_next, anchor='nw')
+    count += 1
+    if count == frames_count_all*2:
+        count = 0
+    canvas.after(animation.speed, lambda :animation_func(animation_param, count, images_list, frames_count_all))
+
 
 
 # WINDOW ICON - left, top corner - window loading better when this is after animation section
@@ -316,7 +306,7 @@ def display_canvas_settings():
     def volume_slider_update(music_volume_param):       # update volume, when there is a change in slider position/value
         volume_slider_value = volume_slider.get()/10
         if volume_slider_value != music_volume_param:   # checking any change in volume      
-            music_volume_set(volume_slider_value)
+            mixer.music.set_volume(volume_slider_value)
             music_volume_param = volume_slider_value
             music.volume = volume_slider_value
         canvas_settings.after(50, lambda:volume_slider_update(music_volume_param))    # 1000 = 1 sec
@@ -349,12 +339,56 @@ def display_canvas_settings():
     
     # SKINS
     def change_skin(__):
+        
         for selected_title in skins_dic:
             if skins_dic[selected_title] == skins_roll_down_clicked.get():
                 settings_data = open_settings()
                 settings_data['skin_selected'] = selected_title  # updating & saving the "skin_selected" value in settings_db.json with every click/skin change
                 save_settings(settings_data)
-                
+                skin_selected = selected_title
+                selected_skin_folder = settings_data['skins'][skin_selected]
+        # LIST OF WIDGETS TO UPDATE
+        # TEXT
+        window.title(selected_skin_folder['window_title'])
+        # WINDOW ICON 
+        if platform.system() == 'Windows': 
+            path_icon = Path(working_directory, 'skins', skin_selected, 'icon.ico')
+            window.iconbitmap(path_icon)
+        
+        # BUTTONS
+        button_bg_color = selected_skin_folder['button_bg_color']
+        button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
+        button_pos_x = selected_skin_folder['button_pos_x']
+        button_pos_y = selected_skin_folder['button_pos_y']
+
+        # TIME
+        time_font_color = selected_skin_folder['time_font_color']
+        time_font_style = selected_skin_folder['time_font_style']
+        time_hm_font_size = selected_skin_folder['time_hm_font_size']
+        time_sec_font_size = selected_skin_folder['time_sec_font_size']
+
+        # HOURS & MINUTES
+        time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
+        time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
+
+        # SECONDS
+        time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
+        time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
+
+        # MUSIC
+        music.on, music.volume = settings_data['music_on'], selected_skin_folder['music_volume']
+
+        # ANIMATION
+        animation.speed = selected_skin_folder['animation_speed']  # 1000 = 1 sec
+
+        # CANVAS 2nd - SETTINGS
+        canvas_settings_orentation = selected_skin_folder['canvas_settings_orentation']
+        canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
+
+        # images_list, frames_count_all = img_seq_creation(skin_selected)
+        # animation_func(animation.speed, count, images_list, frames_count_all)
+        music_load_play(skin_selected)
+
 
     skins_dic = {'back_to_the_future': 'Back to the Future I.',
                  'donnie_darko': 'Donnie Darko',
@@ -430,7 +464,7 @@ button_image_close = image_generate(15, 'icon_close.png')
 
 ## FUNCTIONS
 time_display()
-Animation.animation_func(animation.speed, count)
-load_play_music()
+animation_func(animation.speed, count, images_list, frames_count_all)
+if music.on: music_load_play(skin_selected)
 
 window.mainloop()
