@@ -9,7 +9,7 @@
 # - how to loop a function (animation, volume slider)
 
 
-from tkinter import Tk, PhotoImage, Canvas, Button, Scale, Label
+from tkinter import Tk, PhotoImage, Canvas, Button, Scale, Label, OptionMenu, StringVar
 from time import strftime
 
 from json import load, dump
@@ -103,7 +103,7 @@ def music_switch_on_off():
     save_settings(settings_data)
 
 # IMAGE CREATION - resizable
-def image_generate(image_size, picture_name):       # (24, 'icon_close.png')
+def image_generate(image_size, picture_name):   # (24, 'icon_close.png')
     my_img_path = Path(working_directory, 'skins', '_icons', picture_name)
     my_img = Image.open(my_img_path)
     width = int(image_size)
@@ -122,8 +122,8 @@ selected_skin_folder = settings_data['skins'][skin_selected]
 
 
 # FONT
-font_style = selected_skin_folder['font_style']
-font_color = selected_skin_folder['font_color']
+# font_style = selected_skin_folder['font_style']
+# font_color = selected_skin_folder['font_color']
 # BUTTONS
 button_bg_color = selected_skin_folder['button_bg_color']
 button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
@@ -275,17 +275,15 @@ def display_canvas_settings():
         activebackground=button_bg_color_clicked)
     close_button.place(x=canvas_settings_width-30, y=15)
 
-    # VOLUME IMAGE
-    image_volume_label = Label(canvas_settings,image=image_volume, background=button_bg_color)
-    image_volume_label.place(x=15, y=30)
-
+    ## SLIDERS
+    slider_width = 13
     # VOLUME SLIDER
     volume_slider = Scale(
         canvas_settings,
         from_=0,
         to=10,
         length=190,
-        width=10,
+        width=slider_width,
         background=button_bg_color,
         activebackground=button_bg_color,
         troughcolor=button_bg_color_clicked,
@@ -295,6 +293,7 @@ def display_canvas_settings():
         )
     volume_slider.set(music.volume*10)
     volume_slider.place(x=60, y=40)
+
     def volume_slider_update(music_volume_param):       # update volume, when there is a change in slider position/value
         volume_slider_value = volume_slider.get()/10
         if volume_slider_value != music_volume_param:   # checking any change in volume      
@@ -305,13 +304,18 @@ def display_canvas_settings():
     
     volume_slider_update(music.volume)
 
+    # VOLUME IMAGE
+    image_volume_label = Label(canvas_settings,image=image_volume, background=button_bg_color)
+    image_volume_label.place(x=15, y=30)
+
+    
     # ANIMATION SPEED SLIDER
     animation_slider = Scale(
         canvas_settings,
-        from_=10,
-        to=200,
+        from_=200,
+        to=10,
         length=190,
-        width=10,
+        width=slider_width,
         background=button_bg_color,
         activebackground=button_bg_color,
         troughcolor=button_bg_color_clicked,
@@ -328,6 +332,34 @@ def display_canvas_settings():
     
     animation_speed_update()
 
+    # ANIMATION SPEED IMAGE
+    animation_speed_label = Label(canvas_settings,image=image_animation_speed, background=button_bg_color)
+    animation_speed_label.place(x=15, y=80)
+
+
+    # SKINS
+    def change_skin(__):
+        for selected_title in skins_dic:
+            if skins_dic[selected_title] == skins_roll_down_clicked.get():
+                settings_data['skin_selected'] = selected_title  # updating & saving the "skin_selected" value in settings_db.json with every click/skin change
+                save_settings(settings_data)
+                # skin_selected = selected_title
+
+    skins_dic = {'back_to_the_future': 'Back to the Future I.',
+                 'donnie_darko': 'Donnie Darko',
+                 'idiocracy': 'Idiocracy',
+                 'terminator': 'Terminator I.'}
+
+    skins_options = [i for i in skins_dic.values()]
+    skins_roll_down_clicked = StringVar()
+    skins_roll_down_clicked.set(skins_dic[skin_selected])
+    skins_roll_down = OptionMenu(canvas_settings, skins_roll_down_clicked, *skins_options, command=change_skin)     
+    skins_roll_down.configure(font=(None, 10, 'bold'), foreground=button_bg_color_clicked, background=button_bg_color, activeforeground = button_bg_color, activebackground=button_bg_color_clicked, highlightbackground='black')
+    skins_roll_down['menu'].configure(font=(None, 10, 'bold'), foreground=button_bg_color_clicked, background=button_bg_color, activebackground=button_bg_color_clicked, activeforeground=button_bg_color)
+
+    skins_roll_down.place(x=60, y=150)
+
+
     # CLOSE CANVAS
     def close_canvas_settings():
         # SAVE VOLUME, ANIMATION SPEED
@@ -342,6 +374,7 @@ def display_canvas_settings():
 
 # IMAGE GENERATION
 image_volume = image_generate(30, 'icon_volume.png')
+image_animation_speed = image_generate(30, 'icon_animation_speed.png')
 button_image_close = image_generate(15, 'icon_close.png')
 
 ## FUNCTIONS
