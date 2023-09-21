@@ -57,18 +57,15 @@ path_json = Path(working_directory, 'settings_db.json')
 def main():
 
     def time_display():
-        try:
-            hours_and_mins = strftime('%H:%M')
-            seconds = strftime(':%S')
-            # TOP
-            canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
-            canvas.itemconfig(seconds_display, text=seconds)
-            # BACK
-            canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
-            canvas.itemconfig(seconds_display_2nd, text=seconds)
-            canvas.after(1000, lambda: time_display())
-        except:
-            pass
+        hours_and_mins = strftime('%H:%M')
+        seconds = strftime(':%S')
+        # TOP
+        canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
+        canvas.itemconfig(seconds_display, text=seconds)
+        # BACK
+        canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
+        canvas.itemconfig(seconds_display_2nd, text=seconds)
+        canvas.after(1000, lambda:time_display())
 
     # MUSIC
     # saving the music`s ON/OFF and VOLUME parameters to DB when:
@@ -112,6 +109,12 @@ def main():
     skin_selected = settings_data['skin_selected']                                  
     selected_skin_folder = settings_data['skins'][skin_selected]
 
+    # MUSIC
+    music = Music(settings_data['music_on'], selected_skin_folder['music_volume'])
+
+    # ANIMATION
+    animation = Animation(selected_skin_folder['animation_speed'])  # 1000 = 1 sec
+
     # BUTTONS
     button_bg_color = selected_skin_folder['button_bg_color']
     button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
@@ -131,12 +134,6 @@ def main():
     # SECONDS
     time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
     time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
-
-    # MUSIC
-    music = Music(settings_data['music_on'], selected_skin_folder['music_volume'])
-
-    # ANIMATION
-    animation = Animation(selected_skin_folder['animation_speed'])  # 1000 = 1 sec
 
     # CANVAS 2nd - SETTINGS
     canvas_settings_orentation = selected_skin_folder['canvas_settings_orentation']
@@ -179,15 +176,12 @@ def main():
     images_list, frames_count_all = img_seq_creation()
 
     def animation_func(animation_param, count):
-        try:
-            image_next = images_list[count]
-            canvas.itemconfig(image_display, image=image_next, anchor='nw')
-            count += 1
-            if count == frames_count_all*2:
-                count = 0
-            canvas.after(animation.speed, lambda :animation_func(animation_param, count))
-        except:
-            pass
+        image_next = images_list[count]
+        canvas.itemconfig(image_display, image=image_next, anchor='nw')
+        count += 1
+        if count == frames_count_all*2:
+            count = 0
+        canvas.after(animation.speed, lambda:animation_func(animation_param, count))
 
 
 
@@ -269,7 +263,7 @@ def main():
     def display_canvas_settings():
         # CANVAS
         canvas_settings_width = 300
-        canvas_settings_height = 180
+        canvas_settings_height = 185
         canvas_settings = Canvas(
             window,
             background=button_bg_color,
@@ -313,15 +307,13 @@ def main():
         volume_slider.place(x=60, y=40)
 
         def volume_slider_update(music_volume_param):       # update volume, when there is a change in slider position/value
-            try:
-                volume_slider_value = volume_slider.get()/10
-                if volume_slider_value != music_volume_param:   # checking any change in volume      
-                    mixer.music.set_volume(volume_slider_value)
-                    music_volume_param = volume_slider_value
-                    music.volume = volume_slider_value
-                canvas_settings.after(50, lambda:volume_slider_update(music_volume_param))    # 1000 = 1 sec
-            except:
-                pass
+            volume_slider_value = volume_slider.get()/10
+            if volume_slider_value != music_volume_param:   # checking any change in volume      
+                mixer.music.set_volume(volume_slider_value)
+                music_volume_param = volume_slider_value
+                music.volume = volume_slider_value
+            canvas_settings.after(50, lambda: volume_slider_update(music_volume_param))    # 1000 = 1 sec
+            
         
         volume_slider_update(music.volume)
 
@@ -343,11 +335,8 @@ def main():
         animation_slider.place(x=60, y=90)
 
         def animation_speed_update():
-            try:
-                animation.speed=animation_slider.get()
-                canvas_settings.after(50, lambda:animation_speed_update())
-            except:
-                pass
+            animation.speed=animation_slider.get()
+            canvas_settings.after(50, lambda:animation_speed_update())
         
         animation_speed_update()
 
@@ -360,7 +349,8 @@ def main():
                     selected_skin_folder['animation_speed'] = animation.speed
                     settings_data['skin_selected'] = selected_title
                     save_settings(settings_data)
-                    # RELAUNCH WINDOW                    
+                    # RELAUNCH WINDOW
+                    music_stop()
                     window.destroy()
                     main()
 
@@ -378,18 +368,12 @@ def main():
             skins_roll_down_clicked,
             *skins_options,
             command=change_skin)
-        # ROLL DOWN
-        if skin_selected == 'terminator': # color correction just for this skin
-            foreground='black'
-            activeforeground = 'white'     
-        else:
-            foreground = button_bg_color_clicked
-            activeforeground=button_bg_color  
+        # ROLL DOWN    
         # BUTTON   
         skins_roll_down.configure(
             font=(None, 10, 'bold'),
-            foreground=foreground,
-            activeforeground = activeforeground,
+            foreground=button_bg_color_clicked,
+            activeforeground = button_bg_color,
             background=button_bg_color,
             activebackground=button_bg_color_clicked,
             highlightbackground=button_bg_color)
@@ -397,8 +381,8 @@ def main():
         skins_roll_down['menu'].configure(
             font=(None, 10, 'bold'),
             activeborderwidth=9,
-            foreground=foreground,
-            activeforeground=activeforeground,
+            foreground=button_bg_color_clicked,
+            activeforeground=button_bg_color,
             background=button_bg_color,
             activebackground=button_bg_color_clicked)
         skins_roll_down.place(x=60, y=130)
@@ -441,7 +425,7 @@ def main():
     time_display()
     animation_func(animation.speed, count)
     if music.on: music_load_play()
-
+    
     window.mainloop()
 
 if __name__ == "__main__":
