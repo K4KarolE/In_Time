@@ -11,7 +11,11 @@
         - Terminator I.
 
 
-https://github.com/K4KarolE/Motion_In_Time/assets/89346643/1fe17d9b-cd27-4ef8-a81b-c538d56af71b
+
+
+https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b7e8592c-8829-4c87-94f9-6305eab71d49
+
+
 
 
 <div align="center">
