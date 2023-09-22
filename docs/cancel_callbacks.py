@@ -25,7 +25,7 @@ def quit():
 
 # WINDOW - LOOP
 root = Tk()
-root.pack_propagate(False)
+# root.pack_propagate(False) unnecessary - from the original post
 
 ## LOOPS
 # PRINT IN WINDOW
@@ -39,5 +39,5 @@ dipp = Button(root, text='Q', command=lambda:quit()).pack()
 # FUNCTIONS
 callback_1()
 callback_2(n)
-# root.protocol('WM_DELETE_WINDOW', quit) looks unnecessary - from the original post
+# root.protocol('WM_DELETE_WINDOW', quit) unnecessary - from the original post
 root.mainloop()
