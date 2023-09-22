@@ -10,6 +10,7 @@
         - Idiocracy
         - Terminator I.
 
+### SOUND ON:
 
 https://github.com/K4KarolE/Motion_In_Time/assets/89346643/dc4791d7-94b5-482c-8c81-34fd23d98a34
 
@@ -29,9 +30,7 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/dc4791d7-94b5-482c-8c
 - https://www.python.org/
 
 ### Install packages\dependencies
-```
-pip install -r requirements.txt
-```
+``` pip install -r requirements.txt ```
 ### OS
 - Tested on Windows 11
 
