@@ -11,22 +11,15 @@
         - Terminator I.
 
 
-
-
-
-
 https://github.com/K4KarolE/Motion_In_Time/assets/89346643/dc4791d7-94b5-482c-8c81-34fd23d98a34
 
 
-
-
-
-
-<div align="center">
+<br>
+<div align="left">
     <img src="docs/promo/donnie_darko_1.png">
 </div>
 <br>
-<div align="center">
+<div align="left">
     <img src="docs/promo/donnie_darko_2.png">
 </div>
 <br>
