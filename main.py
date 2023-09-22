@@ -1,25 +1,27 @@
-# Thank you "CodeLoop - By Ritik" for the original GIF display - Tkinter code:
-# https://youtu.be/ZX-5XQ1Q8Zg?si=juxoU-Z9WFK-St6J
-
 # What did we learn?
 # - The labels placement - the last one will be on the top
 # - Need CANVAS to be able to display text with clear transparent background
-# - canvas.create_text() parameters` style
+# - Canvas.create_text() parameters` style
 # - Be able to save/hold a sequence of tkinter widgets we need class instance sequence (/docs/tkinter_fonts.py)
-# - how to loop a function (animation, volume slider)
+# - How to loop a function (time display, volume and animation speed)
+# - Cancel callbacks - destroying window with recursive functions like above (/docs/cancel_callbacks.py)
+
+# Thank you "CodeLoop - By Ritik" for the original GIF display - Tkinter code:
+# https://youtu.be/ZX-5XQ1Q8Zg?si=juxoU-Z9WFK-St6J
+
+# Thank you "j_4321" for the original cancel callbacks script
+# https://stackoverflow.com/questions/63628566/how-to-handle-invalid-command-name-error-while-executing-after-script-in-tk
 
 
 from tkinter import Tk, PhotoImage, Canvas, Button, Scale, Label, OptionMenu, StringVar
-from time import strftime
 
+from time import strftime
 from json import load, dump
 from pathlib import Path
+import platform
 
 from PIL import Image
 from PIL import ImageTk
-
-import platform
-import os
 
 from pygame import mixer
 mixer.init()
@@ -50,7 +52,7 @@ def save_settings(settings_data):
     return
 
 # JSON PATH
-working_directory = os.path.dirname(__file__)
+working_directory = Path(__file__).parent
 path_json = Path(working_directory, 'settings_db.json')
 
 
@@ -68,8 +70,6 @@ def main():
         canvas.after(1000, lambda:time_display())
 
     # MUSIC
-    # saving the music`s ON/OFF and VOLUME parameters to DB when:
-    # 1.start playing 2.stop playing 3.closing the settings window
     def music_stop():
         mixer.music.fadeout(500)
 
@@ -175,6 +175,7 @@ def main():
         # -> half size GIF, faster load time
     images_list, frames_count_all = img_seq_creation()
 
+
     def animation_func(animation_param, count):
         image_next = images_list[count]
         canvas.itemconfig(image_display, image=image_next, anchor='nw')
@@ -184,14 +185,13 @@ def main():
         canvas.after(animation.speed, lambda:animation_func(animation_param, count))
 
 
-
-    # WINDOW ICON - left, top corner - window loading better when this is after animation section
+    # WINDOW ICON - left, top corner - better window load time when this is after animation section
     if platform.system() == 'Windows':      # will not be visible on Linux, macOS
         path_icon = Path(working_directory, 'skins', skin_selected, 'icon.ico')
         window.iconbitmap(path_icon)
 
     ## TIME
-    re_pos = 4  # for the "shadow"
+    re_pos = 4  # for the "shadows"
     # BACK
     # anchor = se/sw -> changing time size(11<55): will no overlapping or too far from eachother
     hours_and_mins_display_2nd = canvas.create_text(
@@ -345,13 +345,24 @@ def main():
         def change_skin(__):
             for selected_title in skins_dic:
                 if skins_dic[selected_title] == skins_roll_down_clicked.get():
+                    # SAVING CURRENT SETTINGS AND THE NEWLY SELECTED SKIN
+                    settings_data = open_settings()
+                    skin_selected = settings_data['skin_selected']
+                    selected_skin_folder = settings_data['skins'][skin_selected]
                     selected_skin_folder['music_volume'] = music.volume
                     selected_skin_folder['animation_speed'] = animation.speed
+                    settings_data['skin_selected'] = music.on
                     settings_data['skin_selected'] = selected_title
                     save_settings(settings_data)
-                    # RELAUNCH WINDOW
+                    
+                    ## RELAUNCH WINDOW
                     music_stop()
                     window.destroy()
+                    
+                    # CANCEL CALLBACKS - time, volume, animation
+                    for after_id in window.eval('after info').split():
+                        window.after_cancel(after_id)
+                    
                     main()
 
 
@@ -421,7 +432,7 @@ def main():
     image_skin_switch = image_generate(37, 'icon_skin_switch.png')
     button_image_close = image_generate(15, 'icon_close.png')
 
-    ## FUNCTIONS
+    # FUNCTIONS
     time_display()
     animation_func(animation.speed, count)
     if music.on: music_load_play()
