@@ -6,7 +6,8 @@
 # - How to loop a function (time display, volume and animation speed)
 # - Cancel callbacks - destroying window with recursive functions like above (/docs/cancel_callbacks.py)
 # - default_button = Button(window, ..).place(x,y) --> NO default_button.configure option
-#   + widget creation and placement need to be seperate: default_button = Button(window, ..) / default_button.place(x,y)
+#   + widget creation and placement need to be seperate: 
+#   + default_button = Button(window, ..), default_button.place(x,y) --> default_button.configure
 
 # Thank you "CodeLoop - By Ritik" for the original GIF display - Tkinter code:
 # https://youtu.be/ZX-5XQ1Q8Zg?si=juxoU-Z9WFK-St6J
