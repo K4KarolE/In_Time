@@ -10,6 +10,7 @@
         - Idiocracy
         - Terminator I.
 - GUI created with `Tkinter`, music played with `Pygame`, images created with `Pillow`
+- The `PyQt` version is in progress
 
 ### SOUND ON:
 
@@ -36,7 +37,7 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/7283b486-dc02-447a-a5
 - https://www.python.org/
 
 ### Install dependencies
-``` pip install -r requirements.txt ```
+``` pip install -r requirements_tkinter.txt ```
 
 ### OS
 - Tested on Windows 11

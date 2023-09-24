@@ -1,4 +1,6 @@
-''' 
+'''
+Motion in Time - Tkinter version
+
 What did we learn?
 - The labels placement - the last one will be on the top
 - Need CANVAS to be able to display text with clear transparent background
