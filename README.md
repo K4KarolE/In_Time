@@ -26,7 +26,7 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/7283b486-dc02-447a-a5
     - On the Deliver page:
         - Format: GIF
         - Codec Animated GIF
-        - Resolution: 720 x 486 NTSC
+        - Resolution: Custom - 720 x 518
 - The returning phase of the movements in the animation are not part of the GIF images
 - It is coming from allocating the same image object (pulled from the GIF) for 2 mirrored positions in image sequence/list:
     - half sized GIF images, faster load time

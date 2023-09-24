@@ -1,19 +1,15 @@
-# What did we learn?
-# - The labels placement - the last one will be on the top
-# - Need CANVAS to be able to display text with clear transparent background
-# - Canvas.create_text() parameters` style
-# - Be able to save/hold a sequence of tkinter widgets we need class instance sequence (/docs/tkinter_fonts.py)
-# - How to loop a function (time display, volume and animation speed)
-# - Cancel callbacks - destroying window with recursive functions like above (/docs/cancel_callbacks.py)
-# - default_button = Button(window, ..).place(x,y) --> NO default_button.configure option
-#   + widget creation and placement need to be seperate: 
-#   + default_button = Button(window, ..), default_button.place(x,y) --> default_button.configure
-
-# Thank you "CodeLoop - By Ritik" for the original GIF display - Tkinter code:
-# https://youtu.be/ZX-5XQ1Q8Zg?si=juxoU-Z9WFK-St6J
-
-# Thank you "j_4321" for the original cancel callbacks script
-# https://stackoverflow.com/questions/63628566/how-to-handle-invalid-command-name-error-while-executing-after-script-in-tk
+''' 
+What did we learn?
+- The labels placement - the last one will be on the top
+- Need CANVAS to be able to display text with clear transparent background
+- Canvas.create_text() parameters` style
+- Be able to save/hold a sequence of tkinter widgets we need class instance sequence (/docs/tkinter_fonts.py)
+- How to loop a function (time display, volume and animation speed)
+ - Cancel callbacks - destroying window with recursive functions like above (/docs/cancel_callbacks.py)
+- default_button = Button(window, ..).place(x,y) --> NO default_button.configure option
+    + widget creation and placement need to be seperate: 
+    + default_button = Button(window, ..), default_button.place(x,y) --> default_button.configure
+'''
 
 
 from tkinter import Tk, PhotoImage, Canvas, Button, Scale, Label, OptionMenu, StringVar
@@ -27,7 +23,7 @@ from PIL import Image
 from PIL import ImageTk
 
 from pygame import mixer
-mixer.init()
+
 
 class Music:
     def __init__(self, on, volume):
@@ -53,11 +49,17 @@ def save_settings(settings_data):
         dump(settings_data, f, indent=2)
     return
 
+
 # DIRECTORY AND JSON PATH
 working_directory = Path(__file__).parent
 path_json = Path(working_directory, 'settings_db.json')
 
+# MIXER
+mixer.init()
 
+
+
+# MAIN
 def main():
 
     def load_info():
@@ -66,6 +68,7 @@ def main():
         selected_skin_folder = settings_data['skins'][skin_selected]
         return settings_data, skin_selected, selected_skin_folder
 
+
     def time_display():
         # TIME
         hours_and_mins = strftime('%H:%M')
@@ -73,23 +76,26 @@ def main():
         # TOP
         canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
         canvas.itemconfig(seconds_display, text=seconds)
-        # BACK
+        # BACK - "SHADOW"
         canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
         canvas.itemconfig(seconds_display_2nd, text=seconds)
         # CALLBACK
         canvas.after(1000, lambda:time_display())
 
+
     # MUSIC
     def music_stop():
         mixer.music.fadeout(0)
+
 
     def music_load_play():
         mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
         mixer.music.set_volume(music.volume)
         mixer.music.play(loops=-1)
 
+
     def music_switch_on_off():
-        # LOAD LATEST INFO
+        
         settings_data, skin_selected, selected_skin_folder = load_info()
         
         # MUSIC ON --> OFF
@@ -97,13 +103,16 @@ def main():
             music_stop()
             settings_data['music_on'] = False
             sound_button.configure(image=button_image_start)
+
         # MUSIC OFF --> ON
         else:
             music_load_play()
             settings_data['music_on'] = True
             sound_button.configure(image=button_image_stop)
+
         selected_skin_folder['music_volume'] = music.volume
         save_settings(settings_data)
+
 
     # IMAGE CREATION - resizable
     def image_generate(image_size, picture_name):   # (24, 'icon_close.png')
@@ -116,7 +125,7 @@ def main():
         return photo
 
     
-    # JSON / SETTINGS / SKIN - LOAD LATEST INFO
+    # JSON / SETTINGS / SKIN - LOAD INFO
     settings_data, skin_selected, selected_skin_folder = load_info()
 
     # MUSIC
@@ -150,6 +159,8 @@ def main():
     canvas_settings_orentation = selected_skin_folder['canvas_settings_orentation']
     canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
 
+
+
     # WINDOW
     window = Tk()
     window.title(selected_skin_folder['window_title'])
@@ -160,6 +171,7 @@ def main():
     window.geometry(f'{window_width}x{window_high}+%d+%d' % (screen_width/2, screen_height-window_high-80))
     window.resizable(0,0)   # locks the main window
     
+
     # CANVAS
     canvas = Canvas(
         window,
@@ -168,6 +180,7 @@ def main():
     canvas.place(x=0,y=0)
     # BASE IMAGE FOR ANIMATION
     image_display = canvas.create_image((0,0))
+
 
     # ANIMATION
     def img_seq_creation():
@@ -186,7 +199,9 @@ def main():
         # the returning part of the animation coming from:
         # allocating the same image object for 2 mirrored position in the list
         # -> half size GIF enough, faster load time
+    
     images_list, frames_count_all = img_seq_creation()
+
 
     def animation_func(animation_param, count):
         image_next = images_list[count]
@@ -198,10 +213,12 @@ def main():
         canvas.after(animation.speed, lambda:animation_func(animation_param, count))
 
 
+
     # WINDOW ICON - left, top corner - better window load time when this is after animation section
     if platform.system() == 'Windows':      # will not be visible on Linux, macOS
         path_icon = Path(working_directory, 'skins', skin_selected, 'icon.ico')
         window.iconbitmap(path_icon)
+
 
     ## TIME
     re_pos = 4  # for the "shadows"
@@ -233,8 +250,10 @@ def main():
         fill=time_font_color,
         anchor='sw')
 
-    ## BUTTONS
+
+    ## BUTTONS - ON THE MAIN WINDOW
     pos_y_diff = 33
+
     # SETTINGS BUTTON
     button_image_settings = image_generate(21, 'icon_settings.png')
     Button(
@@ -244,6 +263,7 @@ def main():
         background=button_bg_color,
         activebackground=button_bg_color_clicked
         ).place(x=button_pos_x, y=button_pos_y)
+
 
     # MUSIC BUTTON
     button_image_start = image_generate(20, 'icon_start.png')
@@ -260,7 +280,11 @@ def main():
                 activebackground=button_bg_color_clicked)
     sound_button.place(x=button_pos_x, y=button_pos_y + pos_y_diff)
 
-    ## CANVAS
+
+
+    '''
+    CANVAS - FOR THE SETTINGS WINDOW, TRIGGERED BY THE SETTINGS BUTTON
+    '''
     # CANVAS COUNTER, LAUNCHER
     canvas_launched = Params(False)
     def canvas_launcher():      # command of the SETTINGS button
@@ -269,6 +293,7 @@ def main():
         else:
             display_canvas_settings()
             canvas_launched.value = True
+
 
     # DISPLAY CANVAS
     def display_canvas_settings():
@@ -287,6 +312,7 @@ def main():
             y=button_pos_y-3,
             anchor=canvas_settings_orentation)
         
+
         # CLOSE BUTTON
         Button(
             canvas_settings,
@@ -295,6 +321,8 @@ def main():
             background=button_bg_color,
             activebackground=button_bg_color_clicked
             ).place(x=canvas_settings_width-30, y=15)
+
+
 
         ## SLIDERS
         slider_width = 13
@@ -315,16 +343,20 @@ def main():
         volume_slider.set(music.volume*10)
         volume_slider.place(x=60, y=40)
 
+
         def volume_slider_update(music_volume_param):       
             # GET LATEST VALUE
             volume_slider_value = volume_slider.get()/10
+            
             # UPDATE VOLUME, WHEN THERE IS A CHANGE IN SLIDER POSITION/VALUE
             if volume_slider_value != music_volume_param:     
                 mixer.music.set_volume(volume_slider_value)
                 music_volume_param = volume_slider_value
                 music.volume = volume_slider_value
+            
             # CALLBACK
             canvas_settings.after(50, lambda: volume_slider_update(music_volume_param))    # 1000 = 1 sec
+        
         volume_slider_update(music.volume)
 
         
@@ -348,14 +380,18 @@ def main():
             animation.speed=animation_slider.get()
             # CALLBACK
             canvas_settings.after(50, lambda:animation_speed_update())
+        
         animation_speed_update()
 
-        # CHANGE SKIN
+
+        # CHANGE SKIN, TRIGGERED BY THE SKIN OPTIONMENU SELECTION
         def change_skin(__):
             for selected_title in skins_dic:
-                # GET SELECTED FROM LISTED TITLES(Back to the Future I.) --> FOLDER NAME(back_to_the_future) = skin_selected
+                
+                # SELECTED TITLE(Back to the Future I.) --> FOLDER NAME(back_to_the_future) = skin_selected
                 if skins_dic[selected_title] == skins_roll_down_clicked.get():
-                    # LOAD LATEST INFO
+                    
+                    # LOAD INFO
                     settings_data, skin_selected, selected_skin_folder = load_info()
                     
                     # SAVING CURRENT SETTINGS AND THE NEWLY SELECTED SKIN
@@ -376,13 +412,18 @@ def main():
                     # RELAUNCH MAIN
                     main()
 
+
         ## SKINS - OPTION MENU - ROLL DOWN MENU
+        # SKINS DIC.
         skins_dic = {'back_to_the_future': 'Back to the Future I.',
                     'donnie_darko': 'Donnie Darko',
                     'idiocracy': 'Idiocracy',
                     'terminator': 'Terminator I.'}
-
+        
+        # LIST OF MOVIE TITLES
         skins_options = [i for i in skins_dic.values()]
+        
+        # OPTION MENU
         skins_roll_down_clicked = StringVar()
         skins_roll_down_clicked.set(skins_dic[skin_selected])
         skins_roll_down = OptionMenu(
@@ -390,8 +431,8 @@ def main():
             skins_roll_down_clicked,
             *skins_options,
             command=change_skin)
-        # ROLL DOWN    
-        # BUTTON   
+        
+        # ROLL DOWN - BUTTON
         skins_roll_down.configure(
             font=(None, 10, 'bold'),
             foreground=button_bg_color_clicked,
@@ -399,7 +440,8 @@ def main():
             background=button_bg_color,
             activebackground=button_bg_color_clicked,
             highlightbackground=button_bg_color)
-        # MENU
+        
+        # ROLL DOWN - MENU
         skins_roll_down['menu'].configure(
             font=(None, 10, 'bold'),
             activeborderwidth=9,
@@ -409,19 +451,17 @@ def main():
             activebackground=button_bg_color_clicked)
         skins_roll_down.place(x=60, y=130)
 
+
         # CLOSE CANVAS
         def close_canvas_settings():
-            # LOAD LATEST INFO
             settings_data, skin_selected, selected_skin_folder = load_info()
-            # SAVE VOLUME, ANIMATION SPEED
             selected_skin_folder['music_volume'] = music.volume
             selected_skin_folder['animation_speed'] = animation.speed
             save_settings(settings_data)
-            # CANVAS LAUNCH COUNTER
             canvas_launched.value = False
-            # CLOSE CANVAS
             canvas_settings.destroy()
         
+
         ## DISPLAY IMAGES
         # VOLUME IMAGE
         Label(canvas_settings,image=image_volume, background=button_bg_color).place(x=15, y=30)
@@ -432,18 +472,22 @@ def main():
         # SKIN SWITCH IMAGE
         Label(canvas_settings,image=image_skin_switch, background=button_bg_color).place(x=13, y=125)
 
-    # IMAGE GENERATION FOR SETTINGS CANVAS
+
+    # IMAGE GENERATION FOR SETTINGS WINDOW(CANVAS)
     image_volume = image_generate(30, 'icon_volume.png')
     image_animation_speed = image_generate(30, 'icon_animation_speed.png')
     image_skin_switch = image_generate(37, 'icon_skin_switch.png')
     button_image_close = image_generate(15, 'icon_close.png')
+
 
     # FUNCTIONS
     time_display()
     animation_func(animation.speed, count)
     if music.on: music_load_play()
     
+
     window.mainloop()
+
 
 if __name__ == "__main__":
     main()
