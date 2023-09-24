@@ -7,7 +7,7 @@ What did we learn?
 - How to loop a function (time display, volume and animation speed)
  - Cancel callbacks - destroying window with recursive functions like above (/docs/cancel_callbacks.py)
 - default_button = Button(window, ..).place(x,y) --> NO default_button.configure option
-    + widget creation and placement need to be seperate: 
+    + widget creation and placement need to be seperated: 
     + default_button = Button(window, ..), default_button.place(x,y) --> default_button.configure
 '''
 
