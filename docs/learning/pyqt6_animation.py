@@ -3,14 +3,17 @@ Original from: https://pythonpyqt.com/pyqt-gif/
 Cheers lads!
 '''
 
-from PyQt6.QtCore import QDir
+from PyQt6.QtCore import QDir 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QMovie
+
+from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
+
 import sys
 
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, skin_selected):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(720, 486)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -27,19 +30,11 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         # set qmovie as label
-        self.movie = QMovie(image_path)
+        self.movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
         self.label.setMovie(self.movie)
         self.movie.start()
         self.movie.setSpeed(100)    # =%
 
-
-# IMAGE PATH
-skin_selected = 'terminator'
-
-def new_path(skin_selected):
-    image_path = QDir(f'skins/{skin_selected}/GIF.GIF').path()
-    return image_path
-image_path = new_path(skin_selected)
 
 
 if __name__ == "__main__":
@@ -48,16 +43,27 @@ if __name__ == "__main__":
     window = QtWidgets.QMainWindow()
     
     ui = Ui_MainWindow()
-    ui.setupUi(window)
+
+
+    skin_selected = 'terminator'
+    ui.setupUi(window, skin_selected)
+    
+
+    ui.movie.start()
+    window.show()
 
     # CHANGE ANIMATION
-    image_path = new_path('donnie_darko')
-    ui.movie = QMovie(image_path)
-    ui.label.setMovie(ui.movie)
-    ui.movie.start()
+    print('\n')
+    input(' Press enter to change the animation ')
+    skin_selected = 'idiocracy'
+    ui.setupUi(window, skin_selected)
 
     # CHANGE ANIMATION SPEED
-    ui.movie.setSpeed(50)
-    
-    window.show()
+    print('\n')
+    user_input = int(input('Add new animation speed: '))
+    print('\n')
+    ui.movie.setSpeed(user_input)
+
     sys.exit(app.exec())
+
+    
