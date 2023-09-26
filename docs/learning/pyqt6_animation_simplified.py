@@ -24,22 +24,20 @@ if __name__ == "__main__":
     window.show()
 
 
-    # ANIMATION SWITCH
-    print('\n')
-    input(' Press enter to change the animation ')
-    skin_selected = 'idiocracy'
-    movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
-    label.setMovie(movie)
-    movie.start()
-    movie.setSpeed(100)
+    # # ANIMATION SWITCH
+    # print('\n')
+    # input(' Press enter to change the animation ')
+    # skin_selected = 'idiocracy'
+    # movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
+    # label.setMovie(movie)
+    # movie.start()
+    # movie.setSpeed(100)
 
-    # ANIMATION SPEED CHANGE
-    print('\n')
-    user_input = int(input('Add new animation speed: '))
-    print('\n')
-    movie.setSpeed(user_input)
-
-
-    app.exec()
+    # # ANIMATION SPEED CHANGE
+    # print('\n')
+    # user_input = input('Add new animation speed: ')
+    # print('\n')
+    # movie.setSpeed(int(user_input))
 
     # sys.exit(app.exec()) - unnecessary?
+    app.exec()
