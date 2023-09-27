@@ -14,7 +14,7 @@ from pygame import mixer
 
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PyQt6.QtGui import QMovie, QIcon, QPixmap
+from PyQt6.QtGui import QMovie, QIcon, QPixmap, QPalette, QColor, QFont
 from PyQt6.QtCore import QSize, QDir
 
 
@@ -49,7 +49,7 @@ def save_settings(settings_data):
 
 # DIRECTORY AND JSON PATH
 working_directory = Path(__file__).parent
-path_json = Path(working_directory, 'settings_db.json')
+path_json = Path(working_directory, 'settings_db_pyqt.json')
 
 # MIXER
 mixer.init()
@@ -67,17 +67,19 @@ def load_info():
 
 
 # def time_display():
-#     # TIME
-#     hours_and_mins = strftime('%H:%M')
-#     seconds = strftime(':%S')
-#     # TOP
-#     canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
-#     canvas.itemconfig(seconds_display, text=seconds)
-#     # BACK - "SHADOW"
-#     canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
-#     canvas.itemconfig(seconds_display_2nd, text=seconds)
-#     # CALLBACK
-#     canvas.after(1000, lambda:time_display())
+    # TIME
+    # hours_and_mins = strftime('%H:%M')
+    # seconds = strftime(':%S')
+    # TOP
+    
+    # canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
+    # canvas.itemconfig(seconds_display, text=seconds)
+    # BACK - "SHADOW"
+    # canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
+    # canvas.itemconfig(seconds_display_2nd, text=seconds)
+    # # CALLBACK
+    # canvas.after(1000, lambda:time_display())
+
 
 
 # MUSIC
@@ -122,7 +124,7 @@ music = Music(settings_data['music_on'], selected_skin_folder['music_volume'])
 
 # ANIMATION
 count = 0
-animation = Animation(selected_skin_folder['animation_speed'])  # 1000 = 1 sec
+animation = Animation(selected_skin_folder['animation_speed'])  # 100% = original
 
 # BUTTONS
 button_bg_color = selected_skin_folder['button_bg_color']
@@ -175,7 +177,13 @@ label_animation = QLabel(window)
 button_image_settings = QIcon('skins/_icons/icon_settings.png')
 button_settings = QPushButton(window, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(20,20))       # icon sizing
-button_settings.setGeometry(20, 30, 30, 30)     # pos, pos, size, size
+button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, size, size
+
+
+# TIME
+hours_and_mins_display = QLabel(window, text=strftime('%H:%M')) #strftime('%H:%M')
+hours_and_mins_display.setGeometry(20, 20, 720, 486)
+hours_and_mins_display.setStyleSheet(f'color:{time_font_color}; background: black; font: 10pt {time_font_style};')
 
 
 # BUTTON - MUSIC
@@ -187,76 +195,39 @@ if music.on:
 else:
     music_start_stop_img = button_image_start
 
+pos_y_diff = 33
 button_music = QPushButton(window, text=None, icon=music_start_stop_img)
 button_music.setIconSize(QSize(20,20))
-button_music.setGeometry(20, 62, 29, 29)     # pos, pos, size, size
+button_music.setGeometry(button_pos_x, button_pos_y+pos_y_diff, 29, 29)     # pos, pos, size, size
 button_music.clicked.connect(music_switch_on_off)
 
 
-
-
-
-
-
-
-
-# SKINS
-if skin_selected == 'terminator':
-
-    app.setStyleSheet("QPushButton"
+# WIDGETS STYLE
+# Simplified example, just for a button:
+# button_color = 'red'
+# button_example.setStyleSheet(f"background-color: {button_color}; border: 2px solid red;")
+window.setStyleSheet("QPushButton"
                         # DEFAULT
                         "{"
-                        "background-color : #AF0000;"
+                        f"background-color : {button_bg_color};"
                         "border-radius: 5px;"          # corner roundness
                         "border: 2px solid black;"
                         "}"
                         # CLICKED
                         "QPushButton::pressed"
                         "{"
-                        "background-color : #400000;"
-                        "}"
-                        )
-
-elif skin_selected == 'back_to_the_future':
-
-    app.setStyleSheet("QPushButton"
-                        # DEFAULT
-                        "{"
-                        "background-color : #675C7C;"
-                        "border-radius: 5px;"          # corner roundness
-                        "border: 2px solid black;"
-                        "}"
-                        # CLICKED
-                        "QPushButton::pressed"
-                        "{"
-                        "background-color : #F5D2A5;"
-                        "}"
-                        )
-
-elif skin_selected == 'donnie_darko':
-
-    app.setStyleSheet("QPushButton"
-                        # DEFAULT
-                        "{"
-                        "background-color : #475162;"
-                        "border-radius: 5px;"          # corner roundness
-                        "border: 2px solid black;"
-                        "}"
-                        # CLICKED
-                        "QPushButton::pressed"
-                        "{"
-                        "background-color : #858B96;"
+                        f"background-color : {button_bg_color_clicked};"
                         "}"
                         )
 
 
 
-movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
-label_animation.setMovie(movie)
-label_animation.resize(720,486)
-movie.start()
-movie.setSpeed(100)
-
+# ANIMATION
+# movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
+# label_animation.setMovie(movie)
+# label_animation.resize(720,486)
+# movie.start()
+# movie.setSpeed(animation.speed)
 
 window.show()
 
