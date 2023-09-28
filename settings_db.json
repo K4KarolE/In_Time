@@ -1,9 +1,6 @@
 {
-  "skin_selected1": "back_to_the_future",
-  "skin_selected2": "donnie_darko",
-  "skin_selected": "idiocracy",
-  "skin_selected4": "terminator",
-  "music_on": false,
+  "skin_selected": "donnie_darko",
+  "music_on": true,
   "skins": {
     "back_to_the_future": {
       "button_bg_color": "#675C7C",

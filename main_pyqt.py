@@ -7,7 +7,6 @@ Work in progress
 import sys
 from pathlib import Path
 
-from time import strftime
 from json import load, dump
 from pathlib import Path
 from pygame import mixer
@@ -15,7 +14,8 @@ from pygame import mixer
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from PyQt6.QtGui import QMovie, QIcon, QPixmap, QPalette, QColor, QFont
-from PyQt6.QtCore import QSize, QDir
+from PyQt6 import QtCore
+from PyQt6.QtCore import QSize, QTimer, QTime
 
 
 
@@ -28,9 +28,6 @@ class Animation:
     def __init__(self, speed):
         self.speed = speed
     
-class Params:
-    def __init__(self, value):
-        self.value = value
 
 
 def open_settings():
@@ -64,22 +61,6 @@ def load_info():
         skin_selected = settings_data['skin_selected']                                  
         selected_skin_folder = settings_data['skins'][skin_selected]
         return settings_data, skin_selected, selected_skin_folder
-
-
-# def time_display():
-    # TIME
-    # hours_and_mins = strftime('%H:%M')
-    # seconds = strftime(':%S')
-    # TOP
-    
-    # canvas.itemconfig(hours_and_mins_display, text=hours_and_mins)
-    # canvas.itemconfig(seconds_display, text=seconds)
-    # BACK - "SHADOW"
-    # canvas.itemconfig(hours_and_mins_display_2nd, text=hours_and_mins)
-    # canvas.itemconfig(seconds_display_2nd, text=seconds)
-    # # CALLBACK
-    # canvas.after(1000, lambda:time_display())
-
 
 
 # MUSIC
@@ -181,9 +162,63 @@ button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, 
 
 
 # TIME
-hours_and_mins_display = QLabel(window, text=strftime('%H:%M')) #strftime('%H:%M')
-hours_and_mins_display.setGeometry(20, 20, 720, 486)
-hours_and_mins_display.setStyleSheet(f'color:{time_font_color}; background: black; font: 10pt {time_font_style};')
+def time_display():
+    # CURRENT TIME
+    current_time = QTime.currentTime()
+    # TIMES
+    hours_and_mins = current_time.toString('hh:mm')
+    seconds = current_time.toString(':ss')
+    # TOP
+    hours_and_mins_display.setText(hours_and_mins)
+    seconds_display.setText(seconds)
+    # BACk - SHADOW
+    hours_and_mins_display_2nd.setText(hours_and_mins)
+    seconds_display_2nd.setText(seconds)
+
+
+timer = QTimer()
+ 
+# adding action to timer
+timer.timeout.connect(time_display)
+
+# update the timer every second
+time_display_first_time = True
+if not time_display_first_time:
+    timer.start(1000)
+else:
+    timer.start()
+
+
+
+## BACK - SHADOWS
+# HOURS:MINUTES
+pos_diff = 4
+hours_and_mins_display_2nd = QLabel(window)
+hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+hours_and_mins_display_2nd.resize(350, 300)
+hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {time_hm_font_size}pt {time_font_style}; font-weight: bold;')
+hours_and_mins_display_2nd.move(time_hm_pos_x+pos_diff, time_hm_pos_y+pos_diff)
+# SECONDS
+seconds_display_2nd = QLabel(window) 
+seconds_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+seconds_display_2nd.resize(350, 300)
+seconds_display_2nd.setStyleSheet(f'color:black; font: {time_sec_font_size}pt {time_font_style}; font-weight: bold;')
+seconds_display_2nd.move(time_sec_pos_x+pos_diff, time_sec_pos_y+pos_diff)
+## TOP
+# HOURS:MINUTES
+hours_and_mins_display = QLabel(window)
+hours_and_mins_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+hours_and_mins_display.resize(350, 300)
+hours_and_mins_display.setStyleSheet(f'color:{time_font_color}; font: {time_hm_font_size}pt {time_font_style}; font-weight: bold;')
+hours_and_mins_display.move(time_hm_pos_x, time_hm_pos_y)
+# SECONDS
+seconds_display = QLabel(window) 
+seconds_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+seconds_display.resize(350, 300)
+seconds_display.setStyleSheet(f'color:{time_font_color}; font: {time_sec_font_size}pt {time_font_style}; font-weight: bold;')
+seconds_display.move(time_sec_pos_x, time_sec_pos_y) # background: black;
+
+
 
 
 # BUTTON - MUSIC
@@ -223,11 +258,11 @@ window.setStyleSheet("QPushButton"
 
 
 # ANIMATION
-# movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
-# label_animation.setMovie(movie)
-# label_animation.resize(720,486)
-# movie.start()
-# movie.setSpeed(animation.speed)
+movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
+label_animation.setMovie(movie)
+label_animation.resize(720,486)
+movie.start()
+movie.setSpeed(animation.speed)
 
 window.show()
 
