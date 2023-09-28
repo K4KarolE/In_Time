@@ -5,8 +5,6 @@ Cheers Martin!
 '''
 
 import sys
-
-from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -56,6 +54,7 @@ class MainWindow(QMainWindow):
             QSlider,
             QSpinBox,
             QTimeEdit,
+            QPushButton,
         ]
 
         for w in widgets:

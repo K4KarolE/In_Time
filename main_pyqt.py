@@ -13,7 +13,7 @@ from pygame import mixer
 
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PyQt6.QtGui import QMovie, QIcon, QPixmap, QPalette, QColor, QFont
+from PyQt6.QtGui import QMovie, QIcon
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime
 
@@ -41,29 +41,15 @@ def save_settings(settings_data):
     return
 
 
-
-
-
-# DIRECTORY AND JSON PATH
-working_directory = Path(__file__).parent
-path_json = Path(working_directory, 'settings_db_pyqt.json')
-
-# MIXER
-mixer.init()
-
-
-
-########################################################################
-
+######################################
 
 def load_info():
-        settings_data = open_settings()
-        skin_selected = settings_data['skin_selected']                                  
-        selected_skin_folder = settings_data['skins'][skin_selected]
-        return settings_data, skin_selected, selected_skin_folder
+    settings_data = open_settings()
+    skin_selected = settings_data['skin_selected']                                  
+    selected_skin_folder = settings_data['skins'][skin_selected]
+    return settings_data, skin_selected, selected_skin_folder
 
 
-# MUSIC
 def music_stop():
     mixer.music.fadeout(0)
 
@@ -95,7 +81,33 @@ def music_switch_on_off():
 
 
 
+def time_display():
+    
+    # CURRENT TIME
+    current_time = QTime.currentTime()
+    
+    # TIMES
+    hours_and_mins = current_time.toString('hh:mm')
+    seconds = current_time.toString(':ss')
+    
+    # TOP
+    hours_and_mins_display.setText(hours_and_mins)
+    seconds_display.setText(seconds)
+    
+    # BACk - SHADOW
+    hours_and_mins_display_2nd.setText(hours_and_mins)
+    seconds_display_2nd.setText(seconds)
 
+
+
+
+
+# MIXER
+mixer.init()
+
+# DIRECTORY AND JSON PATH
+working_directory = Path(__file__).parent
+path_json = Path(working_directory, 'settings_db_pyqt.json')
 
 # JSON / SETTINGS / SKIN - LOAD INFO
 settings_data, skin_selected, selected_skin_folder = load_info()
@@ -162,33 +174,9 @@ button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, 
 
 
 # TIME
-def time_display():
-    # CURRENT TIME
-    current_time = QTime.currentTime()
-    # TIMES
-    hours_and_mins = current_time.toString('hh:mm')
-    seconds = current_time.toString(':ss')
-    # TOP
-    hours_and_mins_display.setText(hours_and_mins)
-    seconds_display.setText(seconds)
-    # BACk - SHADOW
-    hours_and_mins_display_2nd.setText(hours_and_mins)
-    seconds_display_2nd.setText(seconds)
-
-
 timer = QTimer()
- 
-# adding action to timer
 timer.timeout.connect(time_display)
-
-# update the timer every second
-time_display_first_time = True
-if not time_display_first_time:
-    timer.start(1000)
-else:
-    timer.start()
-
-
+timer.start()
 
 ## BACK - SHADOWS
 # HOURS:MINUTES
@@ -238,9 +226,6 @@ button_music.clicked.connect(music_switch_on_off)
 
 
 # WIDGETS STYLE
-# Simplified example, just for a button:
-# button_color = 'red'
-# button_example.setStyleSheet(f"background-color: {button_color}; border: 2px solid red;")
 window.setStyleSheet("QPushButton"
                         # DEFAULT
                         "{"
@@ -264,9 +249,12 @@ label_animation.resize(720,486)
 movie.start()
 movie.setSpeed(animation.speed)
 
+
 window.show()
 
 
 if music.on: music_load_play()
+
+
 
 sys.exit(app.exec())

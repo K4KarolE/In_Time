@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
 import sys
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow:
     def setupUi(self, MainWindow, skin_selected):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(720, 486)
@@ -48,21 +48,8 @@ if __name__ == "__main__":
     skin_selected = 'terminator'
     ui.setupUi(window, skin_selected)
     
-
     ui.movie.start()
     window.show()
-
-    # CHANGE ANIMATION
-    print('\n')
-    input(' Press enter to change the animation ')
-    skin_selected = 'idiocracy'
-    ui.setupUi(window, skin_selected)
-
-    # CHANGE ANIMATION SPEED
-    print('\n')
-    user_input = int(input('Add new animation speed: '))
-    print('\n')
-    ui.movie.setSpeed(user_input)
 
     sys.exit(app.exec())
 
