@@ -98,6 +98,9 @@ def time_display():
     hours_and_mins_display_2nd.setText(hours_and_mins)
     seconds_display_2nd.setText(seconds)
 
+    # TIME REFRESH - 1000=1sec
+    timer.setInterval(1000)
+
 
 
 
@@ -173,7 +176,7 @@ button_settings.setIconSize(QSize(20,20))       # icon sizing
 button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, size, size
 
 
-# TIME
+#### TIME
 timer = QTimer()
 timer.timeout.connect(time_display)
 timer.start()
@@ -251,6 +254,8 @@ movie.setSpeed(animation.speed)
 
 
 window.show()
+
+
 
 
 if music.on: music_load_play()
