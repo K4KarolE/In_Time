@@ -19,10 +19,9 @@ class Playz:
         self.player.setLoops(-1) # -1=infinite
 
 
-working_directory = Path(__file__).parent
-path_music_1 = Path(working_directory, 'skins', 'terminator', 'music.mp3')
-path_music_2 = Path(working_directory, 'skins', 'idiocracy', 'music.mp3')
-
+# working_directory = Path(__file__).parent
+path_music_1 = Path('skins', 'terminator', 'music.mp3')
+path_music_2 = Path('skins', 'idiocracy', 'music.mp3')
 
 
 app = QApplication([])
@@ -34,6 +33,5 @@ input(' Hit enter for next song! ')
 print('\n')
 
 test_music = Playz(path_music_2)
-
 
 sys.exit(app.exec())
