@@ -391,7 +391,7 @@ def main():
             for selected_title in skins_dic:
                 
                 # SELECTED TITLE(Back to the Future I.) --> FOLDER NAME(back_to_the_future) = skin_selected
-                if skins_dic[selected_title] == skins_roll_down_clicked.get():
+                if skins_dic[selected_title]['title'] == skins_roll_down_clicked.get():
                     
                     # LOAD INFO
                     settings_data, skin_selected, selected_skin_folder = load_info()
@@ -415,19 +415,17 @@ def main():
                     main()
 
 
-        ## SKINS - OPTION MENU - ROLL DOWN MENU
-        # SKINS DIC.
-        skins_dic = {'back_to_the_future': 'Back to the Future I.',
-                    'donnie_darko': 'Donnie Darko',
-                    'idiocracy': 'Idiocracy',
-                    'terminator': 'Terminator I.'}
         
         # LIST OF MOVIE TITLES
-        skins_options = [i for i in skins_dic.values()]
+        skins_dic = settings_data['skins']
+        skins_options = []
+        for _ in skins_dic:
+            skins_options.append(settings_data['skins'][_]['title'])
+
         
         # OPTION MENU
         skins_roll_down_clicked = StringVar()
-        skins_roll_down_clicked.set(skins_dic[skin_selected])
+        skins_roll_down_clicked.set(skins_dic[skin_selected]['title'])
         skins_roll_down = OptionMenu(
             canvas_settings,
             skins_roll_down_clicked,
