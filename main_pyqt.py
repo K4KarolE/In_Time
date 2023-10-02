@@ -9,20 +9,28 @@ from pathlib import Path
 
 from json import load, dump
 from pathlib import Path
-from pygame import mixer
 
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from PyQt6.QtGui import QMovie, QIcon
 from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, QTimer, QTime, Qt
+from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
+from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 
 
 class Music:
-    def __init__(self, on, volume):
-        self.on = on
-        self.volume = volume
+    def __init__(self):
+        self.path_music = Path(working_directory, 'skins', skin_selected, 'music.mp3')
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
+        self.player.setSource(QUrl.fromLocalFile(str(self.path_music)))
+        self.player.setLoops(-1) # -1=infinite
+        self.on = settings_data['music_on']
+        self.volume = selected_skin_folder['music_volume']
+        self.audio_output.setVolume(self.volume)
+
 
 class Animation:
     def __init__(self, speed):
@@ -44,8 +52,8 @@ def save_settings(settings_data):
 working_directory = Path(__file__).parent
 path_json = Path(working_directory, 'settings_db_pyqt.json')
 
- # MIXER
-mixer.init()
+
+
 
 #############################################################
 # def main():
@@ -57,33 +65,24 @@ def load_info():
     return settings_data, skin_selected, selected_skin_folder
 
 
-def music_stop():
-    mixer.music.fadeout(0)
-
-
-def music_load_play():
-    mixer.music.load(Path(working_directory, 'skins', skin_selected, 'music.mp3'))
-    mixer.music.set_volume(music.volume)
-    mixer.music.play(loops=-1)
-
-
 def music_switch_on_off():
     
     settings_data, skin_selected, selected_skin_folder = load_info()
     
     # MUSIC ON --> OFF
     if settings_data['music_on']:
-        music_stop()
+        music.player.stop()
         settings_data['music_on'] = False
         button_music.setIcon(button_image_start)
 
     # MUSIC OFF --> ON
     else:
-        music_load_play()
+        music.audio_output.setVolume(music.volume)
+        music.player.play()
         settings_data['music_on'] = True
         button_music.setIcon(button_image_stop)
 
-    selected_skin_folder['music_volume'] = music.volume
+    # selected_skin_folder['music_volume'] = music.volume
     save_settings(settings_data)
 
 
@@ -114,7 +113,7 @@ def time_display():
 settings_data, skin_selected, selected_skin_folder = load_info()
 
 # MUSIC
-music = Music(settings_data['music_on'], selected_skin_folder['music_volume'])
+music= Music()
 
 # ANIMATION
 count = 0
@@ -157,22 +156,28 @@ canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
 # APP
 app = QApplication(sys.argv)
 
-# event = QCloseEvent
-# def closeEvent():
-#    print('test')
-   
-#    app.closeAllWindows()
-
-
-# app.aboutToQuit.connect(closeEvent)
-
-
 # MAIN WINDOW
 window = QMainWindow()
 window_width, window_height = 720, 486
 window.resize(window_width, window_height)
 window.setWindowTitle(selected_skin_folder['window_title'])
 window.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
+window.setFixedWidth(window_width)
+window.setFixedHeight(window_height)
+window.setStyleSheet(
+                    "QPushButton"
+                    # DEFAULT
+                    "{"
+                    f"background-color : {button_bg_color};"
+                    "border-radius: 5px;"          # corner roundness
+                    "border: 2px solid black;"
+                    "}"
+                    # CLICKED
+                    "QPushButton::pressed"
+                    "{"
+                    f"background-color : {button_bg_color_clicked};"
+                    "}"
+                    )
 
 # MAIN WINDOW POSITION
 screen = QApplication.primaryScreen()
@@ -197,6 +202,8 @@ window_settings = QMainWindow()
 window_settings.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Sheet )
 window_settings_width, window_settings_height = 250, 200
 window_settings.resize(window_settings_width, window_settings_height)
+window_settings.setFixedWidth(window_settings_width)
+window_settings.setFixedHeight(window_settings_height)
 window_settings.setWindowTitle('Settings')
 window_settings.setWindowIcon(QIcon(f'skins/icon_settings.ico'))
 window_settings.setStyleSheet(
@@ -286,23 +293,6 @@ button_music.setGeometry(button_pos_x, button_pos_y+pos_y_diff, 29, 29)     # po
 button_music.clicked.connect(music_switch_on_off)
 
 
-# WIDGETS STYLE
-window.setStyleSheet(
-                    "QPushButton"
-                    # DEFAULT
-                    "{"
-                    f"background-color : {button_bg_color};"
-                    "border-radius: 5px;"          # corner roundness
-                    "border: 2px solid black;"
-                    "}"
-                    # CLICKED
-                    "QPushButton::pressed"
-                    "{"
-                    f"background-color : {button_bg_color_clicked};"
-                    "}"
-                    )
-
-
 
 # ANIMATION
 movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
@@ -312,12 +302,9 @@ movie.start()
 movie.setSpeed(animation.speed)
 
 
+
 window.show()
-
-
-
-
-if music.on: music_load_play()
+if music.on: music.player.play()
 
 
 
