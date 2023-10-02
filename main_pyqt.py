@@ -15,7 +15,7 @@ from pygame import mixer
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from PyQt6.QtGui import QMovie, QIcon
 from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, QTimer, QTime
+from PyQt6.QtCore import QSize, QTimer, QTime, Qt
 
 
 
@@ -40,8 +40,15 @@ def save_settings(settings_data):
         dump(settings_data, f, indent=2)
     return
 
+# DIRECTORY AND JSON PATH
+working_directory = Path(__file__).parent
+path_json = Path(working_directory, 'settings_db_pyqt.json')
 
-######################################
+ # MIXER
+mixer.init()
+
+#############################################################
+# def main():
 
 def load_info():
     settings_data = open_settings()
@@ -103,15 +110,6 @@ def time_display():
 
 
 
-
-
-# MIXER
-mixer.init()
-
-# DIRECTORY AND JSON PATH
-working_directory = Path(__file__).parent
-path_json = Path(working_directory, 'settings_db_pyqt.json')
-
 # JSON / SETTINGS / SKIN - LOAD INFO
 settings_data, skin_selected, selected_skin_folder = load_info()
 
@@ -155,26 +153,86 @@ canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
 
 ##################################################################################
 
-# if __name__ == "__main__":
 
-# APP / WINDOW
+# APP
 app = QApplication(sys.argv)
+
+# event = QCloseEvent
+# def closeEvent():
+#    print('test')
+   
+#    app.closeAllWindows()
+
+
+# app.aboutToQuit.connect(closeEvent)
+
+
+# MAIN WINDOW
 window = QMainWindow()
-window.resize(720, 486)
+window_width, window_height = 720, 486
+window.resize(window_width, window_height)
 window.setWindowTitle(selected_skin_folder['window_title'])
 window.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
+
+# MAIN WINDOW POSITION
+screen = QApplication.primaryScreen()
+screen_rect = screen.availableGeometry()
+window_main_pos_x = int((screen_rect.width() - window_width)/2)
+window_main_pos_y = int((screen_rect.height() - window_height)/2)
+window.move(window_main_pos_x, window_main_pos_y)
+
+
+
+
+# SETTINGS WINDOW
+'''
+setWindowFlags
+
+Sheet: closing the main window --> closing settings window as well
+WindowStaysOnTopHint: settings window stays on top
+    - even when clicked elsewhere
+    - even when the main window get minimized
+'''
+window_settings = QMainWindow()
+window_settings.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Sheet )
+window_settings_width, window_settings_height = 250, 200
+window_settings.resize(window_settings_width, window_settings_height)
+window_settings.setWindowTitle('Settings')
+window_settings.setWindowIcon(QIcon(f'skins/icon_settings.ico'))
+window_settings.setStyleSheet(
+                            "QMainWindow"
+                            "{"
+                            f"background-color : {button_bg_color};"
+                            "}"
+                            "QPushButton"
+                            # DEFAULT
+                            "{"
+                            f"background-color : {button_bg_color};"
+                            "border-radius: 5px;"          # corner roundness
+                            "border: 2px solid black;"
+                            "}"
+                            # CLICKED
+                            "QPushButton::pressed"
+                            "{"
+                            f"background-color : {button_bg_color_clicked};"
+                            "}"
+                            )
+
+# SETTINGS WINDOW POSITION
+window_settings_pos_x = window_main_pos_x + window_width - window_settings_width - 55
+window_settings.move(window_settings_pos_x, window_main_pos_y + 55)
 
 
 # ANIMATION LABEL
 label_animation = QLabel(window)
     
-       
+    
 # BUTTON - SETTINGS
 button_image_settings = QIcon('skins/_icons/icon_settings.png')
 button_settings = QPushButton(window, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(20,20))       # icon sizing
 button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, size, size
-
+button_settings.clicked.connect(window_settings.show)
 
 #### TIME
 timer = QTimer()
@@ -229,19 +287,20 @@ button_music.clicked.connect(music_switch_on_off)
 
 
 # WIDGETS STYLE
-window.setStyleSheet("QPushButton"
-                        # DEFAULT
-                        "{"
-                        f"background-color : {button_bg_color};"
-                        "border-radius: 5px;"          # corner roundness
-                        "border: 2px solid black;"
-                        "}"
-                        # CLICKED
-                        "QPushButton::pressed"
-                        "{"
-                        f"background-color : {button_bg_color_clicked};"
-                        "}"
-                        )
+window.setStyleSheet(
+                    "QPushButton"
+                    # DEFAULT
+                    "{"
+                    f"background-color : {button_bg_color};"
+                    "border-radius: 5px;"          # corner roundness
+                    "border: 2px solid black;"
+                    "}"
+                    # CLICKED
+                    "QPushButton::pressed"
+                    "{"
+                    f"background-color : {button_bg_color_clicked};"
+                    "}"
+                    )
 
 
 
@@ -263,3 +322,7 @@ if music.on: music_load_play()
 
 
 sys.exit(app.exec())
+
+
+# if __name__ == "__main__":
+#     main()
