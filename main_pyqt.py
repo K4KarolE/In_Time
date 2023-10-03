@@ -11,7 +11,7 @@ from json import load, dump
 from pathlib import Path
 
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider
 from PyQt6.QtGui import QMovie, QIcon, QPixmap
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
@@ -188,7 +188,12 @@ window.move(window_main_pos_x, window_main_pos_y)
 
 
 
-# SETTINGS WINDOW
+
+
+
+
+
+### SETTINGS WINDOW
 '''
 setWindowFlags
 
@@ -211,17 +216,19 @@ window_settings.setStyleSheet(
                             f"background-color : {button_bg_color};"
                             "}"
                             "QPushButton"
-                            # DEFAULT
                             "{"
                             f"background-color : {button_bg_color};"
                             "border-radius: 5px;"          # corner roundness
                             "border: 2px solid black;"
                             "}"
-                            # CLICKED
                             "QPushButton::pressed"
                             "{"
                             f"background-color : {button_bg_color_clicked};"
                             "}"
+                            # "QSlider"
+                            # "{"
+                            # f"background-color : {button_bg_color_clicked};"
+                            # "}"
                             )
 
 # SETTINGS WINDOW - POSITION
@@ -253,6 +260,39 @@ label_skin_switch.setPixmap(image_skin_switch)
 label_skin_switch.resize(image_skin_switch.width(), image_skin_switch.height())
 label_skin_switch.move(pos_x-3, pos_y + pos_y_diff*2)
 
+# SETTINGS WINDOW - SLIDERS
+def save_change():
+    save_settings(settings_data)
+
+# VOLUME
+def change_volume():
+    music.audio_output.setVolume(slider_volume.value()/10)
+    selected_skin_folder['music_volume'] = slider_volume.value()/10
+
+slider_pos_x = 60
+slider_pos_y = 27
+slider_volume = QSlider(window_settings)
+slider_volume.setGeometry(QtCore.QRect(slider_pos_x, slider_pos_y, 160, 20))
+slider_volume.setOrientation(QtCore.Qt.Orientation.Horizontal)
+slider_volume.setMinimum(0)
+slider_volume.setMaximum(10)
+slider_volume.setValue(int(music.volume*10))
+slider_volume.valueChanged.connect(change_volume)
+slider_volume.sliderReleased.connect(save_change)
+
+# ANIMATION SPEED
+def change_animation_speed():
+    movie.setSpeed(slider_animation_speed.value())
+    selected_skin_folder['animation_speed'] = slider_animation_speed.value()
+
+slider_animation_speed = QSlider(window_settings)
+slider_animation_speed.setGeometry(QtCore.QRect(slider_pos_x, slider_pos_y*3 - 5, 160, 20))
+slider_animation_speed.setOrientation(QtCore.Qt.Orientation.Horizontal)
+slider_animation_speed.setMinimum(0)
+slider_animation_speed.setMaximum(300)
+slider_animation_speed.setValue(animation.speed)
+slider_animation_speed.valueChanged.connect(change_animation_speed)
+slider_animation_speed.sliderReleased.connect(save_change)
 
 
 
