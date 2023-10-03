@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PyQt6.QtGui import QMovie, QIcon
+from PyQt6.QtGui import QMovie, QIcon, QPixmap
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
@@ -139,10 +139,9 @@ time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
 time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
 time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
 
-# CANVAS 2nd - SETTINGS
-canvas_settings_orentation = selected_skin_folder['canvas_settings_orentation']
-canvas_settings_pos_x_diff = selected_skin_folder['canvas_settings_pos_x_diff']
-
+# WINDOW SETTINGS - POSITIONING
+window_settings_pos_x_diff = selected_skin_folder['window_settings_pos_x_diff']
+window_settings_pos_y_diff = selected_skin_folder['window_settings_pos_y_diff']
 
 
 
@@ -225,9 +224,36 @@ window_settings.setStyleSheet(
                             "}"
                             )
 
-# SETTINGS WINDOW POSITION
-window_settings_pos_x = window_main_pos_x + window_width - window_settings_width - 55
-window_settings.move(window_settings_pos_x, window_main_pos_y + 55)
+# SETTINGS WINDOW - POSITION
+window_settings_pos_x = window_main_pos_x + window_width - window_settings_width - window_settings_pos_x_diff
+window_settings_pos_y = window_main_pos_y + 55 - window_settings_pos_y_diff
+window_settings.move(window_settings_pos_x, window_settings_pos_y)
+
+# SETTINGS WINDOW - IMAGES
+image_size = 30
+pos_x = 20
+pos_y = 20
+pos_y_diff = image_size + 20
+# VOLUME
+label_volume = QLabel(window_settings)
+image_volume = QPixmap('skins/_icons/icon_volume.png').scaledToWidth(image_size, Qt.TransformationMode.SmoothTransformation)
+label_volume.setPixmap(image_volume)
+label_volume.resize(image_volume.width(), image_volume.height())
+label_volume.move(pos_x, pos_y)
+# ANIMATION SPEED
+label_animation_speed = QLabel(window_settings)
+image_animation_speed = QPixmap('skins/_icons/icon_animation_speed.png').scaledToWidth(image_size, Qt.TransformationMode.SmoothTransformation)
+label_animation_speed.setPixmap(image_animation_speed)
+label_animation_speed.resize(image_animation_speed.width(), image_animation_speed.height())
+label_animation_speed.move(pos_x, pos_y + pos_y_diff)
+# SKIN SWITCH
+label_skin_switch = QLabel(window_settings)
+image_skin_switch = QPixmap('skins/_icons/icon_skin_switch.png').scaledToWidth(image_size+8, Qt.TransformationMode.SmoothTransformation)
+label_skin_switch.setPixmap(image_skin_switch)
+label_skin_switch.resize(image_skin_switch.width(), image_skin_switch.height())
+label_skin_switch.move(pos_x-3, pos_y + pos_y_diff*2)
+
+
 
 
 # ANIMATION LABEL
