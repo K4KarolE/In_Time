@@ -295,8 +295,8 @@ window_settings.setStyleSheet(
 
 
 # SETTINGS WINDOW - POSITION
-window_settings_pos_x = window_main_pos_x + window_width - window_settings_width - window_settings_pos_x_diff
-window_settings_pos_y = window_main_pos_y + 55 - window_settings_pos_y_diff
+window_settings_pos_x = window_main_pos_x + window_settings_pos_x_diff
+window_settings_pos_y = window_main_pos_y + 57 + window_settings_pos_y_diff
 window_settings.move(window_settings_pos_x, window_settings_pos_y)
 
 

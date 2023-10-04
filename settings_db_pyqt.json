@@ -1,6 +1,6 @@
 {
   "skin_selected": "idiocracy",
-  "music_on": false,
+  "music_on": true,
   "skins": {
     "back_to_the_future": {
       "title": "Back to the Future I.",
@@ -16,9 +16,9 @@
       "time_hm_pos_y": 375,
       "time_sec_pos_x": 622,
       "time_sec_pos_y": 410,
-      "music_volume": 0.5,
-      "animation_speed": 167,
-      "window_settings_pos_x_diff": 55,
+      "music_volume": 0.32,
+      "animation_speed": 91,
+      "window_settings_pos_x_diff": 415,
       "window_settings_pos_y_diff": 0,
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!"
     },
@@ -36,9 +36,9 @@
       "time_hm_pos_y": 375,
       "time_sec_pos_x": 632,
       "time_sec_pos_y": 415,
-      "music_volume": 0.6,
-      "animation_speed": 97,
-      "window_settings_pos_x_diff": 55,
+      "music_volume": 0.4,
+      "animation_speed": 153,
+      "window_settings_pos_x_diff": 415,
       "window_settings_pos_y_diff": 0,
       "window_title": "Back, in time, to pie"
     },
@@ -56,10 +56,10 @@
       "time_hm_pos_y": 355,
       "time_sec_pos_x": 310,
       "time_sec_pos_y": 410,
-      "music_volume": 0.6,
-      "animation_speed": 137,
-      "window_settings_pos_x_diff": 415,
-      "window_settings_pos_y_diff": 5,
+      "music_volume": 0.28,
+      "animation_speed": 179,
+      "window_settings_pos_x_diff": 52,
+      "window_settings_pos_y_diff": -5,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha."
     },
     "terminator": {
@@ -77,9 +77,9 @@
       "time_sec_pos_x": 340,
       "time_sec_pos_y": 410,
       "music_volume": 0.3,
-      "animation_speed": 197,
-      "window_settings_pos_x_diff": 410,
-      "window_settings_pos_y_diff": 5,
+      "animation_speed": 153,
+      "window_settings_pos_x_diff": 62,
+      "window_settings_pos_y_diff": -5,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!"
     }
   }
