@@ -9,20 +9,22 @@
         - Donnie Darko
         - Idiocracy
         - Terminator I.
-- GUI created with `Tkinter`, music played with `Pygame`, images created with `Pillow`
-- The `PyQt` version is in progress
+- GUI+:
+    - The `PyQt` version with additional features is in progress
+    - The original created with `Tkinter`, music played with `Pygame`, images created with `Pillow`
 
-### SOUND ON:
-
-https://github.com/K4KarolE/Motion_In_Time/assets/89346643/7283b486-dc02-447a-a55b-aa037dbf1d24
-
-<br>
+## PyQt6:
 <div align="left">
-    <img src="docs/promo/back_to_the_future.png">
+    <img src="docs/promo/idiocracy_pyqt.png">
 </div>
-<br>
 
-### GIF image creation and how it is used in the animation
+## Tkinter:
+<div align="left">
+    <img src="docs/promo/idiocracy_tkinter.png">
+</div>
+
+
+### Tkinter: GIF image creation and how it is used in the animation
 - The GIF images are generated in `DaVinci Resolve`:
     - On the Deliver page:
         - Format: GIF
@@ -37,6 +39,9 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/7283b486-dc02-447a-a5
 - https://www.python.org/
 
 ### Install dependencies
+## PyQt6
+``` work in progress ```
+## Tkinter
 ``` pip install -r requirements_tkinter.txt ```
 
 ### OS
