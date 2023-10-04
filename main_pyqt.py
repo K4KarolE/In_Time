@@ -153,17 +153,15 @@ window.setFixedWidth(window_width)
 window.setFixedHeight(window_height)
 window.setStyleSheet(
                     "QPushButton"
-                    # DEFAULT
-                    "{"
-                    f"background-color : {button_bg_color};"
-                    "border-radius: 5px;"          # corner roundness
-                    "border: 2px solid black;"
-                    "}"
-                    # CLICKED
+                        "{"
+                        f"background-color : {button_bg_color};"
+                        "border-radius: 6px;"          # corner roundness
+                        "border: 3px solid black;"
+                        "}"
                     "QPushButton::pressed"
-                    "{"
-                    f"background-color : {button_bg_color_clicked};"
-                    "}"
+                        "{"
+                        f"background-color : {button_bg_color_clicked};"
+                        "}"
                     )
 
 # MAIN WINDOW POSITION
@@ -225,6 +223,7 @@ pos_y_diff = 33
 button_music = QPushButton(window, text=None, icon=music_start_stop_img)
 button_music.setIconSize(QSize(20,20))
 button_music.setGeometry(button_pos_x, button_pos_y+pos_y_diff, 29, 29)     # pos, pos, size, size
+button_music.setCursor(Qt.CursorShape.PointingHandCursor)
 button_music.clicked.connect(music_switch_on_off)
 
 
@@ -234,6 +233,7 @@ button_image_settings = QIcon('skins/_icons/icon_settings.png')
 button_settings = QPushButton(window, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(20,20))       # icon sizing
 button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, size, size
+button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
 
 
@@ -269,27 +269,28 @@ window_settings.setWindowTitle('Settings')
 window_settings.setWindowIcon(QIcon(f'skins/icon_settings.ico'))
 window_settings.setStyleSheet(
                             "QMainWindow"
-                            "{"
-                            f"background-color : {button_bg_color};"
-                            "}"
+                                "{"
+                                f"background-color : {button_bg_color};"
+                                "border-radius: 10px;"
+                                "border: 4px solid black;"
+                                "}"
 
                             "QPushButton"
-                            "{"
-                            f"background-color : {button_bg_color};"
-                            "border-radius: 5px;"          # corner roundness
-                            "border: 2px solid black;"
-                            "}"
+                                "{"
+                                f"background-color : {button_bg_color};"
+                                "border-radius: 5px;"          # corner roundness
+                                "border: 2px solid black;"
+                                "}"
 
                             "QPushButton::pressed"
-                            "{"
-                            f"background-color : {button_bg_color_clicked};"
-                            "}"
+                                "{"
+                                f"background-color : {button_bg_color_clicked};"
+                                "}"
 
                             "QSlider::handle"
-                            "{"
-                            # "border-radius: 10px;"
-                            f"background-color : 'black';"
-                            "}"
+                                "{"
+                                f"background-color : 'black';"
+                                "}"
                             )
 
 
@@ -331,9 +332,10 @@ def save_change():
     save_settings(settings_data)
 
 # VOLUME
+# music volume [0.0 - 1.0] <-- slider [0 - 100], default pos. change: 10
 def change_volume():
-    music.audio_output.setVolume(slider_volume.value()/10)
-    selected_skin_folder['music_volume'] = slider_volume.value()/10
+    music.audio_output.setVolume(slider_volume.value()/100)
+    selected_skin_folder['music_volume'] = slider_volume.value()/100
 
 slider_pos_x = 60
 slider_pos_y = 27
@@ -341,10 +343,12 @@ slider_volume = QSlider(window_settings)
 slider_volume.setGeometry(QtCore.QRect(slider_pos_x, slider_pos_y, 160, 20))
 slider_volume.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_volume.setMinimum(0)
-slider_volume.setMaximum(10)
-slider_volume.setValue(int(music.volume*10))
+slider_volume.setMaximum(100)
+slider_volume.setValue(int(music.volume*100))
+slider_volume.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_volume.valueChanged.connect(change_volume)
 slider_volume.sliderReleased.connect(save_change)
+
 
 # ANIMATION SPEED
 def change_animation_speed():
@@ -357,6 +361,7 @@ slider_animation_speed.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_animation_speed.setMinimum(0)
 slider_animation_speed.setMaximum(300)
 slider_animation_speed.setValue(animation.speed)
+slider_animation_speed.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_animation_speed.valueChanged.connect(change_animation_speed)
 slider_animation_speed.sliderReleased.connect(save_change)
 
@@ -391,6 +396,8 @@ combobox_skins.addItems(skins_options)
 combobox_skins.setCurrentText(skins_dic[skin_selected]['title'])
 combobox_skins.setGeometry(slider_pos_x, slider_pos_y*5 - 5, 160, 20)
 combobox_skins.currentTextChanged.connect(change_skin)
+combobox_skins.setCursor(Qt.CursorShape.PointingHandCursor)
+
 
 
 
