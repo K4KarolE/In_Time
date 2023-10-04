@@ -12,6 +12,8 @@
 - GUI+:
     - The `PyQt` version with additional features is in progress
     - The original created with `Tkinter`, music played with `Pygame`, images created with `Pillow`
+- Launching `Motion in Time` from the `Taskbar`: 
+    - With only one click you can enjoy the current time from your bed according to your mood
 
 ## PyQt6:
 <div align="left">
@@ -24,15 +26,20 @@
 </div>
 
 
-### Tkinter: GIF image creation and how it is used in the animation
+### GIF image creation and how it is used in the animation
 - The GIF images are generated in `DaVinci Resolve`:
     - On the Deliver page:
         - Format: GIF
         - Codec Animated GIF
         - Resolution: Custom - 720 x 518
-- The returning phase of the movements in the animation are not part of the GIF images
-- It is coming from allocating the same image object (pulled from the GIF) for 2 mirrored positions in image sequence/list:
-    - half sized GIF images, faster load time
+- `PyQt6`:
+    - The GIF/animation playback is handled by PyQt's own `QMovie` module
+    - No additional steps required
+- `Tkinter`:
+    - Image objects are created from the GIF via DIY
+    - The returning phase of the movements in the animation are not part of the GIF images
+    - It is coming from allocating the same image object for 2 mirrored positions in the image sequence/list:
+        - half sized GIF images, faster load time
 
 ## Requirements
 ### Python 3 - used: 3.11.6
