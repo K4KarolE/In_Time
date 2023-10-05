@@ -4,18 +4,16 @@ Motion in Time - PyQt6 version
 Work in progress
 '''
 
-import sys
-from pathlib import Path
-
-from json import load, dump
-from pathlib import Path
-
-
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QComboBox
 from PyQt6.QtGui import QMovie, QIcon, QPixmap
 from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
+from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl, QEvent
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+
+import sys
+from pathlib import Path
+from json import load, dump
+from pathlib import Path
 
 
 
@@ -328,14 +326,21 @@ label_skin_switch.move(pos_x-3, pos_y + pos_y_diff*2)
 
 
 ## SETTINGS WINDOW - SLIDERS
-def save_change():
+def save_volume():
+    settings_data, skin_selected, selected_skin_folder = load_info()
+    selected_skin_folder['music_volume'] = slider_volume.value()/100
+    save_settings(settings_data)
+
+def save_animation_speed():
+    settings_data, skin_selected, selected_skin_folder = load_info()
+    selected_skin_folder['animation_speed'] = slider_animation_speed.value()
     save_settings(settings_data)
 
 # VOLUME
 # music volume [0.0 - 1.0] <-- slider [0 - 100], default pos. change: 10
 def change_volume():
     music.audio_output.setVolume(slider_volume.value()/100)
-    selected_skin_folder['music_volume'] = slider_volume.value()/100
+    
 
 slider_pos_x = 60
 slider_pos_y = 27
@@ -347,13 +352,13 @@ slider_volume.setMaximum(100)
 slider_volume.setValue(int(music.volume*100))
 slider_volume.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_volume.valueChanged.connect(change_volume)
-slider_volume.sliderReleased.connect(save_change)
+slider_volume.sliderReleased.connect(save_volume)
 
 
 # ANIMATION SPEED
 def change_animation_speed():
     movie.setSpeed(slider_animation_speed.value())
-    selected_skin_folder['animation_speed'] = slider_animation_speed.value()
+
 
 slider_animation_speed = QSlider(window_settings)
 slider_animation_speed.setGeometry(QtCore.QRect(slider_pos_x, slider_pos_y*3 - 5, 160, 20))
@@ -363,7 +368,7 @@ slider_animation_speed.setMaximum(300)
 slider_animation_speed.setValue(animation.speed)
 slider_animation_speed.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_animation_speed.valueChanged.connect(change_animation_speed)
-slider_animation_speed.sliderReleased.connect(save_change)
+slider_animation_speed.sliderReleased.connect(save_animation_speed)
 
 
 
