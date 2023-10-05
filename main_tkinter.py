@@ -13,18 +13,16 @@ What did we learn?
     + default_button = Button(window, ..), default_button.place(x,y) --> default_button.configure
 '''
 
+from PIL import Image
+from PIL import ImageTk
+from pygame import mixer
 
 from tkinter import Tk, PhotoImage, Canvas, Button, Scale, Label, OptionMenu, StringVar
-
 from time import strftime
 from json import load, dump
 from pathlib import Path
 import platform
 
-from PIL import Image
-from PIL import ImageTk
-
-from pygame import mixer
 
 
 class Music:
