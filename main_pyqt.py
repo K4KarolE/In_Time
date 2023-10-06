@@ -7,13 +7,14 @@ Work in progress
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QComboBox
 from PyQt6.QtGui import QMovie, QIcon, QPixmap
 from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl, QEvent
+from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 import sys
 from pathlib import Path
-from json import load, dump
-from pathlib import Path
+
+from MIT import Data, save_settings, load_info, working_directory, settings_data, skin_selected, selected_skin_folder 
+cv = Data()
 
 
 
@@ -25,35 +26,9 @@ class Music:
         self.player.setAudioOutput(self.audio_output)
         self.player.setSource(QUrl.fromLocalFile(str(self.path_music)))
         self.player.setLoops(-1) # -1=infinite
-        self.on = settings_data['music_on']
-        self.volume = selected_skin_folder['music_volume']
-        self.audio_output.setVolume(self.volume)
+        self.audio_output.setVolume(cv.music_volume)
 
 
-class Animation:
-    def __init__(self, speed):
-        self.speed = speed
-    
-
-
-
-def open_settings():
-    f = open(path_json)
-    settings_data = load(f)
-    return settings_data
-
-
-def save_settings(settings_data):
-    with open(path_json, 'w') as f:
-        dump(settings_data, f, indent=2)
-    return
-
-
-def load_info():
-    settings_data = open_settings()
-    skin_selected = settings_data['skin_selected']                                  
-    selected_skin_folder = settings_data['skins'][skin_selected]
-    return settings_data, skin_selected, selected_skin_folder
 
 
 def music_switch_on_off():
@@ -68,7 +43,7 @@ def music_switch_on_off():
 
     # MUSIC OFF --> ON
     else:
-        music.audio_output.setVolume(music.volume)
+        music.audio_output.setVolume(cv.music_volume)
         music.player.play()
         settings_data['music_on'] = True
         button_music.setIcon(button_image_stop)
@@ -98,44 +73,10 @@ def time_display():
     timer.setInterval(1000)
 
 
-# DIRECTORY AND JSON PATH
-working_directory = Path(__file__).parent
-path_json = Path(working_directory, 'settings_db_pyqt.json')
 
-# JSON / SETTINGS / SKIN - LOAD INFO
-settings_data, skin_selected, selected_skin_folder = load_info()
 
 # MUSIC
 music= Music()
-
-# ANIMATION
-animation = Animation(selected_skin_folder['animation_speed'])  # 100% = original
-
-# BUTTONS
-button_bg_color = selected_skin_folder['button_bg_color']
-button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
-button_pos_x = selected_skin_folder['button_pos_x']
-button_pos_y = selected_skin_folder['button_pos_y']
-
-# TIME
-time_font_color = selected_skin_folder['time_font_color']
-time_font_style = selected_skin_folder['time_font_style']
-time_hm_font_size = selected_skin_folder['time_hm_font_size']
-time_sec_font_size = selected_skin_folder['time_sec_font_size']
-
-# HOURS & MINUTES
-time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
-time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
-
-# SECONDS
-time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
-time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
-
-# WINDOW SETTINGS - POSITIONING
-window_settings_pos_x_diff = selected_skin_folder['window_settings_pos_x_diff']
-window_settings_pos_y_diff = selected_skin_folder['window_settings_pos_y_diff']
-
-
 
 
 ''' APP '''
@@ -152,13 +93,13 @@ window.setFixedHeight(window_height)
 window.setStyleSheet(
                     "QPushButton"
                         "{"
-                        f"background-color : {button_bg_color};"
+                        f"background-color : {cv.button_bg_color};"
                         "border-radius: 6px;"          # corner roundness
                         "border: 3px solid black;"
                         "}"
                     "QPushButton::pressed"
                         "{"
-                        f"background-color : {button_bg_color_clicked};"
+                        f"background-color : {cv.button_bg_color_clicked};"
                         "}"
                     )
 
@@ -168,7 +109,6 @@ screen_rect = screen.availableGeometry()
 window_main_pos_x = int((screen_rect.width() - window_width)/2)
 window_main_pos_y = int((screen_rect.height() - window_height)/2)
 window.move(window_main_pos_x, window_main_pos_y)
-
 
 # ANIMATION LABEL - before the TIME and BUTTONS
 label_animation = QLabel(window)
@@ -185,34 +125,34 @@ pos_diff = 4
 hours_and_mins_display_2nd = QLabel(window)
 hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 hours_and_mins_display_2nd.resize(350, 300)
-hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {time_hm_font_size}pt {time_font_style}; font-weight: bold;')
-hours_and_mins_display_2nd.move(time_hm_pos_x+pos_diff, time_hm_pos_y+pos_diff)
+hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+hours_and_mins_display_2nd.move(cv.time_hm_pos_x+pos_diff, cv.time_hm_pos_y+pos_diff)
 # SECONDS
 seconds_display_2nd = QLabel(window) 
 seconds_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 seconds_display_2nd.resize(350, 300)
-seconds_display_2nd.setStyleSheet(f'color:black; font: {time_sec_font_size}pt {time_font_style}; font-weight: bold;')
-seconds_display_2nd.move(time_sec_pos_x+pos_diff, time_sec_pos_y+pos_diff)
+seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+seconds_display_2nd.move(cv.time_sec_pos_x+pos_diff, cv.time_sec_pos_y+pos_diff)
 ## TOP
 # HOURS:MINUTES
 hours_and_mins_display = QLabel(window)
 hours_and_mins_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 hours_and_mins_display.resize(350, 300)
-hours_and_mins_display.setStyleSheet(f'color:{time_font_color}; font: {time_hm_font_size}pt {time_font_style}; font-weight: bold;')
-hours_and_mins_display.move(time_hm_pos_x, time_hm_pos_y)
+hours_and_mins_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+hours_and_mins_display.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
 # SECONDS
 seconds_display = QLabel(window) 
 seconds_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 seconds_display.resize(350, 300)
-seconds_display.setStyleSheet(f'color:{time_font_color}; font: {time_sec_font_size}pt {time_font_style}; font-weight: bold;')
-seconds_display.move(time_sec_pos_x, time_sec_pos_y) # background: black;
+seconds_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+seconds_display.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
 
 ## BUTTONS
 # BUTTON - MUSIC
 button_image_start = QIcon('skins/_icons/icon_start.png')
 button_image_stop = QIcon('skins/_icons/icon_stop.png')
 
-if music.on:
+if cv.music_on:
         music_start_stop_img = button_image_stop
 else:
     music_start_stop_img = button_image_start
@@ -220,17 +160,19 @@ else:
 pos_y_diff = 33
 button_music = QPushButton(window, text=None, icon=music_start_stop_img)
 button_music.setIconSize(QSize(20,20))
-button_music.setGeometry(button_pos_x, button_pos_y+pos_y_diff, 29, 29)     # pos, pos, size, size
+button_music.setGeometry(cv.button_pos_x, cv.button_pos_y+pos_y_diff, 29, 29)     # pos, pos, size, size
 button_music.setCursor(Qt.CursorShape.PointingHandCursor)
 button_music.clicked.connect(music_switch_on_off)
 
 
 # BUTTON - SETTING
-window_settings = QMainWindow() # configured later
+window_settings = QMainWindow(window) 
+# window_settings configured later
+# (window) --> SETTINGS WINDOW default launch in center of the main window
 button_image_settings = QIcon('skins/_icons/icon_settings.png')
 button_settings = QPushButton(window, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(20,20))       # icon sizing
-button_settings.setGeometry(button_pos_x, button_pos_y, 30, 30)     # pos, pos, size, size
+button_settings.setGeometry(cv.button_pos_x, cv.button_pos_y, 30, 30)     # pos, pos, size, size
 button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
 
@@ -241,7 +183,7 @@ movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
 label_animation.setMovie(movie)
 label_animation.resize(720,486)
 movie.start()
-movie.setSpeed(animation.speed)
+movie.setSpeed(cv.animation_speed)
 
 
 
@@ -268,21 +210,21 @@ window_settings.setWindowIcon(QIcon(f'skins/icon_settings.ico'))
 window_settings.setStyleSheet(
                             "QMainWindow"
                                 "{"
-                                f"background-color : {button_bg_color};"
+                                f"background-color : {cv.button_bg_color};"
                                 "border-radius: 10px;"
                                 "border: 4px solid black;"
                                 "}"
 
                             "QPushButton"
                                 "{"
-                                f"background-color : {button_bg_color};"
+                                f"background-color : {cv.button_bg_color};"
                                 "border-radius: 5px;"          # corner roundness
                                 "border: 2px solid black;"
                                 "}"
 
                             "QPushButton::pressed"
                                 "{"
-                                f"background-color : {button_bg_color_clicked};"
+                                f"background-color : {cv.button_bg_color_clicked};"
                                 "}"
 
                             "QSlider::handle"
@@ -293,9 +235,10 @@ window_settings.setStyleSheet(
 
 
 # SETTINGS WINDOW - POSITION
-window_settings_pos_x = window_main_pos_x + window_settings_pos_x_diff
-window_settings_pos_y = window_main_pos_y + 57 + window_settings_pos_y_diff
+window_settings_pos_x = window_main_pos_x + cv.window_settings_pos_x_diff
+window_settings_pos_y = window_main_pos_y + 57 + cv.window_settings_pos_y_diff
 window_settings.move(window_settings_pos_x, window_settings_pos_y)
+
 
 
 
@@ -326,6 +269,9 @@ label_skin_switch.move(pos_x-3, pos_y + pos_y_diff*2)
 
 
 ## SETTINGS WINDOW - SLIDERS
+# In this scale we can use only one function to save
+# the two parameters together at the same/every time
+# if one of them is changed - pros/kons
 def save_volume():
     settings_data, skin_selected, selected_skin_folder = load_info()
     selected_skin_folder['music_volume'] = slider_volume.value()/100
@@ -349,7 +295,7 @@ slider_volume.setGeometry(QtCore.QRect(slider_pos_x, slider_pos_y, 160, 20))
 slider_volume.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_volume.setMinimum(0)
 slider_volume.setMaximum(100)
-slider_volume.setValue(int(music.volume*100))
+slider_volume.setValue(int(cv.music_volume*100))
 slider_volume.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_volume.valueChanged.connect(change_volume)
 slider_volume.sliderReleased.connect(save_volume)
@@ -365,7 +311,7 @@ slider_animation_speed.setGeometry(QtCore.QRect(slider_pos_x, slider_pos_y*3 - 5
 slider_animation_speed.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_animation_speed.setMinimum(0)
 slider_animation_speed.setMaximum(300)
-slider_animation_speed.setValue(animation.speed)
+slider_animation_speed.setValue(cv.animation_speed)
 slider_animation_speed.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_animation_speed.valueChanged.connect(change_animation_speed)
 slider_animation_speed.sliderReleased.connect(save_animation_speed)
@@ -405,8 +351,7 @@ combobox_skins.setCursor(Qt.CursorShape.PointingHandCursor)
 
 
 
-
 window.show()
-if music.on: music.player.play()
+if cv.music_on: music.player.play()
 
 sys.exit(app.exec())
