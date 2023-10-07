@@ -13,7 +13,7 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import Data, save_settings, load_info, WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder 
+from MIT import Data, MyComboBox, save_settings, load_info, WORKING_DIRECTORY, skin_selected, selected_skin_folder 
 cv = Data()
 
 
@@ -83,14 +83,14 @@ music= Music()
 app = QApplication(sys.argv)
 
 # MAIN WINDOW
-window = QMainWindow()
+window_main = QMainWindow()
 WINDOW_WIDTH, WINDOW_HEIGHT = 720, 486
-window.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
-window.setWindowTitle(selected_skin_folder['window_title'])
-window.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
-window.setFixedWidth(WINDOW_WIDTH)
-window.setFixedHeight(WINDOW_HEIGHT)
-window.setStyleSheet(
+window_main.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
+window_main.setWindowTitle(selected_skin_folder['window_title'])
+window_main.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
+window_main.setFixedWidth(WINDOW_WIDTH)
+window_main.setFixedHeight(WINDOW_HEIGHT)
+window_main.setStyleSheet(
                     "QMainWindow"
                         "{"
                         f"background-color : {cv.button_bg_color};"
@@ -114,10 +114,10 @@ screen = QApplication.primaryScreen()
 screen_rect = screen.availableGeometry()
 window_main_pos_x = int((screen_rect.width() - WINDOW_WIDTH)/2)
 window_main_pos_y = int((screen_rect.height() - WINDOW_HEIGHT)/2)
-window.move(window_main_pos_x, window_main_pos_y)
+window_main.move(window_main_pos_x, window_main_pos_y)
 
 # ANIMATION LABEL - before the TIME and BUTTONS
-label_animation = QLabel(window)
+label_animation = QLabel(window_main)
     
 
 #### TIME
@@ -128,26 +128,26 @@ timer.start()
 ## BACK - SHADOWS
 # HOURS:MINUTES
 pos_diff = 4
-hours_and_mins_display_2nd = QLabel(window)
+hours_and_mins_display_2nd = QLabel(window_main)
 hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 hours_and_mins_display_2nd.resize(350, 300)
 hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_display_2nd.move(cv.time_hm_pos_x+pos_diff, cv.time_hm_pos_y+pos_diff)
 # SECONDS
-seconds_display_2nd = QLabel(window) 
+seconds_display_2nd = QLabel(window_main) 
 seconds_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 seconds_display_2nd.resize(350, 300)
 seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds_display_2nd.move(cv.time_sec_pos_x+pos_diff, cv.time_sec_pos_y+pos_diff)
 ## TOP
 # HOURS:MINUTES
-hours_and_mins_display = QLabel(window)
+hours_and_mins_display = QLabel(window_main)
 hours_and_mins_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 hours_and_mins_display.resize(350, 300)
 hours_and_mins_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_display.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
 # SECONDS
-seconds_display = QLabel(window) 
+seconds_display = QLabel(window_main) 
 seconds_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 seconds_display.resize(350, 300)
 seconds_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
@@ -164,7 +164,7 @@ else:
     music_start_stop_img = button_image_start
 
 pos_y_diff = 33
-button_music = QPushButton(window, text=None, icon=music_start_stop_img)
+button_music = QPushButton(window_main, text=None, icon=music_start_stop_img)
 button_music.setIconSize(QSize(20,20))
 button_music.setGeometry(cv.button_pos_x, cv.button_pos_y+pos_y_diff, 29, 29)     # pos, pos, size, size
 button_music.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -176,7 +176,7 @@ window_settings = QMainWindow()
 # window_settings configured later
 # (window) --> SETTINGS WINDOW default launch in center of the main window
 button_image_settings = QIcon('skins/_icons/icon_settings.png')
-button_settings = QPushButton(window, text=None, icon=button_image_settings)
+button_settings = QPushButton(window_main, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(20,20))       # icon sizing
 button_settings.setGeometry(cv.button_pos_x, cv.button_pos_y, 30, 30)     # pos, pos, size, size
 button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -325,45 +325,20 @@ slider_animation_speed.valueChanged.connect(change_animation_speed)
 slider_animation_speed.sliderReleased.connect(save_animation_speed)
 
 
-
 ## SETTINGS WINDOW - SKIN SWITCH - COMBOBOX
-def restart():
-    QtCore.QCoreApplication.quit()
-    QtCore.QProcess.startDetached(sys.executable, sys.argv)
+MyComboBox(window_settings, slider_pos_x, slider_pos_y*5 - 5)
 
+## ADVANCED SETTINGS WINDOW - SKIN SWITCH - COMBOBOX
+MyComboBox(window_main, WINDOW_WIDTH + 30, 50)
 
-def change_skin():
-    
-    settings_data, skin_selected, selected_skin_folder = load_info()
-
-    for selected_title in skins_dic:
-                
-        # SELECTED TITLE(Back to the Future I.) --> FOLDER NAME(back_to_the_future) = skin_selected
-        if skins_dic[selected_title]['title'] == combobox_skins.currentText():
-            settings_data['skin_selected'] = selected_title
-            save_settings(settings_data)
-            restart()
-
-# LIST OF MOVIE TITLES
-skins_dic = settings_data['skins']
-skins_options = []
-for _ in skins_dic:
-    skins_options.append(settings_data['skins'][_]['title'])
-
-combobox_skins = QComboBox(window_settings)
-combobox_skins.addItems(skins_options)
-combobox_skins.setCurrentText(skins_dic[skin_selected]['title'])
-combobox_skins.setGeometry(slider_pos_x, slider_pos_y*5 - 5, 160, 20)
-combobox_skins.currentTextChanged.connect(change_skin)
-combobox_skins.setCursor(Qt.CursorShape.PointingHandCursor)
-combobox_skins.setFont(QFont('Times', 10))
 
 ## SETTINGS WINDOW - ADVANCED BUTTON
 def button_advanced_launch():
     window_settings.hide()
+    button_settings.setEnabled(False)
     for size_incr in range(0, WINDOW_SETTINGS_WIDTH, 2):
-        window.setFixedWidth(WINDOW_WIDTH + size_incr)
-
+        window_main.setFixedWidth(WINDOW_WIDTH + size_incr)
+    
 button_advanced = QPushButton(window_settings, text='ADVANCED')
 button_advanced.setGeometry(slider_pos_x, slider_pos_y*6 + 12, 160, 25)
 button_advanced.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -371,7 +346,7 @@ button_advanced.clicked.connect(button_advanced_launch)
 button_advanced.setFont(QFont('Times', 11, 600))
 
 
-window.show()
+window_main.show()
 if cv.music_on: music.player.play()
 
 sys.exit(app.exec())
