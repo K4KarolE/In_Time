@@ -5,7 +5,7 @@ Work in progress
 '''
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QComboBox
-from PyQt6.QtGui import QMovie, QIcon, QPixmap
+from PyQt6.QtGui import QMovie, QIcon, QPixmap, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
@@ -13,14 +13,14 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import Data, save_settings, load_info, working_directory, settings_data, skin_selected, selected_skin_folder 
+from MIT import Data, save_settings, load_info, WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder 
 cv = Data()
 
 
 
 class Music:
     def __init__(self):
-        self.path_music = Path(working_directory, 'skins', skin_selected, 'music.mp3')
+        self.path_music = Path(WORKING_DIRECTORY, 'skins', skin_selected, 'music.mp3')
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
         self.player.setAudioOutput(self.audio_output)
@@ -84,13 +84,19 @@ app = QApplication(sys.argv)
 
 # MAIN WINDOW
 window = QMainWindow()
-window_width, window_height = 720, 486
-window.resize(window_width, window_height)
+WINDOW_WIDTH, WINDOW_HEIGHT = 720, 486
+window.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
 window.setWindowTitle(selected_skin_folder['window_title'])
 window.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
-window.setFixedWidth(window_width)
-window.setFixedHeight(window_height)
+window.setFixedWidth(WINDOW_WIDTH)
+window.setFixedHeight(WINDOW_HEIGHT)
 window.setStyleSheet(
+                    "QMainWindow"
+                        "{"
+                        f"background-color : {cv.button_bg_color};"
+                        "border-radius: 10px;"
+                        "border: 6px solid black;"
+                        "}"
                     "QPushButton"
                         "{"
                         f"background-color : {cv.button_bg_color};"
@@ -106,8 +112,8 @@ window.setStyleSheet(
 # MAIN WINDOW POSITION
 screen = QApplication.primaryScreen()
 screen_rect = screen.availableGeometry()
-window_main_pos_x = int((screen_rect.width() - window_width)/2)
-window_main_pos_y = int((screen_rect.height() - window_height)/2)
+window_main_pos_x = int((screen_rect.width() - WINDOW_WIDTH)/2)
+window_main_pos_y = int((screen_rect.height() - WINDOW_HEIGHT)/2)
 window.move(window_main_pos_x, window_main_pos_y)
 
 # ANIMATION LABEL - before the TIME and BUTTONS
@@ -166,7 +172,7 @@ button_music.clicked.connect(music_switch_on_off)
 
 
 # BUTTON - SETTING
-window_settings = QMainWindow(window) 
+window_settings = QMainWindow()
 # window_settings configured later
 # (window) --> SETTINGS WINDOW default launch in center of the main window
 button_image_settings = QIcon('skins/_icons/icon_settings.png')
@@ -200,11 +206,11 @@ WindowStaysOnTopHint: settings window stays on top
     - even when the main window get minimized
 '''
 # window_settings object created in the SETTINGS BUTTON section
-window_settings.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Sheet )
-window_settings_width, window_settings_height = 250, 200
-window_settings.resize(window_settings_width, window_settings_height)
-window_settings.setFixedWidth(window_settings_width)
-window_settings.setFixedHeight(window_settings_height)
+window_settings.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Sheet)
+WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
+window_settings.resize(WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT)
+window_settings.setFixedWidth(WINDOW_SETTINGS_WIDTH)
+window_settings.setFixedHeight(WINDOW_SETTINGS_HEIGHT)
 window_settings.setWindowTitle('Settings')
 window_settings.setWindowIcon(QIcon(f'skins/icon_settings.ico'))
 window_settings.setStyleSheet(
@@ -241,8 +247,7 @@ window_settings.move(window_settings_pos_x, window_settings_pos_y)
 
 
 
-
-## SETTINGS WINDOW - IMAGES
+## SETTINGS WINDOW - IMAGES AND TEXT
 image_size = 30
 pos_x = 20
 pos_y = 20
@@ -265,7 +270,10 @@ image_skin_switch = QPixmap('skins/_icons/icon_skin_switch.png').scaledToWidth(i
 label_skin_switch.setPixmap(image_skin_switch)
 label_skin_switch.resize(image_skin_switch.width(), image_skin_switch.height())
 label_skin_switch.move(pos_x-3, pos_y + pos_y_diff*2)
-
+# A - ADVANCED
+label_A = QLabel(window_settings, text='A')
+label_A.move(pos_x+3, pos_y + pos_y_diff*3)
+label_A.setFont(QFont('Times', 30, 800))   # style, size, bold
 
 
 ## SETTINGS WINDOW - SLIDERS
@@ -348,7 +356,19 @@ combobox_skins.setCurrentText(skins_dic[skin_selected]['title'])
 combobox_skins.setGeometry(slider_pos_x, slider_pos_y*5 - 5, 160, 20)
 combobox_skins.currentTextChanged.connect(change_skin)
 combobox_skins.setCursor(Qt.CursorShape.PointingHandCursor)
+combobox_skins.setFont(QFont('Times', 10))
 
+## SETTINGS WINDOW - ADVANCED BUTTON
+def button_advanced_launch():
+    window_settings.hide()
+    for size_incr in range(0, WINDOW_SETTINGS_WIDTH, 2):
+        window.setFixedWidth(WINDOW_WIDTH + size_incr)
+
+button_advanced = QPushButton(window_settings, text='ADVANCED')
+button_advanced.setGeometry(slider_pos_x, slider_pos_y*6 + 12, 160, 25)
+button_advanced.setCursor(Qt.CursorShape.PointingHandCursor)
+button_advanced.clicked.connect(button_advanced_launch)
+button_advanced.setFont(QFont('Times', 11, 600))
 
 
 window.show()

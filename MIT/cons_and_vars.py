@@ -4,12 +4,12 @@ from pathlib import Path
 from json import load, dump
 
 def open_settings():
-    f = open(path_json)
+    f = open(PATH_JSON)
     settings_data = load(f)
     return settings_data
 
 def save_settings(settings_data):
-    with open(path_json, 'w') as f:
+    with open(PATH_JSON, 'w') as f:
         dump(settings_data, f, indent=2)
     return
 
@@ -20,8 +20,8 @@ def load_info():
     return settings_data, skin_selected, selected_skin_folder
 
 
-working_directory = Path().resolve()
-path_json = Path(working_directory, 'settings_db_pyqt.json')
+WORKING_DIRECTORY = Path().resolve()
+PATH_JSON = Path(WORKING_DIRECTORY, 'settings_db_pyqt.json')
 settings_data, skin_selected, selected_skin_folder = load_info()
 
 
