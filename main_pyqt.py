@@ -4,8 +4,8 @@ Motion in Time - PyQt6 version
 Work in progress
 '''
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QComboBox
-from PyQt6.QtGui import QMovie, QIcon, QPixmap, QFont
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider
+from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
@@ -13,7 +13,8 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import Data, MyComboBox, save_settings, load_info, WORKING_DIRECTORY, skin_selected, selected_skin_folder 
+from MIT import Data, MyComboBox, MyImage, MySlider
+from MIT import save_settings, load_info, WORKING_DIRECTORY, skin_selected, selected_skin_folder 
 cv = Data()
 
 
@@ -253,23 +254,16 @@ pos_x = 20
 pos_y = 20
 pos_y_diff = image_size + 20
 # VOLUME
-label_volume = QLabel(window_settings)
-image_volume = QPixmap('skins/_icons/icon_volume.png').scaledToWidth(image_size, Qt.TransformationMode.SmoothTransformation)
-label_volume.setPixmap(image_volume)
-label_volume.resize(image_volume.width(), image_volume.height())
-label_volume.move(pos_x, pos_y)
+
+# VOLUME
+MyImage(window_settings, 'icon_volume.png', image_size, pos_x, pos_y)
+
 # ANIMATION SPEED
-label_animation_speed = QLabel(window_settings)
-image_animation_speed = QPixmap('skins/_icons/icon_animation_speed.png').scaledToWidth(image_size, Qt.TransformationMode.SmoothTransformation)
-label_animation_speed.setPixmap(image_animation_speed)
-label_animation_speed.resize(image_animation_speed.width(), image_animation_speed.height())
-label_animation_speed.move(pos_x, pos_y + pos_y_diff)
+MyImage(window_settings, 'icon_animation_speed.png', image_size, pos_x, pos_y+pos_y_diff)
+
 # SKIN SWITCH
-label_skin_switch = QLabel(window_settings)
-image_skin_switch = QPixmap('skins/_icons/icon_skin_switch.png').scaledToWidth(image_size+8, Qt.TransformationMode.SmoothTransformation)
-label_skin_switch.setPixmap(image_skin_switch)
-label_skin_switch.resize(image_skin_switch.width(), image_skin_switch.height())
-label_skin_switch.move(pos_x-3, pos_y + pos_y_diff*2)
+MyImage(window_settings, 'icon_skin_switch.png', image_size+8, pos_x-3, pos_y+pos_y_diff*2)
+
 # A - ADVANCED
 label_A = QLabel(window_settings, text='A')
 label_A.move(pos_x+3, pos_y + pos_y_diff*3)
@@ -307,6 +301,7 @@ slider_volume.setValue(int(cv.music_volume*100))
 slider_volume.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_volume.valueChanged.connect(change_volume)
 slider_volume.sliderReleased.connect(save_volume)
+
 
 
 # ANIMATION SPEED
