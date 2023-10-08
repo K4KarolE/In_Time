@@ -10,19 +10,13 @@ from MIT.cons_and_vars import save_settings, load_info, settings_data, skin_sele
 
 
 
-class MyComboBox:
+class MyComboBoxSkins(QComboBox):
     def __init__(self, window_type, combo_pos_x, combo_pos_y):
-
-        skins_dic = settings_data['skins']
-        skins_options = []
-        for _ in skins_dic:
-            skins_options.append(settings_data['skins'][_]['title'])
-
-
+        super().__init__()
+        
         def restart():
             QCoreApplication.quit()
             QProcess.startDetached(sys.executable, sys.argv)
-
 
 
         def change_skin():
@@ -34,11 +28,31 @@ class MyComboBox:
                     save_settings(settings_data)
                     restart()
 
+        skins_dic = settings_data['skins']
+        skins_options = []
+        for _ in skins_dic:
+            skins_options.append(settings_data['skins'][_]['title'])
 
-        self = QComboBox(window_type)
+        self.setParent(window_type)
         self.addItems(skins_options)
         self.setCurrentText(skins_dic[skin_selected]['title'])
         self.setGeometry(combo_pos_x, combo_pos_y, 160, 20)
         self.currentTextChanged.connect(change_skin)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFont(QFont('Times', 10))
+
+
+
+
+class MyComboBoxWidgetUpdate(QComboBox):
+    def __init__(self, window_type, widgets_list, selected_widget_action, combo_pos_x, combo_pos_y):
+        super().__init__()
+
+        self.setParent(window_type)
+        self.addItems(widgets_list)
+        self.setCurrentText(widgets_list[0])
+        self.setGeometry(combo_pos_x, combo_pos_y, 160, 20)
+        self.currentTextChanged.connect(selected_widget_action)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setFont(QFont('Times', 10))
+        self.currentText()
