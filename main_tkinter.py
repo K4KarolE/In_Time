@@ -116,7 +116,7 @@ def main():
 
     # IMAGE CREATION - resizable
     def image_generate(image_size, picture_name):   # (24, 'icon_close.png')
-        my_img_path = Path(working_directory, 'skins', '_icons', picture_name)
+        my_img_path = Path(working_directory, 'skins', '_images', picture_name)
         my_img = Image.open(my_img_path)
         width = int(image_size)
         height = int(image_size)
@@ -255,7 +255,7 @@ def main():
     pos_y_diff = 33
 
     # SETTINGS BUTTON
-    button_image_settings = image_generate(21, 'icon_settings.png')
+    button_image_settings = image_generate(21, 'settings.png')
     Button(
         canvas,
         command=lambda:[canvas_launcher()], 
@@ -266,8 +266,8 @@ def main():
 
 
     # MUSIC BUTTON
-    button_image_start = image_generate(20, 'icon_start.png')
-    button_image_stop = image_generate(20, 'icon_stop.png')
+    button_image_start = image_generate(20, 'start.png')
+    button_image_stop = image_generate(20, 'stop.png')
     if music.on:
         music_start_stop_img = button_image_stop
     else:
@@ -472,10 +472,10 @@ def main():
 
 
     # IMAGE GENERATION FOR SETTINGS WINDOW(CANVAS)
-    image_volume = image_generate(30, 'icon_volume.png')
-    image_animation_speed = image_generate(30, 'icon_animation_speed.png')
-    image_skin_switch = image_generate(37, 'icon_skin_switch.png')
-    button_image_close = image_generate(15, 'icon_close.png')
+    image_volume = image_generate(30, 'volume.png')
+    image_animation_speed = image_generate(30, 'animation_speed.png')
+    image_skin_switch = image_generate(37, 'skin_switch.png')
+    button_image_close = image_generate(15, 'close.png')
 
 
     # FUNCTIONS
