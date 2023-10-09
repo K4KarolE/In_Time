@@ -141,10 +141,10 @@ timer.timeout.connect(time_display)
 timer.start()
 
 ## BACK - SHADOWS
-time_hm_label_w = cv.time_hm_font_size*4
-time_hm_label_h = cv.time_hm_font_size*2
-time_sec_label_w = cv.time_sec_font_size*4
-time_sec_label_h = cv.time_hm_font_size*2
+time_hm_label_w = int(cv.time_hm_font_size * cv.time_label_ratio_w)
+time_hm_label_h = int(cv.time_hm_font_size * cv.time_label_ratio_h)
+time_sec_label_w = int(cv.time_sec_font_size * cv.time_label_ratio_w)
+time_sec_label_h = int(cv.time_sec_font_size * cv.time_label_ratio_h)
 # HOURS:MINUTES
 hours_and_mins_display_2nd = QLabel(window_main)
 hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
@@ -469,10 +469,10 @@ def selected_widget_action():
     selected_widg = select_widget.currentText()
 
     # VARIABLE --> VARIABLE
-    for item in widget_dic:
-            if item == selected_widg:
-                slider_pos_x.setValue(widget_dic[item]['pos_x'])
-                slider_pos_y.setValue(widget_dic[item]['pos_y'])
+    # for item in widget_dic:
+    #         if item == selected_widg:
+    slider_pos_x.setValue(widget_dic[selected_widg]['pos_x'])
+    slider_pos_y.setValue(widget_dic[selected_widg]['pos_y'])
 
 
     # WINDOW MAIN
@@ -511,17 +511,16 @@ def selected_widget_action():
         slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
     
     ## TIME
-    if selected_widg == widget_list[4]:
-        slider_pos_x.setMinimum(-time_hm_label_w)
-        slider_pos_x.setMaximum(WINDOW_WIDTH - time_hm_label_w)
-
-        slider_pos_y.setMinimum(-time_hm_label_h)
-        slider_pos_y.setMaximum(WINDOW_HEIGHT - time_hm_label_h)
-
     if selected_widg in widget_list[4:8]:
         slider_time_size.setValue(widget_dic[selected_widg]['size'])
         slider_time_size.show()
-        label_S.show() 
+        label_S.show()
+
+        label_w = int(widget_dic[selected_widg]['size']*cv.time_label_ratio_w)
+        label_h = int(widget_dic[selected_widg]['size']*cv.time_label_ratio_h)
+    
+        slider_pos_x.setMaximum(WINDOW_WIDTH - label_w)
+        slider_pos_y.setMaximum(WINDOW_HEIGHT - label_h) 
 
     if selected_widg not in widget_list[4:8]:
         slider_time_size.hide()
@@ -602,7 +601,13 @@ def update_size():
             widget_dic[selected_widg]['size'] = slider_time_size.value()
             
             # RESIZE TEXT LABEL
-            widget_dic[selected_widg]['widget'].resize(slider_time_size.value()*4, slider_time_size.value()*2)
+            new_label_w = int(slider_time_size.value() * cv.time_label_ratio_w)
+            new_label_h = int(slider_time_size.value() * cv.time_label_ratio_h)
+            widget_dic[selected_widg]['widget'].resize(new_label_w, new_label_h)
+
+            # AVAILABLE POSITION UPDATE
+            slider_pos_x.setMaximum(WINDOW_WIDTH - new_label_w)
+            slider_pos_y.setMaximum(WINDOW_HEIGHT - new_label_h)
 
 
 slider_time_size = QSlider(window_main)

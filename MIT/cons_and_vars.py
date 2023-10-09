@@ -51,6 +51,9 @@ class Data:
     time_sec_font_size = selected_skin_folder['time_sec_font_size']
     time_sec_shad_font_size = selected_skin_folder['time_sec_shad_font_size']
 
+    time_label_ratio_w = selected_skin_folder['time_label_ratio_w']
+    time_label_ratio_h = selected_skin_folder['time_label_ratio_h']
+
     # WIDGET SELECTING COMBOBOX
     selected_widg_changed = False
 
