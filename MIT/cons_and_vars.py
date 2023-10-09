@@ -44,8 +44,12 @@ class Data:
     # TIME
     time_font_color = selected_skin_folder['time_font_color']
     time_font_style = selected_skin_folder['time_font_style']
+
     time_hm_font_size = selected_skin_folder['time_hm_font_size']
+    time_hm_shad_font_size = selected_skin_folder['time_hm_shad_font_size']
+
     time_sec_font_size = selected_skin_folder['time_sec_font_size']
+    time_sec_shad_font_size = selected_skin_folder['time_sec_shad_font_size']
 
     # WIDGET SELECTING COMBOBOX
     selected_widg_changed = False

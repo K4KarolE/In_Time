@@ -11,7 +11,7 @@ from MIT.cons_and_vars import save_settings, load_info, settings_data, skin_sele
 
 
 class MyComboBoxSkins(QComboBox):
-    def __init__(self, window_type, combo_pos_x, combo_pos_y):
+    def __init__(self, window_type, width, pos_x, pos_y):
         super().__init__()
         
         def restart():
@@ -36,7 +36,7 @@ class MyComboBoxSkins(QComboBox):
         self.setParent(window_type)
         self.addItems(skins_options)
         self.setCurrentText(skins_dic[skin_selected]['title'])
-        self.setGeometry(combo_pos_x, combo_pos_y, 160, 20)
+        self.setGeometry(pos_x, pos_y, width, 20)
         self.currentTextChanged.connect(change_skin)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFont(QFont('Times', 10))
@@ -45,13 +45,13 @@ class MyComboBoxSkins(QComboBox):
 
 
 class MyComboBoxWidgetUpdate(QComboBox):
-    def __init__(self, window_type, widgets_list, selected_widget_action, combo_pos_x, combo_pos_y):
+    def __init__(self, window_type, widgets_list, selected_widget_action, width, pos_x, pos_y):
         super().__init__()
 
         self.setParent(window_type)
         self.addItems(widgets_list)
         self.setCurrentText(widgets_list[0])
-        self.setGeometry(combo_pos_x, combo_pos_y, 160, 20)
+        self.setGeometry(pos_x, pos_y, width, 20)
         self.currentTextChanged.connect(selected_widget_action)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFont(QFont('Times', 10))
