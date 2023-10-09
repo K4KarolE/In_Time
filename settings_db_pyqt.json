@@ -1,6 +1,6 @@
 {
-  "skin_selected": "idiocracy",
-  "music_on": true,
+  "skin_selected": "__test__",
+  "music_on": false,
   "skins": {
     "back_to_the_future": {
       "title": "Back to the Future I.",
@@ -16,8 +16,8 @@
       "time_hm_pos_y": 375,
       "time_sec_pos_x": 622,
       "time_sec_pos_y": 410,
-      "music_volume": 0.15,
-      "animation_speed": 72,
+      "music_volume": 0.36,
+      "animation_speed": 141,
       "window_settings_pos_x_diff": 415,
       "window_settings_pos_y_diff": 0,
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!"
@@ -36,8 +36,8 @@
       "time_hm_pos_y": 375,
       "time_sec_pos_x": 632,
       "time_sec_pos_y": 415,
-      "music_volume": 0.25,
-      "animation_speed": 74,
+      "music_volume": 0.3,
+      "animation_speed": 66,
       "window_settings_pos_x_diff": 415,
       "window_settings_pos_y_diff": 0,
       "window_title": "Back, in time, to pie"
@@ -57,7 +57,7 @@
       "time_sec_pos_x": 310,
       "time_sec_pos_y": 410,
       "music_volume": 0.46,
-      "animation_speed": 185,
+      "animation_speed": 161,
       "window_settings_pos_x_diff": 52,
       "window_settings_pos_y_diff": -5,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha."
@@ -76,11 +76,61 @@
       "time_hm_pos_y": 350,
       "time_sec_pos_x": 340,
       "time_sec_pos_y": 410,
-      "music_volume": 0.21,
-      "animation_speed": 131,
+      "music_volume": 0.25,
+      "animation_speed": 89,
       "window_settings_pos_x_diff": 62,
       "window_settings_pos_y_diff": -5,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!"
+    },
+    "__test__": {
+      "title": " - TEST - ",
+      "button_bg_color": "#9E8263",
+      "button_bg_color_clicked": "#4D3500",
+      "button_pos_x": 15,
+      "button_pos_y": 20,
+      "time_font_color": "#AE580A",
+      "time_font_style": "Bauhaus 93",
+      "time_hm_font_size": 80,
+      "time_sec_font_size": 30,
+      "music_volume": 0.46,
+      "animation_speed": 161,
+      "window_settings_pos_x_diff": 52,
+      "window_settings_pos_y_diff": -5,
+      "window_title": " - TEST TITLE - ",
+      "positions": {
+        "button_settings": {
+          "x": 15,
+          "y": 20
+        },
+        "button_music": {
+          "x": 15,
+          "y": 53
+        },
+        "window_settings": {
+          "x": 800,
+          "y": 600
+        },
+        "window_main": {
+          "x": 800,
+          "y": 600
+        },
+        "hours_and_mins": {
+          "x": -40,
+          "y": 355
+        },
+        "hours_and_mins_shadow": {
+          "x": -36,
+          "y": 359
+        },
+        "seconds": {
+          "x": 310,
+          "y": 410
+        },
+        "seconds_shadow": {
+          "x": 314,
+          "y": 414
+        }
+      }
     }
   }
 }

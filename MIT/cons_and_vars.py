@@ -47,14 +47,47 @@ class Data:
     time_hm_font_size = selected_skin_folder['time_hm_font_size']
     time_sec_font_size = selected_skin_folder['time_sec_font_size']
 
+    # WIDGET SELECTING COMBOBOX
+    selected_widg_changed = False
+
+
+    ## POSITIONS
     # HOURS & MINUTES
-    time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
-    time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
+    time_hm_pos_x = selected_skin_folder['positions']['hours_and_mins']['x']
+    time_hm_pos_y = selected_skin_folder['positions']['hours_and_mins']['y']
+    # HOURS & MINUTES - SHADOW
+    time_hm_shadow_pos_x = selected_skin_folder['positions']['hours_and_mins_shadow']['x']
+    time_hm_shadow_pos_y = selected_skin_folder['positions']['hours_and_mins_shadow']['y']
 
     # SECONDS
-    time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
-    time_sec_pos_y = selected_skin_folder['time_sec_pos_y']
+    time_sec_pos_x = selected_skin_folder['positions']['seconds']['x']
+    time_sec_pos_y = selected_skin_folder['positions']['seconds']['y']
+    # SECONDS - SHADOW
+    time_sec_shadow_pos_x = selected_skin_folder['positions']['seconds_shadow']['x']
+    time_sec_shadow_pos_y = selected_skin_folder['positions']['seconds_shadow']['y']
 
-    # WINDOW SETTINGS - POSITIONING
-    window_settings_pos_x_diff = selected_skin_folder['window_settings_pos_x_diff']
-    window_settings_pos_y_diff = selected_skin_folder['window_settings_pos_y_diff']
+
+    # BUTTON MUSIC
+    button_music_pos_x = selected_skin_folder['positions']['button_music']['x']
+    button_music_pos_y = selected_skin_folder['positions']['button_music']['y']
+
+    # BUTTON SETTINGS
+    button_settings_pos_x = selected_skin_folder['positions']['button_settings']['x']
+    button_settings_pos_y = selected_skin_folder['positions']['button_settings']['y']
+
+    # WINDOW SETTINGS
+    window_settings_pos_x = selected_skin_folder['positions']['window_settings']['x']
+    window_settings_pos_y = selected_skin_folder['positions']['window_settings']['y']
+
+    # WINDOW SETTINGS
+    window_main_pos_x = selected_skin_folder['positions']['window_main']['x']
+    window_main_pos_y = selected_skin_folder['positions']['window_main']['y']
+
+    ## PRE UPDATE
+    #  # HOURS & MINUTES
+    # time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
+    # time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
+
+    # # SECONDS
+    # time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
+    # time_sec_pos_y = selected_skin_folder['time_sec_pos_y']

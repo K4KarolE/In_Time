@@ -123,9 +123,13 @@ window_main.setStyleSheet(
 # MAIN WINDOW POSITION
 SCREEN = QApplication.primaryScreen()
 SCREEN_RECT = SCREEN.availableGeometry()
-WINDOW_MAIN_POS_X = int((SCREEN_RECT.width() - WINDOW_WIDTH)/2)
-WINDOW_MAIN_POS_Y = int((SCREEN_RECT.height() - WINDOW_HEIGHT)/2)
-window_main.move(WINDOW_MAIN_POS_X, WINDOW_MAIN_POS_Y)
+if SCREEN_RECT.width() < cv.window_main_pos_x or SCREEN_RECT.height() < cv.window_main_pos_y:
+    WINDOW_MAIN_POS_X = int((SCREEN_RECT.width() - WINDOW_WIDTH)/2)
+    WINDOW_MAIN_POS_Y = int((SCREEN_RECT.height() - WINDOW_HEIGHT)/2)
+    window_main.move(WINDOW_MAIN_POS_X, WINDOW_MAIN_POS_Y)
+    ''' error message needed - window pos saving needed'''
+else:
+    window_main.move(cv.window_main_pos_x, cv.window_main_pos_y)
 
 # ANIMATION LABEL - before the TIME and BUTTONS
 label_animation = QLabel(window_main)
@@ -138,18 +142,17 @@ timer.start()
 
 ## BACK - SHADOWS
 # HOURS:MINUTES
-pos_diff = 4
 hours_and_mins_display_2nd = QLabel(window_main)
 hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 hours_and_mins_display_2nd.resize(350, 300)
 hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
-hours_and_mins_display_2nd.move(cv.time_hm_pos_x+pos_diff, cv.time_hm_pos_y+pos_diff)
+hours_and_mins_display_2nd.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
 # SECONDS
 seconds_display_2nd = QLabel(window_main) 
 seconds_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 seconds_display_2nd.resize(350, 300)
 seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
-seconds_display_2nd.move(cv.time_sec_pos_x+pos_diff, cv.time_sec_pos_y+pos_diff)
+seconds_display_2nd.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
 ## TOP
 # HOURS:MINUTES
 hours_and_mins_display = QLabel(window_main)
@@ -174,10 +177,10 @@ if cv.music_on:
 else:
     music_start_stop_img = button_image_start
 
-pos_y_diff = 33
+
 button_music = QPushButton(window_main, text=None, icon=music_start_stop_img)
 button_music.setIconSize(QSize(20,20))
-button_music.setGeometry(cv.button_pos_x, cv.button_pos_y+pos_y_diff, 29, 29)     # pos, pos, size, size
+button_music.setGeometry(cv.button_music_pos_x, cv.button_music_pos_y, 29, 29)     # pos, pos, size, size
 button_music.setCursor(Qt.CursorShape.PointingHandCursor)
 button_music.clicked.connect(music_switch_on_off)
 
@@ -189,7 +192,7 @@ window_settings = QMainWindow()
 button_image_settings = QIcon('skins/_images/settings.png')
 button_settings = QPushButton(window_main, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(20,20))       # icon sizing
-button_settings.setGeometry(cv.button_pos_x, cv.button_pos_y, 30, 30)     # pos, pos, size, size
+button_settings.setGeometry(cv.button_settings_pos_x, cv.button_settings_pos_y, 30, 30)     # pos, pos, size, size
 button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
 
@@ -252,11 +255,8 @@ window_settings.setStyleSheet(
                                 "}"
                             )
 
-
 # SETTINGS WINDOW - POSITION
-window_settings_pos_x = WINDOW_MAIN_POS_X + cv.window_settings_pos_x_diff
-window_settings_pos_y = WINDOW_MAIN_POS_Y + 57 + cv.window_settings_pos_y_diff
-window_settings.move(window_settings_pos_x, window_settings_pos_y)
+window_settings.move(cv.window_settings_pos_x, cv.window_settings_pos_y)
 
 
 
@@ -393,8 +393,8 @@ MyComboBoxSkins(window_main, adv_non_img_pos_x, adv_non_img_pos_y)
 
 ## WIDGETS UPDATE - COMBOBOX
 widget_dic = {
-            'Play/Stop button': button_music,
             'Settings button': button_settings,
+            'Play/Stop button': button_music,
             'Settings window': window_settings,
             'HRS:MINS': hours_and_mins_display,
             'HRS:MINS - Shadow': hours_and_mins_display_2nd,
@@ -405,18 +405,40 @@ widget_dic = {
 widget_list = list(widget_dic.keys())
 
 def selected_widget_action():
-    if widget_dic[selected_widgets.currentText()] == window_settings:
+
+    # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
+    cv.selected_widg_changed = True
+
+    selected_widg = select_widget.currentText()
+
+    if selected_widg == widget_list[0]:
+        slider_pos_x.setValue(cv.button_settings_pos_x)
+        slider_pos_y.setValue(cv.button_settings_pos_y)  
+
+    if selected_widg == widget_list[1]:
+        slider_pos_x.setValue(cv.button_music_pos_x)
+        slider_pos_y.setValue(cv.button_music_pos_y)
+
+    if selected_widg == widget_list[2]:
         window_settings.setEnabled(False)
         window_settings.show()
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_SETTINGS_WIDTH)
-        slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_SETTINGS_HEIGHT)
-    else:
+        slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_SETTINGS_HEIGHT + 8)
+        slider_pos_x.setValue(cv.window_settings_pos_x)
+        slider_pos_y.setValue(cv.window_settings_pos_y)
+    
+    if selected_widg != widget_list[2]:
         window_settings.hide()
         slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
-        slider_pos_y.setMaximum(WINDOW_HEIGHT - 30) 
+        slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
 
 
-selected_widgets = MyComboBoxWidgetUpdate(
+
+    cv.selected_widg_changed = False
+
+
+
+select_widget = MyComboBoxWidgetUpdate(
                                     window_main,
                                     widget_list,
                                     selected_widget_action,
@@ -425,23 +447,38 @@ selected_widgets = MyComboBoxWidgetUpdate(
                                     )
 
 
-
 ### SLIDERS
 adv_slider_pos_x = adv_img_pos_x + 15
 
 ## X - SLIDER
 def update_xy():
-    for title in widget_dic:
-        if title == selected_widgets.currentText():   #  Play/Stop button 
-            widget_dic[title].move(slider_pos_x.value(), slider_pos_y.value())
-            
+    
+    # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
+    if not cv.selected_widg_changed:
+
+        selected_widg = select_widget.currentText()
+
+        widget_dic[selected_widg].move(slider_pos_x.value(), slider_pos_y.value())
+        
+        if selected_widg == widget_list[0]:
+            cv.button_settings_pos_x = slider_pos_x.value()
+            cv.button_settings_pos_y = slider_pos_y.value()
+
+        elif selected_widg == widget_list[1]:
+            cv.button_music_pos_x = slider_pos_x.value()
+            cv.button_music_pos_y = slider_pos_y.value()
+        
+        elif selected_widg == widget_list[2]:
+            cv.window_settings_pos_x = slider_pos_x.value()
+            cv.window_settings_pos_y = slider_pos_y.value()
+
 
 slider_pos_x = QSlider(window_main)
 slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*2, 160, 20))
 slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_pos_x.setMinimum(0)
 slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
-# slider_pos_x.setValue(cv.animation_speed)
+slider_pos_x.setValue(cv.button_settings_pos_x)
 slider_pos_x.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_x.valueChanged.connect(update_xy)
 # slider_pos_x.sliderReleased.connect(save_animation_speed)
@@ -453,12 +490,10 @@ slider_pos_y.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv
 slider_pos_y.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_pos_y.setMinimum(0)
 slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
-# slider_pos_y.setValue(cv.animation_speed)
+slider_pos_y.setValue(cv.button_settings_pos_y)
 slider_pos_y.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_y.valueChanged.connect(update_xy)
 # slider_pos_y.sliderReleased.connect(save_animation_speed)
-
-
 
 
 
