@@ -1,6 +1,6 @@
 {
   "skin_selected": "__test__",
-  "music_on": false,
+  "music_on": true,
   "skins": {
     "back_to_the_future": {
       "title": "Back to the Future I.",
@@ -94,8 +94,6 @@
       "time_hm_shad_font_size": 50,
       "time_sec_font_size": 30,
       "time_sec_shad_font_size": 30,
-      "time_label_ratio_w": 3.4,
-      "time_label_ratio_h": 1.2,
       "music_volume": 0.05,
       "animation_speed": 52,
       "window_title": " - TEST TITLE - ",
@@ -121,7 +119,7 @@
           "y": 355
         },
         "hours_and_mins_shadow": {
-          "x": 40,
+          "x": 44,
           "y": 359
         },
         "seconds": {

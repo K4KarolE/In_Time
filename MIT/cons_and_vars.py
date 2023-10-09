@@ -51,9 +51,7 @@ class Data:
     time_sec_font_size = selected_skin_folder['time_sec_font_size']
     time_sec_shad_font_size = selected_skin_folder['time_sec_shad_font_size']
 
-    time_label_ratio_w = selected_skin_folder['time_label_ratio_w']
-    time_label_ratio_h = selected_skin_folder['time_label_ratio_h']
-
+   
     # WIDGET SELECTING COMBOBOX
     selected_widg_changed = False
 
@@ -89,12 +87,3 @@ class Data:
     # WINDOW SETTINGS
     window_main_pos_x = selected_skin_folder['positions']['window_main']['x']
     window_main_pos_y = selected_skin_folder['positions']['window_main']['y']
-
-    ## PRE UPDATE
-    #  # HOURS & MINUTES
-    # time_hm_pos_x = selected_skin_folder['time_hm_pos_x']
-    # time_hm_pos_y = selected_skin_folder['time_hm_pos_y']
-
-    # # SECONDS
-    # time_sec_pos_x = selected_skin_folder['time_sec_pos_x']
-    # time_sec_pos_y = selected_skin_folder['time_sec_pos_y']

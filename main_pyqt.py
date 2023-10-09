@@ -66,11 +66,15 @@ def time_display():
     
     # TOP
     hours_and_mins_display.setText(hours_and_mins)
+    hours_and_mins_display.adjustSize()
     seconds_display.setText(seconds)
+    seconds_display.adjustSize()
     
     # BACk - SHADOW
     hours_and_mins_display_2nd.setText(hours_and_mins)
+    hours_and_mins_display_2nd.adjustSize()
     seconds_display_2nd.setText(seconds)
+    seconds_display_2nd.adjustSize()
 
     # TIME REFRESH - 1000=1sec
     timer.setInterval(1000)
@@ -141,33 +145,26 @@ timer.timeout.connect(time_display)
 timer.start()
 
 ## BACK - SHADOWS
-time_hm_label_w = int(cv.time_hm_font_size * cv.time_label_ratio_w)
-time_hm_label_h = int(cv.time_hm_font_size * cv.time_label_ratio_h)
-time_sec_label_w = int(cv.time_sec_font_size * cv.time_label_ratio_w)
-time_sec_label_h = int(cv.time_sec_font_size * cv.time_label_ratio_h)
 # HOURS:MINUTES
 hours_and_mins_display_2nd = QLabel(window_main)
 hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-hours_and_mins_display_2nd.resize(time_hm_label_w, time_hm_label_h)
 hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_display_2nd.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
 # SECONDS
 seconds_display_2nd = QLabel(window_main) 
 seconds_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-seconds_display_2nd.resize(time_sec_label_w , time_sec_label_h)
 seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds_display_2nd.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
 ## TOP
 # HOURS:MINUTES
 hours_and_mins_display = QLabel(window_main)
 hours_and_mins_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-hours_and_mins_display.resize(time_hm_label_w, time_hm_label_h)
 hours_and_mins_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_display.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
+
 # SECONDS
 seconds_display = QLabel(window_main) 
 seconds_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-seconds_display.resize(time_sec_label_w, time_sec_label_h)
 seconds_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds_display.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
 
@@ -466,17 +463,13 @@ def selected_widget_action():
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     cv.selected_widg_changed = True
 
-    selected_widg = select_widget.currentText()
+    selected_widget = select_widget_cb.currentText()
 
-    # VARIABLE --> VARIABLE
-    # for item in widget_dic:
-    #         if item == selected_widg:
-    slider_pos_x.setValue(widget_dic[selected_widg]['pos_x'])
-    slider_pos_y.setValue(widget_dic[selected_widg]['pos_y'])
-
+    slider_pos_x.setValue(widget_dic[selected_widget]['pos_x'])
+    slider_pos_y.setValue(widget_dic[selected_widget]['pos_y'])
 
     # WINDOW MAIN
-    if selected_widg == widget_list[2]:
+    if selected_widget == widget_list[2]:
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_ADVANCED_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_HEIGHT)
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Vertical)
@@ -486,7 +479,7 @@ def selected_widget_action():
                                               ADV_WIDGETS_WIDTH))
         label_X.move(adv_img_pos_x + ADV_WIDGETS_WIDTH, adv_img_pos_y+adv_img_pos_y_diff*2)
     
-    if selected_widg != widget_list[2]:
+    if selected_widget != widget_list[2]:
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
         slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x,
                                               adv_non_img_pos_y + adv_non_img_pos_y_diff*2,
@@ -495,34 +488,30 @@ def selected_widget_action():
         label_X.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
     
     # WINDOW SETTINGS
-    if selected_widg == widget_list[3]:
+    if selected_widget == widget_list[3]:
         window_settings.setEnabled(False)
         window_settings.show()
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_SETTINGS_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_SETTINGS_HEIGHT + 8)
 
-    if selected_widg != widget_list[3]:
+    if selected_widget != widget_list[3]:
         window_settings.setEnabled(True)
         window_settings.hide()
     
     # NOT MAIN, SETTING WINDOW
-    if selected_widg not in [widget_list[2], widget_list[3]]:
+    if selected_widget in [widget_list[0], widget_list[1]]:
         slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
         slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
     
     ## TIME
-    if selected_widg in widget_list[4:8]:
-        slider_time_size.setValue(widget_dic[selected_widg]['size'])
+    if selected_widget in widget_list[4:8]:
+        slider_time_size.setValue(widget_dic[selected_widget]['size'])
         slider_time_size.show()
         label_S.show()
-
-        label_w = int(widget_dic[selected_widg]['size']*cv.time_label_ratio_w)
-        label_h = int(widget_dic[selected_widg]['size']*cv.time_label_ratio_h)
+        slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
+        slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
     
-        slider_pos_x.setMaximum(WINDOW_WIDTH - label_w)
-        slider_pos_y.setMaximum(WINDOW_HEIGHT - label_h) 
-
-    if selected_widg not in widget_list[4:8]:
+    if selected_widget not in widget_list[4:8]:
         slider_time_size.hide()
         label_S.hide() 
 
@@ -531,7 +520,7 @@ def selected_widget_action():
 
 
 
-select_widget = MyComboBoxWidgetUpdate(
+select_widget_cb = MyComboBoxWidgetUpdate(
                                     window_main,
                                     widget_list,
                                     selected_widget_action,
@@ -547,18 +536,15 @@ adv_slider_pos_x = adv_img_pos_x + 15
 ## X - SLIDER
 def update_xy():
     
-    # SLIDER --> VARIABLE
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
 
-        selected_widg = select_widget.currentText()
+        selected_widget = select_widget_cb.currentText()
 
-        widget_dic[selected_widg]['widget'].move(slider_pos_x.value(), slider_pos_y.value())
+        widget_dic[selected_widget]['widget'].move(slider_pos_x.value(), slider_pos_y.value())
         
-        for item in widget_dic:
-            if item == selected_widg:
-                widget_dic[item]['pos_x'] = slider_pos_x.value()
-                widget_dic[item]['pos_y'] = slider_pos_y.value()
+        widget_dic[selected_widget]['pos_x'] = slider_pos_x.value()
+        widget_dic[selected_widget]['pos_y'] = slider_pos_y.value()
 
 
 
@@ -590,24 +576,22 @@ def update_size():
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
 
-        selected_widg = select_widget.currentText()
+        selected_widget = select_widget_cb.currentText()
         
-        if selected_widg in widget_list[4:8]:
+        if selected_widget in widget_list[4:8]:
             
-            widget_dic[selected_widg]['widget'].setStyleSheet(
-                f"color:{widget_dic[selected_widg]['color']};font: {slider_time_size.value()}pt {cv.time_font_style}; font-weight: bold;")
+            widget_dic[selected_widget]['widget'].setStyleSheet(
+                f"color:{widget_dic[selected_widget]['color']};font: {slider_time_size.value()}pt {cv.time_font_style}; font-weight: bold;")
         
             # SLIDER --> VARIABLE
-            widget_dic[selected_widg]['size'] = slider_time_size.value()
+            widget_dic[selected_widget]['size'] = slider_time_size.value()
             
             # RESIZE TEXT LABEL
-            new_label_w = int(slider_time_size.value() * cv.time_label_ratio_w)
-            new_label_h = int(slider_time_size.value() * cv.time_label_ratio_h)
-            widget_dic[selected_widg]['widget'].resize(new_label_w, new_label_h)
+            widget_dic[selected_widget]['widget'].adjustSize()
 
             # AVAILABLE POSITION UPDATE
-            slider_pos_x.setMaximum(WINDOW_WIDTH - new_label_w)
-            slider_pos_y.setMaximum(WINDOW_HEIGHT - new_label_h)
+            slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
+            slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
 
 
 slider_time_size = QSlider(window_main)
