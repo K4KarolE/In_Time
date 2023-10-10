@@ -1,11 +1,11 @@
 
 from PyQt6.QtCore import QCoreApplication, QProcess, Qt
-from PyQt6.QtWidgets import QComboBox
+from PyQt6.QtWidgets import QComboBox, QFontComboBox
 from PyQt6.QtGui import QFont
 
 import sys
 
-from MIT.cons_and_vars import save_settings, load_info, settings_data, skin_selected
+from MIT.cons_and_vars import save_settings, load_info, settings_data, selected_skin_folder
 
 
 
@@ -35,7 +35,7 @@ class MyComboBoxSkins(QComboBox):
 
         self.setParent(window_type)
         self.addItems(skins_options)
-        self.setCurrentText(skins_dic[skin_selected]['title'])
+        self.setCurrentText(selected_skin_folder['title'])
         self.setGeometry(pos_x, pos_y, width, 20)
         self.currentTextChanged.connect(change_skin)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -55,4 +55,16 @@ class MyComboBoxWidgetUpdate(QComboBox):
         self.currentTextChanged.connect(selected_widget_action)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFont(QFont('Times', 10))
-        self.currentText()
+
+
+
+class MyComboBoxFont(QFontComboBox):
+    def __init__(self, window_type, selected_widget_action, width, pos_x, pos_y):
+        super().__init__()
+
+        self.setParent(window_type)
+        self.setCurrentText(selected_skin_folder['time_font_style'])
+        self.setGeometry(pos_x, pos_y, width, 20)
+        self.currentTextChanged.connect(selected_widget_action)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setFont(QFont('Times', 10))

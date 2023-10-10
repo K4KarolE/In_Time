@@ -15,7 +15,7 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import Data, MyImage, MySlider, MyComboBoxSkins, MyComboBoxWidgetUpdate
+from MIT import Data, MyImage, MySlider, MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
 from MIT import save_settings, load_info, WORKING_DIRECTORY, skin_selected, selected_skin_folder 
 cv = Data()
 
@@ -281,7 +281,8 @@ MyImage(window_settings, 'skin_switch.png', image_size+8, pos_x-3, pos_y+pos_y_d
 label_A = QLabel(window_settings, text='A')
 label_A.move(pos_x+3, pos_y + pos_y_diff*3)
 # label_A.resize(30,30)
-label_A.setFont(QFont('Times', 30, 800))   # style, size, bold
+label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
+# another solution, no color info: label_A.setFont(QFont('Times', 30, 800))   # style, size, bold
 
 
 ## SETTINGS WINDOW - SLIDERS
@@ -363,7 +364,11 @@ button_advanced.setFont(QFont('Times', 11, 600))
 WINDOW_ADVANCED_ADD_WIDTH = 300
 WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
 ADV_WIDGETS_WIDTH = 200
-''' IMAGES AND TEXT '''
+''' 
+#######################
+    IMAGES AND TEXT      
+#######################
+'''
 image_size = 30
 adv_img_pos_x = WINDOW_WIDTH + 15
 adv_img_pos_y = 20
@@ -394,17 +399,21 @@ label_S.setFont(QFont('Times', font_size, 800))
 label_S.hide() 
 
 
-''' WIDGETS '''
+
+'''
+###################
+    COMBOBOXES      
+###################
+'''
 adv_non_img_pos_x = adv_img_pos_x + 40
 adv_non_img_pos_y = 30
 adv_non_img_pos_y_diff = 50
 
-### COMBOBOX
-## SKIN SWITCH - COMBOBOX
+
+''' SKIN SWITCH - COMBOBOX '''
 MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, adv_non_img_pos_x, adv_non_img_pos_y)
 
-
-## WIDGETS UPDATE - COMBOBOX
+''' WIDGETS UPDATE - COMBOBOX '''
 widget_dic = {
             'Button: Settings': {
                 "widget": button_settings,
@@ -489,13 +498,15 @@ def selected_widget_action():
     
     # WINDOW SETTINGS
     if selected_widget == widget_list[3]:
-        window_settings.setEnabled(False)
+        window_settings.setEnabled(False)   # -> widgets are not responding, images are greyed out
+        label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
         window_settings.show()
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_SETTINGS_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_SETTINGS_HEIGHT + 8)
 
     if selected_widget != widget_list[3]:
         window_settings.setEnabled(True)
+        label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
         window_settings.hide()
     
     # NOT MAIN, SETTING WINDOW
@@ -515,27 +526,53 @@ def selected_widget_action():
         slider_time_size.hide()
         label_S.hide() 
 
-
     cv.selected_widg_changed = False
 
 
-
 select_widget_cb = MyComboBoxWidgetUpdate(
-                                    window_main,
-                                    widget_list,
-                                    selected_widget_action,
-                                    ADV_WIDGETS_WIDTH,
-                                    adv_non_img_pos_x,
-                                    adv_non_img_pos_y+adv_non_img_pos_y_diff
-                                    )
+                                        window_main,
+                                        widget_list,
+                                        selected_widget_action,
+                                        ADV_WIDGETS_WIDTH,
+                                        adv_non_img_pos_x,
+                                        adv_non_img_pos_y+adv_non_img_pos_y_diff
+                                        )
+
+''' FONT UPDATE - COMBOBOX '''
+def selected_font_action():
+
+    cv.time_font_style = select_font_cb.currentText()
+    
+    hours_and_mins_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    seconds_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+
+    for item in widget_list[4:8]:
+        widget_dic[item]['widget'].adjustSize()
 
 
-### SLIDERS
+
+
+select_font_cb = MyComboBoxFont(
+                                window_main,
+                                selected_font_action,
+                                ADV_WIDGETS_WIDTH,
+                                adv_non_img_pos_x,
+                                adv_non_img_pos_y+adv_non_img_pos_y_diff*5
+                                )
+
+
+
+'''
+################
+    SLIDERS
+################
+'''
 adv_slider_pos_x = adv_img_pos_x + 15
 
-## X - SLIDER
+''' X - SLIDER '''
 def update_xy():
-    
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
 
@@ -546,8 +583,6 @@ def update_xy():
         widget_dic[selected_widget]['pos_x'] = slider_pos_x.value()
         widget_dic[selected_widget]['pos_y'] = slider_pos_y.value()
 
-
-
 slider_pos_x = QSlider(window_main)
 slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*2, ADV_WIDGETS_WIDTH, 20))
 slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -556,10 +591,9 @@ slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
 slider_pos_x.setValue(cv.button_settings_pos_x)
 slider_pos_x.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_x.valueChanged.connect(update_xy)
-# slider_pos_x.sliderReleased.connect(save_animation_speed)
 
 
-## Y - SLIDER
+''' Y - SLIDER '''
 slider_pos_y = QSlider(window_main)
 slider_pos_y.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*3, ADV_WIDGETS_WIDTH, 20))
 slider_pos_y.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -568,12 +602,11 @@ slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
 slider_pos_y.setValue(cv.button_settings_pos_y)
 slider_pos_y.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_y.valueChanged.connect(update_xy)
-# slider_pos_y.sliderReleased.connect(save_animation_speed)
 
-## S - SLIDER
+
+''' S - SLIDER '''
 def update_size():
     
-    # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
 
         selected_widget = select_widget_cb.currentText()
