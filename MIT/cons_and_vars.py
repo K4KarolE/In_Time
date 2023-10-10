@@ -4,8 +4,8 @@ from pathlib import Path
 from json import load, dump
 
 def open_settings():
-    f = open(PATH_JSON)
-    settings_data = load(f)
+    with open(PATH_JSON) as f:
+        settings_data = load(f)
     return settings_data
 
 def save_settings(settings_data):
@@ -81,9 +81,9 @@ class Data:
     button_settings_pos_y = selected_skin_folder['positions']['button_settings']['y']
 
     # WINDOW SETTINGS
-    window_settings_pos_x = selected_skin_folder['positions']['window_settings']['x']
-    window_settings_pos_y = selected_skin_folder['positions']['window_settings']['y']
+    window_settings_pos_x = settings_data['window_settings']['x']
+    window_settings_pos_y = settings_data['window_settings']['y']
 
     # WINDOW SETTINGS
-    window_main_pos_x = selected_skin_folder['positions']['window_main']['x']
-    window_main_pos_y = selected_skin_folder['positions']['window_main']['y']
+    window_main_pos_x = settings_data['window_main']['x']
+    window_main_pos_y = settings_data['window_main']['y']

@@ -11,22 +11,19 @@ from MIT.cons_and_vars import save_settings, load_info, settings_data, selected_
 
 
 class MyComboBoxSkins(QComboBox):
-    def __init__(self, window_type, width, pos_x, pos_y):
+    def __init__(self, window_type, width, is_skin_switch_advanced, pos_x, pos_y):
         super().__init__()
         
-        def restart():
-            QCoreApplication.quit()
-            QProcess.startDetached(sys.executable, sys.argv)
-
-
         def change_skin():
             settings_data, skin_selected, selected_skin_folder = load_info()
             for selected_title in skins_dic:       
                 # SELECTED TITLE(Back to the Future I.) --> FOLDER NAME(back_to_the_future) = skin_selected
                 if skins_dic[selected_title]['title'] == self.currentText():
                     settings_data['skin_selected'] = selected_title
+                    if is_skin_switch_advanced:
+                        settings_data['is_skin_switch_advanced'] = True
                     save_settings(settings_data)
-                    restart()
+                    restart()     
 
         skins_dic = settings_data['skins']
         skins_options = []
@@ -40,7 +37,6 @@ class MyComboBoxSkins(QComboBox):
         self.currentTextChanged.connect(change_skin)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFont(QFont('Times', 10))
-
 
 
 
@@ -68,3 +64,9 @@ class MyComboBoxFont(QFontComboBox):
         self.currentTextChanged.connect(selected_widget_action)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFont(QFont('Times', 10))
+
+
+
+def restart():
+    QCoreApplication.quit()
+    QProcess.startDetached(sys.executable, sys.argv)

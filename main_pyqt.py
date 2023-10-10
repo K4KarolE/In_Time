@@ -15,8 +15,10 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import Data, MyImage, MySlider, MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
-from MIT import save_settings, load_info, WORKING_DIRECTORY, skin_selected, selected_skin_folder 
+from MIT import Data, MyImage, MySlider
+from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
+from MIT import save_settings, load_info
+from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder 
 cv = Data()
 
 
@@ -106,7 +108,7 @@ window_main.setStyleSheet(
                         "{"
                         f"background-color : {cv.button_bg_color};"
                         "border-radius: 10px;"
-                        "border: 6px solid black;"
+                        # "border: 6px solid black;"
                         "}"
                     "QPushButton"
                         "{"
@@ -211,7 +213,11 @@ movie.setSpeed(cv.animation_speed)
 
 '''
 ########################################
-            SETTINGS WINDOW                
+########################################
+
+            SETTINGS WINDOW         
+
+########################################
 ########################################
 '''
 '''
@@ -336,9 +342,8 @@ slider_animation_speed = MySlider(
 
 
 
-
 ## SETTINGS WINDOW - SKIN SWITCH - COMBOBOX
-MyComboBoxSkins(window_settings, SETT_WIDGETS_WIDTH, slider_pos_x, slider_pos_y*5 - 9)
+MyComboBoxSkins(window_settings, SETT_WIDGETS_WIDTH, False, slider_pos_x, slider_pos_y*5 - 9)
 
 
 
@@ -358,12 +363,26 @@ button_advanced.setFont(QFont('Times', 11, 600))
 
 '''
 ########################################
-        ADVANCED SETTINGS WINDOW                
 ########################################
+
+        ADVANCED SETTINGS WINDOW*       
+
+########################################
+########################################
+* still in main       
 '''
 WINDOW_ADVANCED_ADD_WIDTH = 300
 WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
 ADV_WIDGETS_WIDTH = 200
+
+def butt_and_win_settings_enable(value):
+    window_settings.setEnabled(value)
+    button_settings.setEnabled(value)
+    if value:
+        label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
+    else:
+        label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
+
 ''' 
 #######################
     IMAGES AND TEXT      
@@ -401,24 +420,33 @@ label_S.hide()
 
 
 '''
-###################
-    COMBOBOXES      
-###################
+#########################
+    COMBOBOXES - ADV               
+#########################
 '''
 adv_non_img_pos_x = adv_img_pos_x + 40
 adv_non_img_pos_y = 30
 adv_non_img_pos_y_diff = 50
 
 
-''' SKIN SWITCH - COMBOBOX '''
-MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, adv_non_img_pos_x, adv_non_img_pos_y)
+''' SKIN SWITCH - COMBOBOX - ADV '''
+# RELAUNCHING THE ADVENCED SETTINGS "WINDOW"
+# AFTER ADVANCED SKIN SWITCH
+if settings_data['is_skin_switch_advanced']:
+    # button_advanced_launch()
+    window_main.setFixedWidth(WINDOW_WIDTH+WINDOW_ADVANCED_ADD_WIDTH)
+    butt_and_win_settings_enable(False)
+    settings_data['is_skin_switch_advanced'] = False
+    save_settings(settings_data)
 
-''' WIDGETS UPDATE - COMBOBOX '''
+MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, adv_non_img_pos_x, adv_non_img_pos_y)
+
+''' WIDGETS UPDATE - COMBOBOX - ADV '''
 widget_dic = {
             'Button: Settings': {
                 "widget": button_settings,
                 "pos_x": cv.button_settings_pos_x,
-                "pos_y": cv.button_settings_pos_y
+                "pos_y": cv.button_settings_pos_y,
                 },
             'Button: Play/Stop': {
                 "widget": button_music,
@@ -474,19 +502,18 @@ def selected_widget_action():
 
     selected_widget = select_widget_cb.currentText()
 
-    slider_pos_x.setValue(widget_dic[selected_widget]['pos_x'])
-    slider_pos_y.setValue(widget_dic[selected_widget]['pos_y'])
-
+    ## ADJUSTING THE SLIDERS` MIN, MAX
     # WINDOW MAIN
     if selected_widget == widget_list[2]:
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_ADVANCED_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_HEIGHT)
+
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Vertical)
-        slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x + ADV_WIDGETS_WIDTH,
-                                              adv_non_img_pos_y + adv_non_img_pos_y_diff*2 - int(ADV_WIDGETS_WIDTH/2),
+        slider_pos_x.setGeometry(QtCore.QRect(WINDOW_ADVANCED_WIDTH - 30,
+                                              30,
                                               20,
                                               ADV_WIDGETS_WIDTH))
-        label_X.move(adv_img_pos_x + ADV_WIDGETS_WIDTH, adv_img_pos_y+adv_img_pos_y_diff*2)
+        label_X.move(WINDOW_ADVANCED_WIDTH - 60, adv_img_pos_y+adv_img_pos_y_diff*2)
     
     if selected_widget != widget_list[2]:
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -498,15 +525,12 @@ def selected_widget_action():
     
     # WINDOW SETTINGS
     if selected_widget == widget_list[3]:
-        window_settings.setEnabled(False)   # -> widgets are not responding, images are greyed out
-        label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
+        butt_and_win_settings_enable(False)
         window_settings.show()
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_SETTINGS_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_SETTINGS_HEIGHT + 8)
 
     if selected_widget != widget_list[3]:
-        window_settings.setEnabled(True)
-        label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
         window_settings.hide()
     
     # NOT MAIN, SETTING WINDOW
@@ -524,7 +548,12 @@ def selected_widget_action():
     
     if selected_widget not in widget_list[4:8]:
         slider_time_size.hide()
-        label_S.hide() 
+        label_S.hide()
+
+    # MOVE THE HANDLE TO THE LATEST POSITION
+    # HAS TO BE AFTER THE SLIDER RANGE ADJUSTMENT
+    slider_pos_x.setValue(widget_dic[selected_widget]['pos_x'])
+    slider_pos_y.setValue(widget_dic[selected_widget]['pos_y']) 
 
     cv.selected_widg_changed = False
 
@@ -552,8 +581,6 @@ def selected_font_action():
         widget_dic[item]['widget'].adjustSize()
 
 
-
-
 select_font_cb = MyComboBoxFont(
                                 window_main,
                                 selected_font_action,
@@ -565,9 +592,9 @@ select_font_cb = MyComboBoxFont(
 
 
 '''
-################
-    SLIDERS
-################
+#####################
+    SLIDERS - ADV
+#####################
 '''
 adv_slider_pos_x = adv_img_pos_x + 15
 
@@ -575,13 +602,11 @@ adv_slider_pos_x = adv_img_pos_x + 15
 def update_xy():
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
-
         selected_widget = select_widget_cb.currentText()
-
         widget_dic[selected_widget]['widget'].move(slider_pos_x.value(), slider_pos_y.value())
-        
         widget_dic[selected_widget]['pos_x'] = slider_pos_x.value()
         widget_dic[selected_widget]['pos_y'] = slider_pos_y.value()
+
 
 slider_pos_x = QSlider(window_main)
 slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*2, ADV_WIDGETS_WIDTH, 20))
@@ -637,6 +662,25 @@ slider_time_size.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_time_size.valueChanged.connect(update_size)
 slider_time_size.hide()
 
+'''
+#######################
+    BUTTONS - ADV   
+#######################
+'''
+def close_advanced_window():
+
+    butt_and_win_settings_enable(True)
+
+    for size_decr in range(0, WINDOW_ADVANCED_ADD_WIDTH+2, 2):
+        window_main.setFixedWidth(WINDOW_ADVANCED_WIDTH - size_decr)
+
+
+button_image_close = QIcon('skins/_images/close.png')
+button_close = QPushButton(window_main, text=None, icon=button_image_close)
+button_close.setIconSize(QSize(15,15))
+button_close.setGeometry(WINDOW_ADVANCED_WIDTH-32, 12, 20, 20)     # pos, pos, size, size
+button_close.setCursor(Qt.CursorShape.PointingHandCursor)
+button_close.clicked.connect(close_advanced_window)
 
 
 window_main.show()
