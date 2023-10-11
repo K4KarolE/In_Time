@@ -13,6 +13,6 @@ class MySlider(QSlider):
         self.setValue(setValue)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.valueChanged.connect(valueChanged)
-        # self.sliderReleased.connect(sliderReleased)
+        self.sliderReleased.connect(sliderReleased)
 
 

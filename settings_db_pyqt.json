@@ -1,6 +1,6 @@
 {
-  "skin_selected": "terminator",
-  "music_on": true,
+  "skin_selected": "__test__",
+  "music_on": false,
   "is_skin_switch_advanced": false,
   "window_main": {
     "x": 800,
@@ -15,21 +15,19 @@
       "title": "Back to the Future I.",
       "button_bg_color": "#675C7C",
       "button_bg_color_clicked": "#F5D2A5",
-      "button_pos_x": 15,
-      "button_pos_y": 20,
       "time_font_color": "#675C7C",
-      "time_font_style": "Forte",
+      "time_font_style": "Segoe Script",
       "time_hm_font_size": 90,
       "time_hm_shad_font_size": 35,
       "time_sec_font_size": 30,
       "time_sec_shad_font_size": 30,
-      "music_volume": 0.05,
-      "animation_speed": 52,
+      "music_volume": 0.19,
+      "animation_speed": 44,
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
       "positions": {
         "button_settings": {
-          "x": 15,
-          "y": 20
+          "x": 60,
+          "y": 30
         },
         "button_music": {
           "x": 15,
@@ -57,16 +55,14 @@
       "title": "Donnie Darko",
       "button_bg_color": "#3E4E6A",
       "button_bg_color_clicked": "#748798",
-      "button_pos_x": 15,
-      "button_pos_y": 20,
       "time_font_color": "#3E4E6A",
       "time_font_style": "Chiller",
       "time_hm_font_size": 90,
       "time_hm_shad_font_size": 35,
       "time_sec_font_size": 30,
       "time_sec_shad_font_size": 30,
-      "music_volume": 0.05,
-      "animation_speed": 52,
+      "music_volume": 0.25,
+      "animation_speed": 93,
       "window_title": "Back, in time, to pie",
       "positions": {
         "button_settings": {
@@ -99,8 +95,6 @@
       "title": "Idiocracy",
       "button_bg_color": "#9E8263",
       "button_bg_color_clicked": "#4D3500",
-      "button_pos_x": 15,
-      "button_pos_y": 20,
       "time_font_color": "#AE580A",
       "time_font_style": "Bauhaus 93",
       "time_hm_font_size": 90,
@@ -141,15 +135,13 @@
       "title": "Terminator I.",
       "button_bg_color": "#AF0000",
       "button_bg_color_clicked": "#400000",
-      "button_pos_x": 15,
-      "button_pos_y": 20,
       "time_font_color": "red",
       "time_font_style": "MSGothic",
       "time_hm_font_size": 90,
       "time_hm_shad_font_size": 35,
       "time_sec_font_size": 30,
       "time_sec_shad_font_size": 30,
-      "music_volume": 0.05,
+      "music_volume": 0.2,
       "animation_speed": 52,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
       "positions": {
@@ -183,28 +175,26 @@
       "title": " - TEST - ",
       "button_bg_color": "#9E8263",
       "button_bg_color_clicked": "#4D3500",
-      "button_pos_x": 15,
-      "button_pos_y": 20,
       "time_font_color": "#AE580A",
       "time_font_style": "Bauhaus 93",
       "time_hm_font_size": 50,
       "time_hm_shad_font_size": 50,
       "time_sec_font_size": 30,
       "time_sec_shad_font_size": 30,
-      "music_volume": 0.05,
-      "animation_speed": 52,
+      "music_volume": 0.42,
+      "animation_speed": 137,
       "window_title": " - TEST TITLE - ",
       "positions": {
         "button_settings": {
-          "x": 15,
-          "y": 20
+          "x": 18,
+          "y": 24
         },
         "button_music": {
-          "x": 15,
-          "y": 53
+          "x": 18,
+          "y": 58
         },
         "hours_and_mins": {
-          "x": 40,
+          "x": 31,
           "y": 355
         },
         "hours_and_mins_shadow": {
@@ -212,12 +202,12 @@
           "y": 359
         },
         "seconds": {
-          "x": 310,
-          "y": 410
+          "x": 260,
+          "y": 392
         },
         "seconds_shadow": {
-          "x": 314,
-          "y": 414
+          "x": 267,
+          "y": 392
         }
       }
     }

@@ -35,11 +35,9 @@ class Data:
     # ANIMATION
     animation_speed = selected_skin_folder['animation_speed']  # 100% = original
 
-    # BUTTONS
+    # BUTTONS COLOR
     button_bg_color = selected_skin_folder['button_bg_color']
     button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
-    button_pos_x = selected_skin_folder['button_pos_x']
-    button_pos_y = selected_skin_folder['button_pos_y']
 
     # TIME
     time_font_color = selected_skin_folder['time_font_color']
@@ -84,6 +82,9 @@ class Data:
     window_settings_pos_x = settings_data['window_settings']['x']
     window_settings_pos_y = settings_data['window_settings']['y']
 
-    # WINDOW SETTINGS
+    # WINDOW MAIN
     window_main_pos_x = settings_data['window_main']['x']
     window_main_pos_y = settings_data['window_main']['y']
+
+
+

@@ -63,20 +63,20 @@ def time_display():
     current_time = QTime.currentTime()
     
     # TIMES
-    hours_and_mins = current_time.toString('hh:mm')
-    seconds = current_time.toString(':ss')
+    hours_and_mins_time = current_time.toString('hh:mm')
+    seconds_time = current_time.toString(':ss')
     
     # TOP
-    hours_and_mins_display.setText(hours_and_mins)
-    hours_and_mins_display.adjustSize()
-    seconds_display.setText(seconds)
-    seconds_display.adjustSize()
+    hours_and_mins.setText(hours_and_mins_time)
+    hours_and_mins.adjustSize()
+    seconds.setText(seconds_time)
+    seconds.adjustSize()
     
     # BACk - SHADOW
-    hours_and_mins_display_2nd.setText(hours_and_mins)
-    hours_and_mins_display_2nd.adjustSize()
-    seconds_display_2nd.setText(seconds)
-    seconds_display_2nd.adjustSize()
+    hours_and_mins_shadow.setText(hours_and_mins_time)
+    hours_and_mins_shadow.adjustSize()
+    seconds_shadow.setText(seconds_time)
+    seconds_shadow.adjustSize()
 
     # TIME REFRESH - 1000=1sec
     timer.setInterval(1000)
@@ -148,27 +148,27 @@ timer.start()
 
 ## BACK - SHADOWS
 # HOURS:MINUTES
-hours_and_mins_display_2nd = QLabel(window_main)
-hours_and_mins_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
-hours_and_mins_display_2nd.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
+hours_and_mins_shadow = QLabel(window_main)
+hours_and_mins_shadow.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+hours_and_mins_shadow.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
 # SECONDS
-seconds_display_2nd = QLabel(window_main) 
-seconds_display_2nd.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
-seconds_display_2nd.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
+seconds_shadow = QLabel(window_main) 
+seconds_shadow.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+seconds_shadow.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
 ## TOP
 # HOURS:MINUTES
-hours_and_mins_display = QLabel(window_main)
-hours_and_mins_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-hours_and_mins_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
-hours_and_mins_display.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
+hours_and_mins = QLabel(window_main)
+hours_and_mins.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+hours_and_mins.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
 
 # SECONDS
-seconds_display = QLabel(window_main) 
-seconds_display.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-seconds_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
-seconds_display.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
+seconds = QLabel(window_main) 
+seconds.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+seconds.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
 
 ## BUTTONS
 # BUTTON - MUSIC
@@ -433,7 +433,6 @@ adv_non_img_pos_y_diff = 50
 # RELAUNCHING THE ADVENCED SETTINGS "WINDOW"
 # AFTER ADVANCED SKIN SWITCH
 if settings_data['is_skin_switch_advanced']:
-    # button_advanced_launch()
     window_main.setFixedWidth(WINDOW_WIDTH+WINDOW_ADVANCED_ADD_WIDTH)
     butt_and_win_settings_enable(False)
     settings_data['is_skin_switch_advanced'] = False
@@ -445,49 +444,57 @@ MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, adv_non_img_pos_x, adv_non
 widget_dic = {
             'Button: Settings': {
                 "widget": button_settings,
-                "pos_x": cv.button_settings_pos_x,
-                "pos_y": cv.button_settings_pos_y,
+                "name": "button_settings",
+                "x": cv.button_settings_pos_x,
+                "y": cv.button_settings_pos_y,
                 },
             'Button: Play/Stop': {
                 "widget": button_music,
-                "pos_x": cv.button_music_pos_x,
-                "pos_y": cv.button_music_pos_y
+                "name": "button_music",
+                "x": cv.button_music_pos_x,
+                "y": cv.button_music_pos_y
                 },
             'Window: Main': {
                 "widget": window_main,
-                "pos_x": cv.window_main_pos_x,
-                "pos_y": cv.window_main_pos_y
+                "name": "window_main",
+                "x": cv.window_main_pos_x,
+                "y": cv.window_main_pos_y
                 },
             'Window: Settings ': {
                 "widget": window_settings,
-                "pos_x": cv.window_settings_pos_x,
-                "pos_y": cv.window_settings_pos_y
+                "name": "window_settings",
+                "x": cv.window_settings_pos_x,
+                "y": cv.window_settings_pos_y
                 },
             'Time: HRS:MINS': {
-                "widget": hours_and_mins_display,
-                "pos_x": cv.time_hm_pos_x,
-                "pos_y": cv.time_hm_pos_y,
+                "widget": hours_and_mins,
+                "name": "hours_and_mins",
+                "x": cv.time_hm_pos_x,
+                "y": cv.time_hm_pos_y,
                 "size": cv.time_hm_font_size,
                 "color": cv.time_font_color
                 },
             'Time: HRS:MINS - Shadow': {
-                "widget": hours_and_mins_display_2nd,
-                "pos_x": cv.time_hm_shadow_pos_x,
-                "pos_y": cv.time_hm_shadow_pos_y,
+                "widget": hours_and_mins_shadow,
+                "name": "hours_and_mins_shadow",
+                "x": cv.time_hm_shadow_pos_x,
+                "y": cv.time_hm_shadow_pos_y,
                 "size": cv.time_hm_shad_font_size,
                 "color": 'black'
                 },
             'Time: SEC': {
-                "widget": seconds_display,
-                "pos_x": cv.time_sec_pos_x,
-                "pos_y": cv.time_sec_pos_y,
+                "widget": seconds,
+                "name": "seconds",
+                "x": cv.time_sec_pos_x,
+                "y": cv.time_sec_pos_y,
                 "size": cv.time_sec_font_size,
                 "color": cv.time_font_color
                 },
             'Time: SEC - Shadow':  {
-                "widget": seconds_display_2nd,
-                "pos_x": cv.time_sec_shadow_pos_x,
-                "pos_y": cv.time_sec_shadow_pos_y,
+                "widget": seconds_shadow,
+                "name": "seconds_shadow",
+                "x": cv.time_sec_shadow_pos_x,
+                "y": cv.time_sec_shadow_pos_y,
                 "size": cv.time_sec_shad_font_size,
                 "color": 'black'
                 }
@@ -552,8 +559,8 @@ def selected_widget_action():
 
     # MOVE THE HANDLE TO THE LATEST POSITION
     # HAS TO BE AFTER THE SLIDER RANGE ADJUSTMENT
-    slider_pos_x.setValue(widget_dic[selected_widget]['pos_x'])
-    slider_pos_y.setValue(widget_dic[selected_widget]['pos_y']) 
+    slider_pos_x.setValue(widget_dic[selected_widget]['x'])
+    slider_pos_y.setValue(widget_dic[selected_widget]['y']) 
 
     cv.selected_widg_changed = False
 
@@ -572,10 +579,10 @@ def selected_font_action():
 
     cv.time_font_style = select_font_cb.currentText()
     
-    hours_and_mins_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
-    hours_and_mins_display_2nd.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
-    seconds_display.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
-    seconds_display_2nd.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 
     for item in widget_list[4:8]:
         widget_dic[item]['widget'].adjustSize()
@@ -604,8 +611,8 @@ def update_xy():
     if not cv.selected_widg_changed:
         selected_widget = select_widget_cb.currentText()
         widget_dic[selected_widget]['widget'].move(slider_pos_x.value(), slider_pos_y.value())
-        widget_dic[selected_widget]['pos_x'] = slider_pos_x.value()
-        widget_dic[selected_widget]['pos_y'] = slider_pos_y.value()
+        widget_dic[selected_widget]['x'] = slider_pos_x.value()
+        widget_dic[selected_widget]['y'] = slider_pos_y.value()
 
 
 slider_pos_x = QSlider(window_main)
@@ -667,6 +674,7 @@ slider_time_size.hide()
     BUTTONS - ADV   
 #######################
 '''
+''' BUTTON - CLOSE - ADV '''
 def close_advanced_window():
 
     butt_and_win_settings_enable(True)
@@ -681,6 +689,52 @@ button_close.setIconSize(QSize(15,15))
 button_close.setGeometry(WINDOW_ADVANCED_WIDTH-32, 12, 20, 20)     # pos, pos, size, size
 button_close.setCursor(Qt.CursorShape.PointingHandCursor)
 button_close.clicked.connect(close_advanced_window)
+
+
+# ''' BUTTON - SAVE - ADV '''
+def save_advanced_settings():
+    
+    settings_data, skin_selected, selected_skin_folder = load_info()
+
+    for index, item in enumerate(widget_list):
+        if index not in [2, 3]:      # no window main
+        
+            widget_name = widget_dic[item]['name']
+            for var_name in selected_skin_folder['positions'][widget_name]:
+
+                selected_skin_folder['positions'][widget_name][var_name] = widget_dic[item][var_name]
+
+    # # BUTTONS COLOR
+    # selected_skin_folder['button_bg_color'] = cv.button_bg_color
+    # selected_skin_folder['button_bg_color_clicked'] = cv.button_bg_color_clicked
+
+    # # TIME
+    # selected_skin_folder['time_font_color'] = cv.time_font_color
+    # selected_skin_folder['time_font_style'] = select_font_cb.currentText()
+  
+    # # WINDOW SETTINGS
+    # settings_data['window_settings']['x'] = cv.window_settings_pos_x
+    # settings_data['window_settings']['y'] = cv.window_settings_pos_y
+    
+    # # WINDOW MAIN
+    # settings_data['window_main']['x'] = cv.window_main_pos_x
+    # settings_data['window_main']['y'] = cv.window_main_pos_y
+
+
+    save_settings(settings_data)
+
+
+button_save_adv_sett = QPushButton(window_main, text='SAVE SETTINGS')
+button_save_adv_sett.setGeometry(
+    adv_non_img_pos_x,
+    adv_non_img_pos_y + adv_non_img_pos_y_diff *6,
+    ADV_WIDGETS_WIDTH,
+    30
+    )
+button_save_adv_sett.setCursor(Qt.CursorShape.PointingHandCursor)
+button_save_adv_sett.clicked.connect(save_advanced_settings)
+button_save_adv_sett.setFont(QFont('Times', 11, 600))
+
 
 
 window_main.show()
