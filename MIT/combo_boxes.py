@@ -59,7 +59,7 @@ class MyComboBoxFont(QFontComboBox):
         super().__init__()
 
         self.setParent(window_type)
-        self.setCurrentText(selected_skin_folder['time_font_style'])
+        self.setCurrentText(selected_skin_folder['json_widg_params']['hours_and_mins']['style'])
         self.setGeometry(pos_x, pos_y, width, 20)
         self.currentTextChanged.connect(selected_widget_action)
         self.setCursor(Qt.CursorShape.PointingHandCursor)

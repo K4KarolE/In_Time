@@ -39,15 +39,15 @@ class Data:
     button_bg_color = selected_skin_folder['button_bg_color']
     button_bg_color_clicked = selected_skin_folder['button_bg_color_clicked']
 
-    # TIME
-    time_font_color = selected_skin_folder['time_font_color']
-    time_font_style = selected_skin_folder['time_font_style']
+    ## TIME
+    time_font_color = selected_skin_folder['json_widg_params']['hours_and_mins']['color']
+    time_font_style = selected_skin_folder['json_widg_params']['hours_and_mins']['style']
 
-    time_hm_font_size = selected_skin_folder['time_hm_font_size']
-    time_hm_shad_font_size = selected_skin_folder['time_hm_shad_font_size']
+    time_hm_font_size = selected_skin_folder['json_widg_params']['hours_and_mins']['size']
+    time_hm_shad_font_size = selected_skin_folder['json_widg_params']['hours_and_mins_shadow']['size']
 
-    time_sec_font_size = selected_skin_folder['time_sec_font_size']
-    time_sec_shad_font_size = selected_skin_folder['time_sec_shad_font_size']
+    time_sec_font_size = selected_skin_folder['json_widg_params']['seconds']['size']
+    time_sec_shad_font_size = selected_skin_folder['json_widg_params']['seconds_shadow']['size']
 
    
     # WIDGET SELECTING COMBOBOX
@@ -56,27 +56,27 @@ class Data:
 
     ## POSITIONS
     # HOURS & MINUTES
-    time_hm_pos_x = selected_skin_folder['positions']['hours_and_mins']['x']
-    time_hm_pos_y = selected_skin_folder['positions']['hours_and_mins']['y']
+    time_hm_pos_x = selected_skin_folder['json_widg_params']['hours_and_mins']['x']
+    time_hm_pos_y = selected_skin_folder['json_widg_params']['hours_and_mins']['y']
     # HOURS & MINUTES - SHADOW
-    time_hm_shadow_pos_x = selected_skin_folder['positions']['hours_and_mins_shadow']['x']
-    time_hm_shadow_pos_y = selected_skin_folder['positions']['hours_and_mins_shadow']['y']
+    time_hm_shadow_pos_x = selected_skin_folder['json_widg_params']['hours_and_mins_shadow']['x']
+    time_hm_shadow_pos_y = selected_skin_folder['json_widg_params']['hours_and_mins_shadow']['y']
 
     # SECONDS
-    time_sec_pos_x = selected_skin_folder['positions']['seconds']['x']
-    time_sec_pos_y = selected_skin_folder['positions']['seconds']['y']
+    time_sec_pos_x = selected_skin_folder['json_widg_params']['seconds']['x']
+    time_sec_pos_y = selected_skin_folder['json_widg_params']['seconds']['y']
     # SECONDS - SHADOW
-    time_sec_shadow_pos_x = selected_skin_folder['positions']['seconds_shadow']['x']
-    time_sec_shadow_pos_y = selected_skin_folder['positions']['seconds_shadow']['y']
+    time_sec_shadow_pos_x = selected_skin_folder['json_widg_params']['seconds_shadow']['x']
+    time_sec_shadow_pos_y = selected_skin_folder['json_widg_params']['seconds_shadow']['y']
 
 
     # BUTTON MUSIC
-    button_music_pos_x = selected_skin_folder['positions']['button_music']['x']
-    button_music_pos_y = selected_skin_folder['positions']['button_music']['y']
+    button_music_pos_x = selected_skin_folder['json_widg_params']['button_music']['x']
+    button_music_pos_y = selected_skin_folder['json_widg_params']['button_music']['y']
 
     # BUTTON SETTINGS
-    button_settings_pos_x = selected_skin_folder['positions']['button_settings']['x']
-    button_settings_pos_y = selected_skin_folder['positions']['button_settings']['y']
+    button_settings_pos_x = selected_skin_folder['json_widg_params']['button_settings']['x']
+    button_settings_pos_y = selected_skin_folder['json_widg_params']['button_settings']['y']
 
     # WINDOW SETTINGS
     window_settings_pos_x = settings_data['window_settings']['x']

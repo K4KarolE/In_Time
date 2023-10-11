@@ -1,53 +1,53 @@
 {
-  "skin_selected": "__test__",
-  "music_on": false,
+  "skin_selected": "terminator",
+  "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
-    "x": 800,
-    "y": 600
+    "x": 896,
+    "y": 537
   },
   "window_settings": {
-    "x": 800,
-    "y": 600
+    "x": 1100,
+    "y": 536
   },
   "skins": {
     "back_to_the_future": {
       "title": "Back to the Future I.",
       "button_bg_color": "#675C7C",
       "button_bg_color_clicked": "#F5D2A5",
-      "time_font_color": "#675C7C",
-      "time_font_style": "Segoe Script",
-      "time_hm_font_size": 90,
-      "time_hm_shad_font_size": 35,
-      "time_sec_font_size": 30,
-      "time_sec_shad_font_size": 30,
-      "music_volume": 0.19,
-      "animation_speed": 44,
+      "music_volume": 0.42,
+      "animation_speed": 137,
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
-      "positions": {
+      "json_widg_params": {
         "button_settings": {
-          "x": 60,
-          "y": 30
+          "x": 307,
+          "y": 372
         },
         "button_music": {
-          "x": 15,
-          "y": 53
+          "x": 307,
+          "y": 403
         },
         "hours_and_mins": {
-          "x": 40,
-          "y": 355
+          "x": 464,
+          "y": 298,
+          "size": 100,
+          "color": "#675C7C",
+          "style": "Pristina"
         },
         "hours_and_mins_shadow": {
-          "x": 44,
-          "y": 359
+          "x": 466,
+          "y": 311,
+          "size": 100
         },
         "seconds": {
-          "x": 310,
-          "y": 410
+          "x": 554,
+          "y": 419,
+          "size": 30
         },
         "seconds_shadow": {
-          "x": 314,
-          "y": 414
+          "x": 558,
+          "y": 424,
+          "size": 30
         }
       }
     },
@@ -55,39 +55,39 @@
       "title": "Donnie Darko",
       "button_bg_color": "#3E4E6A",
       "button_bg_color_clicked": "#748798",
-      "time_font_color": "#3E4E6A",
-      "time_font_style": "Chiller",
-      "time_hm_font_size": 90,
-      "time_hm_shad_font_size": 35,
-      "time_sec_font_size": 30,
-      "time_sec_shad_font_size": 30,
-      "music_volume": 0.25,
-      "animation_speed": 93,
+      "music_volume": 0.42,
+      "animation_speed": 137,
       "window_title": "Back, in time, to pie",
-      "positions": {
+      "json_widg_params": {
         "button_settings": {
-          "x": 15,
-          "y": 20
+          "x": 672,
+          "y": 17
         },
         "button_music": {
-          "x": 15,
-          "y": 53
+          "x": 672,
+          "y": 48
         },
         "hours_and_mins": {
-          "x": 40,
-          "y": 355
+          "x": 417,
+          "y": 311,
+          "size": 100,
+          "color": "#3E4E6A",
+          "style": "Chiller"
         },
         "hours_and_mins_shadow": {
-          "x": 44,
-          "y": 359
+          "x": 423,
+          "y": 318,
+          "size": 100
         },
         "seconds": {
-          "x": 310,
-          "y": 410
+          "x": 535,
+          "y": 430,
+          "size": 30
         },
         "seconds_shadow": {
-          "x": 314,
-          "y": 414
+          "x": 537,
+          "y": 442,
+          "size": 25
         }
       }
     },
@@ -95,39 +95,39 @@
       "title": "Idiocracy",
       "button_bg_color": "#9E8263",
       "button_bg_color_clicked": "#4D3500",
-      "time_font_color": "#AE580A",
-      "time_font_style": "Bauhaus 93",
-      "time_hm_font_size": 90,
-      "time_hm_shad_font_size": 35,
-      "time_sec_font_size": 30,
-      "time_sec_shad_font_size": 30,
-      "music_volume": 0.05,
-      "animation_speed": 52,
+      "music_volume": 0.42,
+      "animation_speed": 137,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha.",
-      "positions": {
+      "json_widg_params": {
         "button_settings": {
-          "x": 15,
-          "y": 20
+          "x": 142,
+          "y": 147
         },
         "button_music": {
-          "x": 15,
-          "y": 53
+          "x": 172,
+          "y": 147
         },
         "hours_and_mins": {
-          "x": 40,
-          "y": 355
+          "x": 2,
+          "y": 309,
+          "size": 100,
+          "color": "#AE580A",
+          "style": "Segoe UI Black"
         },
         "hours_and_mins_shadow": {
-          "x": 44,
-          "y": 359
+          "x": 10,
+          "y": 309,
+          "size": 100
         },
         "seconds": {
-          "x": 310,
-          "y": 410
+          "x": 344,
+          "y": 405,
+          "size": 30
         },
         "seconds_shadow": {
-          "x": 314,
-          "y": 414
+          "x": 347,
+          "y": 405,
+          "size": 30
         }
       }
     },
@@ -135,79 +135,79 @@
       "title": "Terminator I.",
       "button_bg_color": "#AF0000",
       "button_bg_color_clicked": "#400000",
-      "time_font_color": "red",
-      "time_font_style": "MSGothic",
-      "time_hm_font_size": 90,
-      "time_hm_shad_font_size": 35,
-      "time_sec_font_size": 30,
-      "time_sec_shad_font_size": 30,
-      "music_volume": 0.2,
-      "animation_speed": 52,
+      "music_volume": 0.44,
+      "animation_speed": 215,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
-      "positions": {
+      "json_widg_params": {
         "button_settings": {
-          "x": 15,
-          "y": 20
+          "x": 0,
+          "y": 0
         },
         "button_music": {
-          "x": 15,
-          "y": 53
+          "x": 0,
+          "y": 31
         },
         "hours_and_mins": {
-          "x": 40,
-          "y": 355
+          "x": 12,
+          "y": 304,
+          "size": 100,
+          "color": "red",
+          "style": "Felix Titling"
         },
         "hours_and_mins_shadow": {
-          "x": 44,
-          "y": 359
+          "x": 17,
+          "y": 311,
+          "size": 100
         },
         "seconds": {
-          "x": 310,
-          "y": 410
+          "x": 270,
+          "y": 330,
+          "size": 81
         },
         "seconds_shadow": {
-          "x": 314,
-          "y": 414
+          "x": 277,
+          "y": 331,
+          "size": 81
         }
       }
     },
     "__test__": {
       "title": " - TEST - ",
       "button_bg_color": "#9E8263",
-      "button_bg_color_clicked": "#4D3500",
-      "time_font_color": "#AE580A",
-      "time_font_style": "Bauhaus 93",
-      "time_hm_font_size": 50,
-      "time_hm_shad_font_size": 50,
-      "time_sec_font_size": 30,
-      "time_sec_shad_font_size": 30,
-      "music_volume": 0.42,
-      "animation_speed": 137,
+      "button_bg_color_clicked": "black",
+      "music_volume": 0.34,
+      "animation_speed": 139,
       "window_title": " - TEST TITLE - ",
-      "positions": {
+      "json_widg_params": {
         "button_settings": {
-          "x": 18,
-          "y": 24
+          "x": 33,
+          "y": 27
         },
         "button_music": {
-          "x": 18,
-          "y": 58
+          "x": 150,
+          "y": 99
         },
         "hours_and_mins": {
-          "x": 31,
-          "y": 355
+          "x": 645,
+          "y": 455,
+          "size": 20,
+          "color": "#AE580A",
+          "style": "Bauhaus 93"
         },
         "hours_and_mins_shadow": {
-          "x": 44,
-          "y": 359
+          "x": 242,
+          "y": 191,
+          "size": 100
         },
         "seconds": {
-          "x": 260,
-          "y": 392
+          "x": 205,
+          "y": 131,
+          "size": 45
         },
         "seconds_shadow": {
-          "x": 267,
-          "y": 392
+          "x": 234,
+          "y": 309,
+          "size": 71
         }
       }
     }

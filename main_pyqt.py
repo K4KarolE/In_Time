@@ -150,12 +150,12 @@ timer.start()
 # HOURS:MINUTES
 hours_and_mins_shadow = QLabel(window_main)
 hours_and_mins_shadow.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_shad_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_shadow.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
 # SECONDS
 seconds_shadow = QLabel(window_main) 
 seconds_shadow.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_shad_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds_shadow.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
 ## TOP
 # HOURS:MINUTES
@@ -472,7 +472,8 @@ widget_dic = {
                 "x": cv.time_hm_pos_x,
                 "y": cv.time_hm_pos_y,
                 "size": cv.time_hm_font_size,
-                "color": cv.time_font_color
+                "color": cv.time_font_color,
+                "style": cv.time_font_style
                 },
             'Time: HRS:MINS - Shadow': {
                 "widget": hours_and_mins_shadow,
@@ -578,6 +579,7 @@ select_widget_cb = MyComboBoxWidgetUpdate(
 def selected_font_action():
 
     cv.time_font_style = select_font_cb.currentText()
+    widget_dic[widget_list[4]]['style'] = select_font_cb.currentText()
     
     hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
     hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
@@ -697,29 +699,24 @@ def save_advanced_settings():
     settings_data, skin_selected, selected_skin_folder = load_info()
 
     for index, item in enumerate(widget_list):
-        if index not in [2, 3]:      # no window main
         
-            widget_name = widget_dic[item]['name']
-            for var_name in selected_skin_folder['positions'][widget_name]:
+        widget_name = widget_dic[item]['name']
+        
+        # BUTTONS(MUSIC, SETTINGS), TIMES
+        if index not in [2, 3]:      # no window main
+                    
+            for var_name in selected_skin_folder['json_widg_params'][widget_name]:
+                selected_skin_folder['json_widg_params'][widget_name][var_name] = widget_dic[item][var_name]
 
-                selected_skin_folder['positions'][widget_name][var_name] = widget_dic[item][var_name]
+        # MAIN AND SETTINGS WINDOW
+        if index in [2, 3]:
+             for var_name in settings_data[widget_name]:
+                settings_data[widget_name][var_name] = widget_dic[item][var_name]
 
-    # # BUTTONS COLOR
-    # selected_skin_folder['button_bg_color'] = cv.button_bg_color
-    # selected_skin_folder['button_bg_color_clicked'] = cv.button_bg_color_clicked
 
-    # # TIME
-    # selected_skin_folder['time_font_color'] = cv.time_font_color
-    # selected_skin_folder['time_font_style'] = select_font_cb.currentText()
-  
-    # # WINDOW SETTINGS
-    # settings_data['window_settings']['x'] = cv.window_settings_pos_x
-    # settings_data['window_settings']['y'] = cv.window_settings_pos_y
-    
-    # # WINDOW MAIN
-    # settings_data['window_main']['x'] = cv.window_main_pos_x
-    # settings_data['window_main']['y'] = cv.window_main_pos_y
-
+    # BUTTONS COLOR
+    selected_skin_folder['button_bg_color'] = cv.button_bg_color
+    selected_skin_folder['button_bg_color_clicked'] = cv.button_bg_color_clicked
 
     save_settings(settings_data)
 
