@@ -1,5 +1,5 @@
 {
-  "skin_selected": "terminator",
+  "skin_selected": "donnie_darko",
   "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
@@ -55,8 +55,8 @@
       "title": "Donnie Darko",
       "button_bg_color": "#3E4E6A",
       "button_bg_color_clicked": "#748798",
-      "music_volume": 0.42,
-      "animation_speed": 137,
+      "music_volume": 0.12,
+      "animation_speed": 56,
       "window_title": "Back, in time, to pie",
       "json_widg_params": {
         "button_settings": {
@@ -135,8 +135,8 @@
       "title": "Terminator I.",
       "button_bg_color": "#AF0000",
       "button_bg_color_clicked": "#400000",
-      "music_volume": 0.44,
-      "animation_speed": 215,
+      "music_volume": 0.4,
+      "animation_speed": 83,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
       "json_widg_params": {
         "button_settings": {

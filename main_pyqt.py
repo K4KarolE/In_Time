@@ -388,9 +388,9 @@ def butt_and_win_settings_enable(value):
     IMAGES AND TEXT      
 #######################
 '''
-image_size = 30
+image_size = 25
 adv_img_pos_x = WINDOW_WIDTH + 15
-adv_img_pos_y = 20
+adv_img_pos_y = 23
 adv_img_pos_y_diff = image_size + 20
 
 # SKIN SWITCH
@@ -399,23 +399,15 @@ MyImage(window_main, 'skin_switch.png', image_size+8, adv_img_pos_x, adv_img_pos
 # SETTINGS
 MyImage(window_main, 'settings.png', image_size, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff)
 
-## LABELS
-font_size = 28
-# X
-label_X = QLabel(window_main, text='X')
-label_X.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
-label_X.setFont(QFont('Times', font_size, 800))   # style, size, bold
+# LEFT-RIGHT ARROW
+image_arrow_left_right = MyImage(window_main, 'left_right.png', image_size+5, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
 
-# Y
-label_Y = QLabel(window_main, text='Y')
-label_Y.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*3)
-label_Y.setFont(QFont('Times', font_size, 800)) 
+# UP-DOWN ARROW
+MyImage(window_main, 'up_down.png', image_size, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*3)
 
-# S
-label_S = QLabel(window_main, text='S')
-label_S.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*4)
-label_S.setFont(QFont('Times', font_size, 800))
-label_S.hide() 
+# SIZE ARROWS
+image_arrow_size = MyImage(window_main, 'size.png', image_size, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*4)
+image_arrow_size.hide() 
 
 
 
@@ -426,7 +418,7 @@ label_S.hide()
 '''
 adv_non_img_pos_x = adv_img_pos_x + 40
 adv_non_img_pos_y = 30
-adv_non_img_pos_y_diff = 50
+adv_non_img_pos_y_diff = 40
 
 
 ''' SKIN SWITCH - COMBOBOX - ADV '''
@@ -521,7 +513,7 @@ def selected_widget_action():
                                               30,
                                               20,
                                               ADV_WIDGETS_WIDTH))
-        label_X.move(WINDOW_ADVANCED_WIDTH - 60, adv_img_pos_y+adv_img_pos_y_diff*2)
+        image_arrow_left_right.move(WINDOW_ADVANCED_WIDTH - 60, adv_img_pos_y+adv_img_pos_y_diff*2)
     
     if selected_widget != widget_list[2]:
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -529,7 +521,7 @@ def selected_widget_action():
                                               adv_non_img_pos_y + adv_non_img_pos_y_diff*2,
                                               ADV_WIDGETS_WIDTH,
                                               20))
-        label_X.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
+        image_arrow_left_right.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
     
     # WINDOW SETTINGS
     if selected_widget == widget_list[3]:
@@ -550,13 +542,13 @@ def selected_widget_action():
     if selected_widget in widget_list[4:8]:
         slider_time_size.setValue(widget_dic[selected_widget]['size'])
         slider_time_size.show()
-        label_S.show()
+        image_arrow_size.show()
         slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
         slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
     
     if selected_widget not in widget_list[4:8]:
         slider_time_size.hide()
-        label_S.hide()
+        image_arrow_size.hide()
 
     # MOVE THE HANDLE TO THE LATEST POSITION
     # HAS TO BE AFTER THE SLIDER RANGE ADJUSTMENT
