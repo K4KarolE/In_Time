@@ -19,7 +19,7 @@ from MIT import Data, MyImage, MySlider
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
 from MIT import save_settings, load_info
 from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder 
-cv = Data()
+
 
 
 
@@ -83,6 +83,8 @@ def time_display():
 
 
 
+# LOADING PARAMETERS
+cv = Data()
 
 # MUSIC
 music= Music()
@@ -274,19 +276,19 @@ window_settings.move(cv.window_settings_pos_x, cv.window_settings_pos_y)
 
 
 ## SETTINGS WINDOW - IMAGES AND TEXT
-image_size = 30
+IMAGE_SIZE = 30
 pos_x = 20
 pos_y = 20
-pos_y_diff = image_size + 20
+pos_y_diff = IMAGE_SIZE + 20
 
 # VOLUME
-MyImage(window_settings, 'volume.png', image_size, pos_x, pos_y)
+MyImage(window_settings, 'volume.png', IMAGE_SIZE, pos_x, pos_y)
 
 # ANIMATION SPEED
-MyImage(window_settings, 'animation_speed.png', image_size, pos_x, pos_y+pos_y_diff)
+MyImage(window_settings, 'animation_speed.png', IMAGE_SIZE, pos_x, pos_y+pos_y_diff)
 
 # SKIN SWITCH
-MyImage(window_settings, 'skin_switch.png', image_size+8, pos_x-3, pos_y+pos_y_diff*2-3)
+MyImage(window_settings, 'skin_switch.png', IMAGE_SIZE+8, pos_x-3, pos_y+pos_y_diff*2-3)
 
 # A - ADVANCED
 label_A = QLabel(window_settings, text='A')
@@ -374,11 +376,27 @@ button_advanced.setFont(QFont('Times', 11, 600))
 
 ########################################
 ########################################
-* still in main       
+* still in main window       
 '''
-WINDOW_ADVANCED_ADD_WIDTH = 300
+
+# CONSTANTS
+WINDOW_ADVANCED_ADD_WIDTH = 305
 WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
 ADV_WIDGETS_WIDTH = 200
+FONT_WIDG_GROUP_Y_DIFF = 20
+
+IMAGE_SIZE = 25
+ADV_IMG_POS_X = WINDOW_WIDTH + 15
+ADV_IMG_POS_Y = 23
+ADV_IMG_POS_Y_DIFF = IMAGE_SIZE + 20
+
+ADV_NON_IMG_POS_X = ADV_IMG_POS_X + 40
+ADV_NON_IMG_POS_Y = 30
+ADV_NON_IMG_POS_Y_DIFF = 40
+
+BUTTON_ADV_HEIGHT = 25
+BUTTON_ADV_TEXT_SIZE = 10
+
 
 def butt_and_win_settings_enable(value):
     window_settings.setEnabled(value)
@@ -393,26 +411,27 @@ def butt_and_win_settings_enable(value):
     IMAGES AND TEXT      
 #######################
 '''
-image_size = 25
-adv_img_pos_x = WINDOW_WIDTH + 15
-adv_img_pos_y = 23
-adv_img_pos_y_diff = image_size + 20
 
 # SKIN SWITCH
-MyImage(window_main, 'skin_switch.png', image_size+8, adv_img_pos_x, adv_img_pos_y)
+MyImage(window_main, 'skin_switch.png', IMAGE_SIZE+8, ADV_IMG_POS_X-3, ADV_IMG_POS_Y)
 
 # SETTINGS
-MyImage(window_main, 'settings.png', image_size, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff)
+MyImage(window_main, 'settings.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF)
 
 # LEFT-RIGHT ARROW
-image_arrow_left_right = MyImage(window_main, 'left_right.png', image_size+5, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
+image_arrow_left_right_x = ADV_IMG_POS_X-2
+image_arrow_left_right_y = ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*2-9
+image_arrow_left_right = MyImage(window_main, 'left_right.png', IMAGE_SIZE+5, image_arrow_left_right_x, image_arrow_left_right_y)
 
 # UP-DOWN ARROW
-MyImage(window_main, 'up_down.png', image_size, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*3)
+MyImage(window_main, 'up_down.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*3-12)
 
 # SIZE ARROWS
-image_arrow_size = MyImage(window_main, 'size.png', image_size, adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*4)
-image_arrow_size.hide() 
+image_arrow_size = MyImage(window_main, 'size.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*4-15)
+image_arrow_size.setDisabled(True)
+
+# FONT
+MyImage(window_main, 'font.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*5 - FONT_WIDG_GROUP_Y_DIFF)
 
 
 
@@ -421,10 +440,6 @@ image_arrow_size.hide()
     COMBOBOXES - ADV               
 #########################
 '''
-adv_non_img_pos_x = adv_img_pos_x + 40
-adv_non_img_pos_y = 30
-adv_non_img_pos_y_diff = 40
-
 
 ''' SKIN SWITCH - COMBOBOX - ADV '''
 # RELAUNCHING THE ADVENCED SETTINGS "WINDOW"
@@ -435,7 +450,7 @@ if settings_data['is_skin_switch_advanced']:
     settings_data['is_skin_switch_advanced'] = False
     save_settings(settings_data)
 
-MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, adv_non_img_pos_x, adv_non_img_pos_y)
+MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y)
 
 
 
@@ -516,19 +531,20 @@ def selected_widget_action():
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_HEIGHT)
 
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Vertical)
-        slider_pos_x.setGeometry(QtCore.QRect(WINDOW_ADVANCED_WIDTH - 30,
-                                              30,
-                                              20,
-                                              ADV_WIDGETS_WIDTH))
-        image_arrow_left_right.move(WINDOW_ADVANCED_WIDTH - 60, adv_img_pos_y+adv_img_pos_y_diff*2)
+        SLIDER_POS_X_DIFF = 30
+        slider_pos_x.setGeometry(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF,
+                                40,
+                                20,
+                                ADV_WIDGETS_WIDTH)
+        image_arrow_left_right.move(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF + -6, ADV_WIDGETS_WIDTH+30)
     
     if selected_widget != widget_list[2]:
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x,
-                                              adv_non_img_pos_y + adv_non_img_pos_y_diff*2,
-                                              ADV_WIDGETS_WIDTH,
-                                              20))
-        image_arrow_left_right.move(adv_img_pos_x, adv_img_pos_y+adv_img_pos_y_diff*2)
+        slider_pos_x.setGeometry(ADV_NON_IMG_POS_X,
+                                ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2,
+                                ADV_WIDGETS_WIDTH,
+                                20)
+        image_arrow_left_right.move(image_arrow_left_right_x, image_arrow_left_right_y)
     
     # WINDOW SETTINGS
     if selected_widget == widget_list[3]:
@@ -548,14 +564,14 @@ def selected_widget_action():
     ## TIME
     if selected_widget in widget_list[4:8]:
         slider_time_size.setValue(widget_dic[selected_widget]['size'])
-        slider_time_size.show()
-        image_arrow_size.show()
+        slider_time_size.setDisabled(False)
+        image_arrow_size.setDisabled(False)
         slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
         slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
     
     if selected_widget not in widget_list[4:8]:
-        slider_time_size.hide()
-        image_arrow_size.hide()
+        slider_time_size.setDisabled(True)
+        image_arrow_size.setDisabled(True)
 
     # MOVE THE HANDLE TO THE LATEST POSITION
     # HAS TO BE AFTER THE SLIDER RANGE ADJUSTMENT
@@ -570,8 +586,8 @@ select_widget_cb = MyComboBoxWidgetUpdate(
                                         widget_list,
                                         selected_widget_action,
                                         ADV_WIDGETS_WIDTH,
-                                        adv_non_img_pos_x,
-                                        adv_non_img_pos_y+adv_non_img_pos_y_diff
+                                        ADV_NON_IMG_POS_X,
+                                        ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF
                                         )
 
 ''' FONT UPDATE - COMBOBOX '''
@@ -601,31 +617,18 @@ select_font_cb = MyComboBoxFont(
                                 window_main,
                                 selected_font_action,
                                 ADV_WIDGETS_WIDTH,
-                                adv_non_img_pos_x,
-                                adv_non_img_pos_y+adv_non_img_pos_y_diff*5
+                                ADV_NON_IMG_POS_X,
+                                ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*5
                                 )
 
 
 
 ''' COLOR UPDATE - COMBOBOX '''
 color_dic = {
-            'Color: Clock': {
-                "widget": [hours_and_mins, seconds],
-                "name": "hours_and_mins",
-                "color": cv.time_font_color
-                },
-            'Color: Buttons, windows': {
-                "widget": [button_music, button_settings],
-                "name": "button_bg_color",
-                "color": cv.button_bg_color,
-                },
-            'Color: Buttons clicked': {
-                "widget": [button_music, button_settings],
-                "name": "button_bg_color_clicked",
-                "color": cv.button_bg_color_clicked
-                }
+            'Color: Clock': {"color": cv.time_font_color},
+            'Color: Buttons, windows': {"color": cv.button_bg_color},
+            'Color: Buttons clicked': {"color": cv.button_bg_color_clicked}
             }   
-
 
 color_list = list(color_dic.keys())
 
@@ -639,8 +642,8 @@ select_color_cb = MyComboBoxWidgetUpdate(
                                         color_list,
                                         select_color_action,
                                         ADV_WIDGETS_WIDTH,
-                                        adv_non_img_pos_x,
-                                        adv_non_img_pos_y+adv_non_img_pos_y_diff*6
+                                        ADV_NON_IMG_POS_X,
+                                        ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*6-FONT_WIDG_GROUP_Y_DIFF+10
                                         )
 
 
@@ -650,9 +653,9 @@ select_color_cb = MyComboBoxWidgetUpdate(
     SLIDERS - ADV
 #####################
 '''
-adv_slider_pos_x = adv_img_pos_x + 15
+adv_slider_pos_x = ADV_IMG_POS_X + 15
 
-''' X - SLIDER '''
+''' X - MOVE - SLIDER '''
 def update_xy():
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
@@ -663,7 +666,7 @@ def update_xy():
 
 
 slider_pos_x = QSlider(window_main)
-slider_pos_x.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*2, ADV_WIDGETS_WIDTH, 20))
+slider_pos_x.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2, ADV_WIDGETS_WIDTH, 20))
 slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_pos_x.setMinimum(0)
 slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
@@ -672,9 +675,9 @@ slider_pos_x.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_x.valueChanged.connect(update_xy)
 
 
-''' Y - SLIDER '''
+''' Y - MOVE - SLIDER '''
 slider_pos_y = QSlider(window_main)
-slider_pos_y.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*3, ADV_WIDGETS_WIDTH, 20))
+slider_pos_y.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*3, ADV_WIDGETS_WIDTH, 20))
 slider_pos_y.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_pos_y.setMinimum(0)
 slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
@@ -683,7 +686,7 @@ slider_pos_y.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_y.valueChanged.connect(update_xy)
 
 
-''' S - SLIDER '''
+''' SIZE - SLIDER '''
 def update_size():
     
     if not cv.selected_widg_changed:
@@ -707,14 +710,15 @@ def update_size():
 
 
 slider_time_size = QSlider(window_main)
-slider_time_size.setGeometry(QtCore.QRect(adv_non_img_pos_x, adv_non_img_pos_y + adv_non_img_pos_y_diff*4, ADV_WIDGETS_WIDTH, 20))
+slider_time_size.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*4, ADV_WIDGETS_WIDTH, 20))
 slider_time_size.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_time_size.setMinimum(20)
 slider_time_size.setMaximum(100)
 slider_time_size.setValue(cv.button_settings_pos_y)
 slider_time_size.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_time_size.valueChanged.connect(update_size)
-slider_time_size.hide()
+slider_time_size.setDisabled(True)
+
 
 '''
 #######################
@@ -724,8 +728,8 @@ slider_time_size.hide()
 INPUT_FIELD_COLOR_WIDTH = ADV_WIDGETS_WIDTH-100
 input_field_color = QLineEdit(window_main, text=cv.time_font_color)
 input_field_color.setGeometry(
-    adv_non_img_pos_x,
-    adv_non_img_pos_y+adv_non_img_pos_y_diff*7-10,
+    ADV_NON_IMG_POS_X,
+    ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*7-FONT_WIDG_GROUP_Y_DIFF,
     INPUT_FIELD_COLOR_WIDTH,
     20
     )
@@ -739,8 +743,7 @@ input_field_color.setFont(QFont('Times', 10, 500))
     BUTTONS - ADV   
 #######################
 '''
-BUTTON_ADV_HEIGHT = 25
-BUTTON_ADV_TEXT_SIZE = 10
+
 
 ''' BUTTON - CLOSE - ADV '''
 def close_advanced_window():
@@ -757,6 +760,8 @@ button_close.setIconSize(QSize(15,15))
 button_close.setGeometry(WINDOW_ADVANCED_WIDTH-32, 12, 20, 20)     # pos, pos, size, size
 button_close.setCursor(Qt.CursorShape.PointingHandCursor)
 button_close.clicked.connect(close_advanced_window)
+
+
 
 ''' BUTTON - UPDATE COLOR - ADV '''
 def update_color():
@@ -786,8 +791,8 @@ def update_color():
      
 button_update_color = QPushButton(window_main, text='UPDATE')
 button_update_color.setGeometry(
-    adv_non_img_pos_x + INPUT_FIELD_COLOR_WIDTH + 10,
-    adv_non_img_pos_y + adv_non_img_pos_y_diff *7 - 11,
+    ADV_NON_IMG_POS_X + INPUT_FIELD_COLOR_WIDTH + 10,
+    ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF *7 - FONT_WIDG_GROUP_Y_DIFF - 2,
     ADV_WIDGETS_WIDTH - INPUT_FIELD_COLOR_WIDTH - 10,
     BUTTON_ADV_HEIGHT
     )
@@ -827,8 +832,8 @@ def save_advanced_settings():
 
 button_save_adv_sett = QPushButton(window_main, text='SAVE SETTINGS')
 button_save_adv_sett.setGeometry(
-    adv_non_img_pos_x,
-    adv_non_img_pos_y + adv_non_img_pos_y_diff *8,
+    ADV_NON_IMG_POS_X,
+    ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*8-FONT_WIDG_GROUP_Y_DIFF,
     ADV_WIDGETS_WIDTH,
     BUTTON_ADV_HEIGHT
     )
@@ -844,8 +849,8 @@ def delete_skin():
     
 button_delete_skin = QPushButton(window_main, text='DELETE SKIN')
 button_delete_skin.setGeometry(
-    adv_non_img_pos_x,
-    adv_non_img_pos_y + adv_non_img_pos_y_diff *9 + 20,
+    ADV_NON_IMG_POS_X,
+    ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF *9 + 20,
     ADV_WIDGETS_WIDTH,
     BUTTON_ADV_HEIGHT
     )
@@ -861,7 +866,7 @@ def save_new_skin():
 
 button_save_new_skin = QPushButton(window_main, text='ADD NEW SKIN')
 button_save_new_skin.setGeometry(
-    adv_non_img_pos_x,
+    ADV_NON_IMG_POS_X,
     WINDOW_HEIGHT - BUTTON_ADV_HEIGHT - 20,
     ADV_WIDGETS_WIDTH,
     BUTTON_ADV_HEIGHT
@@ -869,8 +874,6 @@ button_save_new_skin.setGeometry(
 button_save_new_skin.setCursor(Qt.CursorShape.PointingHandCursor)
 button_save_new_skin.clicked.connect(save_new_skin)
 button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
-
-
 
 
 
