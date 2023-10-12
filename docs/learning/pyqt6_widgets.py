@@ -26,6 +26,7 @@ from PyQt6.QtWidgets import (
     QTimeEdit,
     QVBoxLayout,
     QWidget,
+    QFileDialog
 )
 
 
@@ -48,6 +49,8 @@ class MainWindow(QMainWindow):
             QLCDNumber,
             QLabel,
             QLineEdit,
+            QLineEdit,
+            QLineEdit,
             QProgressBar,
             QPushButton,
             QRadioButton,
@@ -55,6 +58,7 @@ class MainWindow(QMainWindow):
             QSpinBox,
             QTimeEdit,
             QPushButton,
+            QFileDialog
         ]
 
         for w in widgets:

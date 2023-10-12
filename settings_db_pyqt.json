@@ -1,14 +1,14 @@
 {
-  "skin_selected": "donnie_darko",
+  "skin_selected": "__test__",
   "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
-    "x": 896,
-    "y": 537
+    "x": 668,
+    "y": 499
   },
   "window_settings": {
-    "x": 1100,
-    "y": 536
+    "x": 1308,
+    "y": 585
   },
   "skins": {
     "back_to_the_future": {
@@ -173,14 +173,14 @@
     },
     "__test__": {
       "title": " - TEST - ",
-      "button_bg_color": "#9E8263",
-      "button_bg_color_clicked": "black",
+      "button_bg_color": "brown",
+      "button_bg_color_clicked": "green",
       "music_volume": 0.34,
       "animation_speed": 139,
       "window_title": " - TEST TITLE - ",
       "json_widg_params": {
         "button_settings": {
-          "x": 33,
+          "x": 44,
           "y": 27
         },
         "button_music": {
@@ -188,10 +188,10 @@
           "y": 99
         },
         "hours_and_mins": {
-          "x": 645,
-          "y": 455,
-          "size": 20,
-          "color": "#AE580A",
+          "x": 334,
+          "y": 96,
+          "size": 91,
+          "color": "green",
           "style": "Bauhaus 93"
         },
         "hours_and_mins_shadow": {

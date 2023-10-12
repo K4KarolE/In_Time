@@ -6,7 +6,7 @@ Work in progress
 
 '''
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QLineEdit
 from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
@@ -103,28 +103,30 @@ window_main.setWindowTitle(selected_skin_folder['window_title'])
 window_main.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
 window_main.setFixedWidth(WINDOW_WIDTH)
 window_main.setFixedHeight(WINDOW_HEIGHT)
-window_main.setStyleSheet(
-                    "QMainWindow"
-                        "{"
-                        f"background-color : {cv.button_bg_color};"
-                        "border-radius: 10px;"
-                        # "border: 6px solid black;"
-                        "}"
-                    "QPushButton"
-                        "{"
-                        f"background-color : {cv.button_bg_color};"
-                        "border-radius: 6px;"          # corner roundness
-                        "border: 3px solid black;"
-                        "}"
-                    "QPushButton::pressed"
-                        "{"
-                        f"background-color : {cv.button_bg_color_clicked};"
-                        "}"
-                    "QSlider::handle"
-                        "{"
-                        f"background-color : 'black';"
-                        "}"
-                    )
+
+def window_main_set_style(button_color, button_color_clicked):
+    window_main.setStyleSheet(
+                        "QMainWindow"
+                            "{"
+                            f"background-color : {button_color};"
+                            "border-radius: 10px;"
+                            "}"
+                        "QPushButton"
+                            "{"
+                            f"background-color : {button_color};"
+                            "border-radius: 6px;"          # corner roundness
+                            "border: 3px solid black;"
+                            "}"
+                        "QPushButton::pressed"
+                            "{"
+                            f"background-color : {button_color_clicked};"
+                            "}"
+                        "QSlider::handle"
+                            "{"
+                            f"background-color : 'black';"
+                            "}"
+                        )
+window_main_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
 
 # MAIN WINDOW POSITION
 SCREEN = QApplication.primaryScreen()
@@ -237,31 +239,34 @@ window_settings.setFixedWidth(WINDOW_SETTINGS_WIDTH)
 window_settings.setFixedHeight(WINDOW_SETTINGS_HEIGHT)
 window_settings.setWindowTitle('Settings')
 window_settings.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
-window_settings.setStyleSheet(
-                            "QMainWindow"
-                                "{"
-                                f"background-color : {cv.button_bg_color};"
-                                "border-radius: 10px;"
-                                "border: 4px solid black;"
-                                "}"
 
-                            "QPushButton"
-                                "{"
-                                f"background-color : {cv.button_bg_color};"
-                                "border-radius: 5px;"          # corner roundness
-                                "border: 2px solid black;"
-                                "}"
+def window_settings_set_style(button_color, button_color_clicked):
+    window_settings.setStyleSheet(
+                                "QMainWindow"
+                                    "{"
+                                    f"background-color : {button_color};"
+                                    "border-radius: 10px;"
+                                    "border: 4px solid black;"
+                                    "}"
 
-                            "QPushButton::pressed"
-                                "{"
-                                f"background-color : {cv.button_bg_color_clicked};"
-                                "}"
+                                "QPushButton"
+                                    "{"
+                                    f"background-color : {button_color};"
+                                    "border-radius: 5px;"          # corner roundness
+                                    "border: 2px solid black;"
+                                    "}"
 
-                            "QSlider::handle"
-                                "{"
-                                f"background-color : 'black';"
-                                "}"
-                            )
+                                "QPushButton::pressed"
+                                    "{"
+                                    f"background-color : {button_color_clicked};"
+                                    "}"
+
+                                "QSlider::handle"
+                                    "{"
+                                    f"background-color : 'black';"
+                                    "}"
+                                )
+window_settings_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
 
 # SETTINGS WINDOW - POSITION
 window_settings.move(cv.window_settings_pos_x, cv.window_settings_pos_y)
@@ -432,33 +437,35 @@ if settings_data['is_skin_switch_advanced']:
 
 MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, adv_non_img_pos_x, adv_non_img_pos_y)
 
+
+
 ''' WIDGETS UPDATE - COMBOBOX - ADV '''
 widget_dic = {
-            'Button: Settings': {
+            'Button: Settings': {               #0     
                 "widget": button_settings,
                 "name": "button_settings",
                 "x": cv.button_settings_pos_x,
                 "y": cv.button_settings_pos_y,
                 },
-            'Button: Play/Stop': {
+            'Button: Play/Stop': {              #1
                 "widget": button_music,
                 "name": "button_music",
                 "x": cv.button_music_pos_x,
                 "y": cv.button_music_pos_y
                 },
-            'Window: Main': {
+            'Window: Main': {                   #2
                 "widget": window_main,
                 "name": "window_main",
                 "x": cv.window_main_pos_x,
                 "y": cv.window_main_pos_y
                 },
-            'Window: Settings ': {
+            'Window: Settings ': {              #3
                 "widget": window_settings,
                 "name": "window_settings",
                 "x": cv.window_settings_pos_x,
                 "y": cv.window_settings_pos_y
                 },
-            'Time: HRS:MINS': {
+            'Time: HRS:MINS': {                 #4
                 "widget": hours_and_mins,
                 "name": "hours_and_mins",
                 "x": cv.time_hm_pos_x,
@@ -467,7 +474,7 @@ widget_dic = {
                 "color": cv.time_font_color,
                 "style": cv.time_font_style
                 },
-            'Time: HRS:MINS - Shadow': {
+            'Time: HRS:MINS - Shadow': {        #5
                 "widget": hours_and_mins_shadow,
                 "name": "hours_and_mins_shadow",
                 "x": cv.time_hm_shadow_pos_x,
@@ -475,7 +482,7 @@ widget_dic = {
                 "size": cv.time_hm_shad_font_size,
                 "color": 'black'
                 },
-            'Time: SEC': {
+            'Time: SEC': {                      #6
                 "widget": seconds,
                 "name": "seconds",
                 "x": cv.time_sec_pos_x,
@@ -483,7 +490,7 @@ widget_dic = {
                 "size": cv.time_sec_font_size,
                 "color": cv.time_font_color
                 },
-            'Time: SEC - Shadow':  {
+            'Time: SEC - Shadow':  {            #7
                 "widget": seconds_shadow,
                 "name": "seconds_shadow",
                 "x": cv.time_sec_shadow_pos_x,
@@ -581,6 +588,14 @@ def selected_font_action():
     for item in widget_list[4:8]:
         widget_dic[item]['widget'].adjustSize()
 
+        ''' IF THE UPDATED TIME(GET BIGGER) OVERLAPPING THE MAIN WINDOW:
+            REPOSITION + SAVE NEW X VALUE
+        '''
+        new_style_time_width = widget_dic[item]['widget'].rect().width()
+        if (new_style_time_width + widget_dic[item]['x']) > WINDOW_WIDTH:
+            widget_dic[item]['widget'].move(WINDOW_WIDTH - new_style_time_width, widget_dic[item]['y'])
+            widget_dic[item]['x'] = WINDOW_WIDTH - new_style_time_width
+
 
 select_font_cb = MyComboBoxFont(
                                 window_main,
@@ -589,6 +604,44 @@ select_font_cb = MyComboBoxFont(
                                 adv_non_img_pos_x,
                                 adv_non_img_pos_y+adv_non_img_pos_y_diff*5
                                 )
+
+
+
+''' COLOR UPDATE - COMBOBOX '''
+color_dic = {
+            'Color: Clock': {
+                "widget": [hours_and_mins, seconds],
+                "name": "hours_and_mins",
+                "color": cv.time_font_color
+                },
+            'Color: Buttons, windows': {
+                "widget": [button_music, button_settings],
+                "name": "button_bg_color",
+                "color": cv.button_bg_color,
+                },
+            'Color: Buttons clicked': {
+                "widget": [button_music, button_settings],
+                "name": "button_bg_color_clicked",
+                "color": cv.button_bg_color_clicked
+                }
+            }   
+
+
+color_list = list(color_dic.keys())
+
+def select_color_action():
+    
+    input_field_color.setText(color_dic[select_color_cb.currentText()]['color'])
+
+
+select_color_cb = MyComboBoxWidgetUpdate(
+                                        window_main,
+                                        color_list,
+                                        select_color_action,
+                                        ADV_WIDGETS_WIDTH,
+                                        adv_non_img_pos_x,
+                                        adv_non_img_pos_y+adv_non_img_pos_y_diff*6
+                                        )
 
 
 
@@ -665,9 +718,30 @@ slider_time_size.hide()
 
 '''
 #######################
+    INPUT FIELD - ADV   
+#######################
+'''
+INPUT_FIELD_COLOR_WIDTH = ADV_WIDGETS_WIDTH-100
+input_field_color = QLineEdit(window_main, text=cv.time_font_color)
+input_field_color.setGeometry(
+    adv_non_img_pos_x,
+    adv_non_img_pos_y+adv_non_img_pos_y_diff*7-10,
+    INPUT_FIELD_COLOR_WIDTH,
+    20
+    )
+input_field_color.setCursor(Qt.CursorShape.PointingHandCursor)
+input_field_color.setFont(QFont('Times', 10, 500))
+
+
+
+'''
+#######################
     BUTTONS - ADV   
 #######################
 '''
+BUTTON_ADV_HEIGHT = 25
+BUTTON_ADV_TEXT_SIZE = 10
+
 ''' BUTTON - CLOSE - ADV '''
 def close_advanced_window():
 
@@ -684,8 +758,46 @@ button_close.setGeometry(WINDOW_ADVANCED_WIDTH-32, 12, 20, 20)     # pos, pos, s
 button_close.setCursor(Qt.CursorShape.PointingHandCursor)
 button_close.clicked.connect(close_advanced_window)
 
+''' BUTTON - UPDATE COLOR - ADV '''
+def update_color():
 
-# ''' BUTTON - SAVE - ADV '''
+    selected_widgets = select_color_cb.currentText()
+    
+    if selected_widgets == color_list[0]:
+        cv.time_font_color = input_field_color.text()
+        hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
+        seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
+    
+        widget_dic[widget_list[4]]['color'] = cv.time_font_color
+        widget_dic[widget_list[6]]['color'] = cv.time_font_color
+    
+    else:
+        # BUTTONS, WINDOWS
+        if selected_widgets == color_list[1]:
+            cv.button_bg_color = input_field_color.text()
+        # BUTTON CLICKED ON MAIN WINDOW
+        if selected_widgets == color_list[2]:
+            cv.button_bg_color_clicked = input_field_color.text()
+        
+        window_main_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
+        window_settings_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
+   
+    
+     
+button_update_color = QPushButton(window_main, text='UPDATE')
+button_update_color.setGeometry(
+    adv_non_img_pos_x + INPUT_FIELD_COLOR_WIDTH + 10,
+    adv_non_img_pos_y + adv_non_img_pos_y_diff *7 - 11,
+    ADV_WIDGETS_WIDTH - INPUT_FIELD_COLOR_WIDTH - 10,
+    BUTTON_ADV_HEIGHT
+    )
+button_update_color.setCursor(Qt.CursorShape.PointingHandCursor)
+button_update_color.clicked.connect(update_color)
+button_update_color.setFont(QFont('Times', 10, 600))
+
+
+
+''' BUTTON - SAVE - ADV '''
 def save_advanced_settings():
     
     settings_data, skin_selected, selected_skin_folder = load_info()
@@ -716,13 +828,50 @@ def save_advanced_settings():
 button_save_adv_sett = QPushButton(window_main, text='SAVE SETTINGS')
 button_save_adv_sett.setGeometry(
     adv_non_img_pos_x,
-    adv_non_img_pos_y + adv_non_img_pos_y_diff *6,
+    adv_non_img_pos_y + adv_non_img_pos_y_diff *8,
     ADV_WIDGETS_WIDTH,
-    30
+    BUTTON_ADV_HEIGHT
     )
 button_save_adv_sett.setCursor(Qt.CursorShape.PointingHandCursor)
 button_save_adv_sett.clicked.connect(save_advanced_settings)
-button_save_adv_sett.setFont(QFont('Times', 11, 600))
+button_save_adv_sett.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
+
+
+
+''' BUTTON - DELETE SKIN - ADV '''
+def delete_skin():
+    pass
+    
+button_delete_skin = QPushButton(window_main, text='DELETE SKIN')
+button_delete_skin.setGeometry(
+    adv_non_img_pos_x,
+    adv_non_img_pos_y + adv_non_img_pos_y_diff *9 + 20,
+    ADV_WIDGETS_WIDTH,
+    BUTTON_ADV_HEIGHT
+    )
+button_delete_skin.setCursor(Qt.CursorShape.PointingHandCursor)
+button_delete_skin.clicked.connect(delete_skin)
+button_delete_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
+
+
+
+''' BUTTON - ADD NEW SKIN - ADV '''
+def save_new_skin():
+    pass
+
+button_save_new_skin = QPushButton(window_main, text='ADD NEW SKIN')
+button_save_new_skin.setGeometry(
+    adv_non_img_pos_x,
+    WINDOW_HEIGHT - BUTTON_ADV_HEIGHT - 20,
+    ADV_WIDGETS_WIDTH,
+    BUTTON_ADV_HEIGHT
+    )
+button_save_new_skin.setCursor(Qt.CursorShape.PointingHandCursor)
+button_save_new_skin.clicked.connect(save_new_skin)
+button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
+
+
+
 
 
 
