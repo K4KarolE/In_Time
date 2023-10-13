@@ -7,7 +7,7 @@ Work in progress
 '''
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PyQt6.QtWidgets import QSlider, QLineEdit, QMessageBox
+from PyQt6.QtWidgets import QSlider, QLineEdit
 from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
@@ -16,8 +16,8 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import Data, MyImage, MySlider
-from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
+from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
+from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
 from MIT import save_settings, load_info
 from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder 
 
@@ -69,15 +69,25 @@ def time_display():
     
     # TOP
     hours_and_mins.setText(hours_and_mins_time)
-    hours_and_mins.adjustSize()
     seconds.setText(seconds_time)
-    seconds.adjustSize()
     
     # BACk - SHADOW
     hours_and_mins_shadow.setText(hours_and_mins_time)
-    hours_and_mins_shadow.adjustSize()
     seconds_shadow.setText(seconds_time)
-    seconds_shadow.adjustSize()
+
+    time_repositioning()
+
+
+    for item in widget_list[4:8]:
+        widget_dic[item]['widget'].adjustSize()
+
+        ''' IF THE UPDATED TIME(GET BIGGER) OVERLAPPING THE MAIN WINDOW:
+            REPOSITION + SAVE NEW X VALUE
+        '''
+        new_style_time_width = widget_dic[item]['widget'].rect().width()
+        if (new_style_time_width + widget_dic[item]['x']) > WINDOW_WIDTH:
+            widget_dic[item]['widget'].move(WINDOW_WIDTH - new_style_time_width, widget_dic[item]['y'])
+            widget_dic[item]['x'] = WINDOW_WIDTH - new_style_time_width
 
     # TIME REFRESH - 1000=1sec
     timer.setInterval(1000)
@@ -429,6 +439,9 @@ ADV_NON_IMG_POS_Y_DIFF = 40
 BUTTON_ADV_HEIGHT = 28
 BUTTON_ADV_TEXT_SIZE = 10
 
+WINDOW_CENTER_X = cv.window_main_pos_x + int(WINDOW_WIDTH/2) - 50
+WINDOW_CENTER_Y = cv.window_main_pos_y + int(WINDOW_HEIGHT/2) - 50
+
 
 def butt_and_win_settings_enable(value):
     window_settings.setEnabled(value)
@@ -636,6 +649,26 @@ select_widget_cb = MyComboBoxWidgetUpdate(
                                         )
 
 ''' FONT UPDATE - COMBOBOX - ADV '''
+
+
+def time_repositioning():
+    ''' 
+    IF THE TIME GET BIGGER FROM:
+        - FONT STYLE UPDATE OR
+        - TIME CHANGE: 11:11-->12:24
+    IT CAN OVERREACH THE MAIN WINDOW:
+    REPOSITION + SAVE NEW 'X' VALUE
+    '''
+    for item in widget_list[4:8]:
+            widget_dic[item]['widget'].adjustSize()
+            new_style_time_width = widget_dic[item]['widget'].rect().width()
+
+            if (new_style_time_width + widget_dic[item]['x']) > WINDOW_WIDTH:
+                widget_dic[item]['widget'].move(WINDOW_WIDTH - new_style_time_width, widget_dic[item]['y'])
+                widget_dic[item]['x'] = WINDOW_WIDTH - new_style_time_width
+
+
+
 def selected_font_action():
 
     cv.time_font_style = select_font_cb.currentText()
@@ -646,16 +679,7 @@ def selected_font_action():
     seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
     seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 
-    for item in widget_list[4:8]:
-        widget_dic[item]['widget'].adjustSize()
-
-        ''' IF THE UPDATED TIME(GET BIGGER) OVERLAPPING THE MAIN WINDOW:
-            REPOSITION + SAVE NEW X VALUE
-        '''
-        new_style_time_width = widget_dic[item]['widget'].rect().width()
-        if (new_style_time_width + widget_dic[item]['x']) > WINDOW_WIDTH:
-            widget_dic[item]['widget'].move(WINDOW_WIDTH - new_style_time_width, widget_dic[item]['y'])
-            widget_dic[item]['x'] = WINDOW_WIDTH - new_style_time_width
+    time_repositioning()
 
 
 select_font_cb = MyComboBoxFont(
@@ -851,44 +875,59 @@ button_update_color.setFont(QFont('Times', 10, 600))
 
 ''' BUTTON - SAVE - ADV '''
 def save_advanced_settings():
+
+    try:
+        settings_data, skin_selected, selected_skin_folder = load_info()
+
+        for index, item in enumerate(widget_list):
+            
+            widget_name = widget_dic[item]['name']
+            
+            # BUTTONS(MUSIC, SETTINGS), TIMES
+            if index not in [2, 3]:      # no window main
+                        
+                for var_name in selected_skin_folder['json_widg_params'][widget_name]:
+                    selected_skin_folder['json_widg_params'][widget_name][var_name] = widget_dic[item][var_name]
+
+            # MAIN AND SETTINGS WINDOW
+            if index in [2, 3]:
+                for var_name in settings_data[widget_name]:
+                    settings_data[widget_name][var_name] = widget_dic[item][var_name]
+
+
+        # BUTTONS COLOR
+        selected_skin_folder['button_bg_color'] = cv.button_bg_color
+        selected_skin_folder['button_bg_color_clicked'] = cv.button_bg_color_clicked
+
+        save_settings(settings_data)
     
-    settings_data, skin_selected, selected_skin_folder = load_info()
-
-    for index, item in enumerate(widget_list):
+        MyMessageBoxConfirmation(
+            'Settings saved',
+            WINDOW_CENTER_X,
+            WINDOW_CENTER_Y
+            )
         
-        widget_name = widget_dic[item]['name']
-        
-        # BUTTONS(MUSIC, SETTINGS), TIMES
-        if index not in [2, 3]:      # no window main
-                    
-            for var_name in selected_skin_folder['json_widg_params'][widget_name]:
-                selected_skin_folder['json_widg_params'][widget_name][var_name] = widget_dic[item][var_name]
 
-        # MAIN AND SETTINGS WINDOW
-        if index in [2, 3]:
-             for var_name in settings_data[widget_name]:
-                settings_data[widget_name][var_name] = widget_dic[item][var_name]
+    except:
+        MyMessageBoxError(
+            'Sorry, something went wrong.\n\nChanges are not saved!',
+            WINDOW_CENTER_X,
+            WINDOW_CENTER_Y
+            )
 
 
-    # BUTTONS COLOR
-    selected_skin_folder['button_bg_color'] = cv.button_bg_color
-    selected_skin_folder['button_bg_color_clicked'] = cv.button_bg_color_clicked
 
-    print('saved')
 
-    save_settings(settings_data)
 
 # MESSAGE BOX - SAVING
 def messagebox_save_adv_sett():
-    mbox_save_adv_sett = QMessageBox()
-    mbox_save_adv_sett.setWindowTitle('Confirmation')
-    mbox_save_adv_sett.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
-    mbox_save_adv_sett.setIcon(QMessageBox.Icon.Question)
-    mbox_save_adv_sett.setText('Saving changes?')
-    mbox_save_adv_sett.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
-    mbox_save_adv_sett.accepted.connect(save_advanced_settings)
-    mbox_save_adv_sett.move(cv.window_main_pos_x + int(WINDOW_WIDTH/2)-50, cv.window_main_pos_y + int(WINDOW_HEIGHT/2)-50)
-    mbox_save_adv_sett.exec()
+
+    MyMessageBoxConfReq(
+                        'Saving changes?',
+                        save_advanced_settings,
+                        WINDOW_CENTER_X,
+                        WINDOW_CENTER_Y
+                        )
 
 
 button_save_adv_sett = QPushButton(window_main, text='SAVE SETTINGS')
