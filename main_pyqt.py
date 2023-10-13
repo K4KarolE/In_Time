@@ -7,7 +7,7 @@ Work in progress
 '''
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QLineEdit
-from PyQt6.QtGui import QMovie, QIcon, QFont
+from PyQt6.QtGui import QMovie, QIcon, QFont, QLinearGradient
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
@@ -115,7 +115,7 @@ def window_main_set_style(button_color, button_color_clicked):
                             "}"
                         "QPushButton"
                             "{"
-                            f"background-color : {button_color};"
+                            f"background-color : QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {cv.button_bg_color}, stop: 0.6 {cv.button_bg_color}, stop: 1 {cv.button_bg_color_clicked});"
                             "border-radius: 6px;"          # corner roundness
                             "border: 3px solid black;"
                             "}"
@@ -233,9 +233,9 @@ WindowStaysOnTopHint: settings window stays on top
     - even when the main window get minimized
 '''
 SETT_WIDGETS_WIDTH = 160
+WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
 # window_settings object created in the SETTINGS BUTTON section
 window_settings.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Sheet)
-WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
 window_settings.resize(WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT)
 window_settings.setFixedWidth(WINDOW_SETTINGS_WIDTH)
 window_settings.setFixedHeight(WINDOW_SETTINGS_HEIGHT)
@@ -253,14 +253,15 @@ def window_settings_set_style(button_color, button_color_clicked):
 
                                 "QPushButton"
                                     "{"
-                                    f"background-color : {button_color};"
+                                    # f"background-color : {button_color};"
+                                    f"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {cv.button_bg_color}, stop: 0.6 {cv.button_bg_color}, stop: 1 {cv.button_bg_color_clicked} );"
                                     "border-radius: 5px;"          # corner roundness
                                     "border: 2px solid black;"
                                     "}"
 
                                 "QPushButton::pressed"
                                     "{"
-                                    f"background-color : {button_color_clicked};"
+                                    f"background-color : {cv.button_bg_color_clicked};"
                                     "}"
 
                                 "QSlider::handle"
@@ -386,7 +387,7 @@ ADV_WIDGETS_WIDTH = 200
 FONT_WIDG_GROUP_Y_DIFF = 20
 
 IMAGE_SIZE = 25
-ADV_IMG_POS_X = WINDOW_WIDTH + 15
+ADV_IMG_POS_X = WINDOW_WIDTH + 25
 ADV_IMG_POS_Y = 23
 ADV_IMG_POS_Y_DIFF = IMAGE_SIZE + 20
 
@@ -405,6 +406,16 @@ def butt_and_win_settings_enable(value):
         label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
     else:
         label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
+
+''' 
+#######################
+        FRAME      
+#######################
+'''
+frame_adv_window = QLabel(window_main)
+frame_adv_window.setGeometry(ADV_IMG_POS_X-15, ADV_IMG_POS_Y-15, WINDOW_ADVANCED_ADD_WIDTH - 20, WINDOW_HEIGHT - ADV_IMG_POS_Y+10)
+frame_adv_window.setStyleSheet("border: 2px solid black; border-radius: 5px;")
+
 
 ''' 
 #######################
@@ -431,7 +442,10 @@ image_arrow_size = MyImage(window_main, 'size.png', IMAGE_SIZE, ADV_IMG_POS_X, A
 image_arrow_size.setDisabled(True)
 
 # FONT
-MyImage(window_main, 'font.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*5 - FONT_WIDG_GROUP_Y_DIFF)
+MyImage(window_main, 'font.png', IMAGE_SIZE, ADV_IMG_POS_X-2, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*5 - FONT_WIDG_GROUP_Y_DIFF)
+
+# COLOR
+MyImage(window_main, 'color.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*6 - FONT_WIDG_GROUP_Y_DIFF-15)
 
 
 
@@ -756,10 +770,12 @@ def close_advanced_window():
 
 button_image_close = QIcon('skins/_images/close.png')
 button_close = QPushButton(window_main, text=None, icon=button_image_close)
-button_close.setIconSize(QSize(15,15))
-button_close.setGeometry(WINDOW_ADVANCED_WIDTH-32, 12, 20, 20)     # pos, pos, size, size
+button_close.setIconSize(QSize(10,10))
+button_close.setGeometry(WINDOW_ADVANCED_WIDTH-30, 12, 16, 16)     # pos, pos, size, size
 button_close.setCursor(Qt.CursorShape.PointingHandCursor)
 button_close.clicked.connect(close_advanced_window)
+button_close.setStyleSheet("border-radius: 4px; border: 2px solid black;")
+
 
 
 
