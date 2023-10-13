@@ -1,22 +1,22 @@
 {
   "skin_selected": "__test__",
-  "music_on": true,
+  "music_on": false,
   "is_skin_switch_advanced": false,
   "window_main": {
-    "x": 668,
-    "y": 499
+    "x": 1267,
+    "y": 455
   },
   "window_settings": {
-    "x": 1308,
-    "y": 585
+    "x": 1711,
+    "y": 504
   },
   "skins": {
     "back_to_the_future": {
       "title": "Back to the Future I.",
       "button_bg_color": "#675C7C",
       "button_bg_color_clicked": "#F5D2A5",
-      "music_volume": 0.42,
-      "animation_speed": 137,
+      "music_volume": 0.11,
+      "animation_speed": 129,
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
       "json_widg_params": {
         "button_settings": {
@@ -53,10 +53,10 @@
     },
     "donnie_darko": {
       "title": "Donnie Darko",
-      "button_bg_color": "#3E4E6A",
-      "button_bg_color_clicked": "#748798",
-      "music_volume": 0.12,
-      "animation_speed": 56,
+      "button_bg_color": "#6F8191",
+      "button_bg_color_clicked": "#475A77",
+      "music_volume": 0.21,
+      "animation_speed": 79,
       "window_title": "Back, in time, to pie",
       "json_widg_params": {
         "button_settings": {
@@ -95,17 +95,17 @@
       "title": "Idiocracy",
       "button_bg_color": "#9E8263",
       "button_bg_color_clicked": "#4D3500",
-      "music_volume": 0.42,
-      "animation_speed": 137,
+      "music_volume": 0.58,
+      "animation_speed": 189,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha.",
       "json_widg_params": {
         "button_settings": {
-          "x": 142,
-          "y": 147
+          "x": 15,
+          "y": 14
         },
         "button_music": {
-          "x": 172,
-          "y": 147
+          "x": 15,
+          "y": 46
         },
         "hours_and_mins": {
           "x": 2,
@@ -125,8 +125,8 @@
           "size": 30
         },
         "seconds_shadow": {
-          "x": 347,
-          "y": 405,
+          "x": 348,
+          "y": 409,
           "size": 30
         }
       }
@@ -135,8 +135,8 @@
       "title": "Terminator I.",
       "button_bg_color": "#AF0000",
       "button_bg_color_clicked": "#400000",
-      "music_volume": 0.4,
-      "animation_speed": 83,
+      "music_volume": 0.36,
+      "animation_speed": 99,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
       "json_widg_params": {
         "button_settings": {
@@ -155,49 +155,49 @@
           "style": "Felix Titling"
         },
         "hours_and_mins_shadow": {
-          "x": 17,
-          "y": 311,
+          "x": 18,
+          "y": 314,
           "size": 100
         },
         "seconds": {
-          "x": 270,
+          "x": 316,
           "y": 330,
           "size": 81
         },
         "seconds_shadow": {
-          "x": 277,
-          "y": 331,
+          "x": 324,
+          "y": 336,
           "size": 81
         }
       }
     },
     "__test__": {
       "title": " - TEST - ",
-      "button_bg_color": "brown",
-      "button_bg_color_clicked": "green",
+      "button_bg_color": "purple",
+      "button_bg_color_clicked": "orange",
       "music_volume": 0.34,
       "animation_speed": 139,
       "window_title": " - TEST TITLE - ",
       "json_widg_params": {
         "button_settings": {
-          "x": 44,
-          "y": 27
+          "x": 365,
+          "y": 220
         },
         "button_music": {
-          "x": 150,
-          "y": 99
+          "x": 318,
+          "y": 294
         },
         "hours_and_mins": {
-          "x": 334,
+          "x": 330,
           "y": 96,
-          "size": 91,
-          "color": "green",
-          "style": "Bauhaus 93"
+          "size": 100,
+          "color": "pink",
+          "style": "Showcard Gothic"
         },
         "hours_and_mins_shadow": {
-          "x": 242,
-          "y": 191,
-          "size": 100
+          "x": 333,
+          "y": 189,
+          "size": 92
         },
         "seconds": {
           "x": 205,

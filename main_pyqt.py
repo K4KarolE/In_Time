@@ -6,8 +6,9 @@ Work in progress
 
 '''
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QSlider, QLineEdit
-from PyQt6.QtGui import QMovie, QIcon, QFont, QLinearGradient
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
+from PyQt6.QtWidgets import QSlider, QLineEdit, QMessageBox
+from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
@@ -83,7 +84,7 @@ def time_display():
 
 
 
-# LOADING PARAMETERS
+# LOADING DATA FROM JSON
 cv = Data()
 
 # MUSIC
@@ -145,7 +146,11 @@ else:
 label_animation = QLabel(window_main)
     
 
-#### TIME
+''' 
+####################
+        TIME                    
+####################
+'''
 timer = QTimer()
 timer.timeout.connect(time_display)
 timer.start()
@@ -174,8 +179,14 @@ seconds.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
 
-## BUTTONS
-# BUTTON - MUSIC
+''' 
+#######################
+        BUTTONS              
+#######################
+'''
+ICON_SIZE = 15  # ICON/PICTURE IN THE BUTTONS
+
+''' BUTTON - MUSIC '''
 button_image_start = QIcon('skins/_images/start.png')
 button_image_stop = QIcon('skins/_images/stop.png')
 
@@ -186,19 +197,19 @@ else:
 
 
 button_music = QPushButton(window_main, text=None, icon=music_start_stop_img)
-button_music.setIconSize(QSize(20,20))
+button_music.setIconSize(QSize(ICON_SIZE, ICON_SIZE))
 button_music.setGeometry(cv.button_music_pos_x, cv.button_music_pos_y, 29, 29)     # pos, pos, size, size
 button_music.setCursor(Qt.CursorShape.PointingHandCursor)
 button_music.clicked.connect(music_switch_on_off)
 
 
-# BUTTON - SETTING
+''' BUTTON - SETTING '''
 window_settings = QMainWindow()
 # window_settings configured later
 # (window) --> SETTINGS WINDOW default launch in center of the main window
 button_image_settings = QIcon('skins/_images/settings.png')
 button_settings = QPushButton(window_main, text=None, icon=button_image_settings)
-button_settings.setIconSize(QSize(20,20))       # icon sizing
+button_settings.setIconSize(QSize(ICON_SIZE, ICON_SIZE))       # icon sizing
 button_settings.setGeometry(cv.button_settings_pos_x, cv.button_settings_pos_y, 30, 30)     # pos, pos, size, size
 button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
@@ -241,6 +252,7 @@ window_settings.setFixedWidth(WINDOW_SETTINGS_WIDTH)
 window_settings.setFixedHeight(WINDOW_SETTINGS_HEIGHT)
 window_settings.setWindowTitle('Settings')
 window_settings.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
+window_settings.move(cv.window_settings_pos_x, cv.window_settings_pos_y)
 
 def window_settings_set_style(button_color, button_color_clicked):
     window_settings.setStyleSheet(
@@ -271,35 +283,39 @@ def window_settings_set_style(button_color, button_color_clicked):
                                 )
 window_settings_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
 
-# SETTINGS WINDOW - POSITION
-window_settings.move(cv.window_settings_pos_x, cv.window_settings_pos_y)
 
 
-
-## SETTINGS WINDOW - IMAGES AND TEXT
+''' 
+#############################
+    IMAGES AND TEXT - SETT        
+#############################
+'''
 IMAGE_SIZE = 30
 pos_x = 20
 pos_y = 20
 pos_y_diff = IMAGE_SIZE + 20
 
-# VOLUME
+# VOLUME - IMAGE - SETT
 MyImage(window_settings, 'volume.png', IMAGE_SIZE, pos_x, pos_y)
 
-# ANIMATION SPEED
+# ANIMATION SPEED - IMAGE
 MyImage(window_settings, 'animation_speed.png', IMAGE_SIZE, pos_x, pos_y+pos_y_diff)
 
-# SKIN SWITCH
+# SKIN SWITCH - IMAGE - SETT
 MyImage(window_settings, 'skin_switch.png', IMAGE_SIZE+8, pos_x-3, pos_y+pos_y_diff*2-3)
 
-# A - ADVANCED
+# A - ADVANCED - TEXT- SETT
 label_A = QLabel(window_settings, text='A')
 label_A.move(pos_x+3, pos_y + pos_y_diff*3)
-# label_A.resize(30,30)
 label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
 # another solution, no color info: label_A.setFont(QFont('Times', 30, 800))   # style, size, bold
 
 
-## SETTINGS WINDOW - SLIDERS
+''' 
+######################
+    SLIDERS - SETT        
+######################
+'''
 slider_pos_x = 60
 slider_pos_y = 27
 
@@ -315,7 +331,7 @@ def save_animation_speed():
     save_settings(settings_data)
 
 
-# VOLUME
+''' VOLUME - SLIDER - SETT '''
 # music volume [0.0 - 1.0] <-- slider [0 - 100], default pos. change: 10
 def change_volume():
     music.audio_output.setVolume(slider_volume.value()/100)
@@ -333,7 +349,7 @@ slider_volume = MySlider(
 
 
 
-# ANIMATION SPEED
+''' ANIMATION SPEED - SLIDER - SETT '''
 def change_animation_speed():
     movie.setSpeed(slider_animation_speed.value())
 
@@ -350,15 +366,30 @@ slider_animation_speed = MySlider(
 
 
 
-## SETTINGS WINDOW - SKIN SWITCH - COMBOBOX
+'''
+#####################################
+    SWITCH SKIN - COMBOBOX - SETT               
+#####################################
+'''
 MyComboBoxSkins(window_settings, SETT_WIDGETS_WIDTH, False, slider_pos_x, slider_pos_y*5 - 9)
 
 
 
-## SETTINGS WINDOW - ADVANCED BUTTON
+'''
+##############################
+    ADVANCED BUTTON - SETT               
+##############################
+'''
 def button_advanced_launch():
-    window_settings.hide()
-    button_settings.setEnabled(False)
+
+    # SETTINGS WINDOW BEHAVIOUR IF IT WAS ALREADY CHOSEN
+    # IN THE ADVANCED WINDOW
+    if select_widget_cb.currentText() != widget_list[3]:
+        window_settings.hide()
+        button_settings.setEnabled(False)
+    else:
+        butt_and_win_settings_enable(False)
+
     for size_incr in range(0, WINDOW_ADVANCED_ADD_WIDTH, 2):
         window_main.setFixedWidth(WINDOW_WIDTH + size_incr)
     
@@ -366,7 +397,7 @@ button_advanced = QPushButton(window_settings, text='ADVANCED')
 button_advanced.setGeometry(slider_pos_x, slider_pos_y*6 + 12, 160, 25)
 button_advanced.setCursor(Qt.CursorShape.PointingHandCursor)
 button_advanced.clicked.connect(button_advanced_launch)
-button_advanced.setFont(QFont('Times', 11, 600))
+button_advanced.setFont(QFont('Times', 10, 600))
 
 
 '''
@@ -395,7 +426,7 @@ ADV_NON_IMG_POS_X = ADV_IMG_POS_X + 40
 ADV_NON_IMG_POS_Y = 30
 ADV_NON_IMG_POS_Y_DIFF = 40
 
-BUTTON_ADV_HEIGHT = 25
+BUTTON_ADV_HEIGHT = 28
 BUTTON_ADV_TEXT_SIZE = 10
 
 
@@ -408,9 +439,9 @@ def butt_and_win_settings_enable(value):
         label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
 
 ''' 
-#######################
-        FRAME      
-#######################
+###################
+    FRAME - ADV      
+###################
 '''
 frame_adv_window = QLabel(window_main)
 frame_adv_window.setGeometry(ADV_IMG_POS_X-15, ADV_IMG_POS_Y-15, WINDOW_ADVANCED_ADD_WIDTH - 20, WINDOW_HEIGHT - ADV_IMG_POS_Y+10)
@@ -418,9 +449,9 @@ frame_adv_window.setStyleSheet("border: 2px solid black; border-radius: 5px;")
 
 
 ''' 
-#######################
-    IMAGES AND TEXT      
-#######################
+#############################
+    IMAGES AND TEXT - ADV        
+#############################
 '''
 
 # SKIN SWITCH
@@ -546,11 +577,11 @@ def selected_widget_action():
 
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Vertical)
         SLIDER_POS_X_DIFF = 30
-        slider_pos_x.setGeometry(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF,
+        slider_pos_x.setGeometry(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF - 5,
                                 40,
                                 20,
                                 ADV_WIDGETS_WIDTH)
-        image_arrow_left_right.move(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF + -6, ADV_WIDGETS_WIDTH+30)
+        
     
     if selected_widget != widget_list[2]:
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -558,7 +589,7 @@ def selected_widget_action():
                                 ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2,
                                 ADV_WIDGETS_WIDTH,
                                 20)
-        image_arrow_left_right.move(image_arrow_left_right_x, image_arrow_left_right_y)
+    
     
     # WINDOW SETTINGS
     if selected_widget == widget_list[3]:
@@ -604,7 +635,7 @@ select_widget_cb = MyComboBoxWidgetUpdate(
                                         ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF
                                         )
 
-''' FONT UPDATE - COMBOBOX '''
+''' FONT UPDATE - COMBOBOX - ADV '''
 def selected_font_action():
 
     cv.time_font_style = select_font_cb.currentText()
@@ -637,7 +668,7 @@ select_font_cb = MyComboBoxFont(
 
 
 
-''' COLOR UPDATE - COMBOBOX '''
+''' COLOR UPDATE - COMBOBOX - ADV '''
 color_dic = {
             'Color: Clock': {"color": cv.time_font_color},
             'Color: Buttons, windows': {"color": cv.button_bg_color},
@@ -669,7 +700,7 @@ select_color_cb = MyComboBoxWidgetUpdate(
 '''
 adv_slider_pos_x = ADV_IMG_POS_X + 15
 
-''' X - MOVE - SLIDER '''
+''' X - MOVE - SLIDER - ADV '''
 def update_xy():
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     if not cv.selected_widg_changed:
@@ -689,7 +720,7 @@ slider_pos_x.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_x.valueChanged.connect(update_xy)
 
 
-''' Y - MOVE - SLIDER '''
+''' Y - MOVE - SLIDER - ADV '''
 slider_pos_y = QSlider(window_main)
 slider_pos_y.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*3, ADV_WIDGETS_WIDTH, 20))
 slider_pos_y.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -700,7 +731,7 @@ slider_pos_y.setCursor(Qt.CursorShape.PointingHandCursor)
 slider_pos_y.valueChanged.connect(update_xy)
 
 
-''' SIZE - SLIDER '''
+''' SIZE - SLIDER - ADV '''
 def update_size():
     
     if not cv.selected_widg_changed:
@@ -843,7 +874,21 @@ def save_advanced_settings():
     selected_skin_folder['button_bg_color'] = cv.button_bg_color
     selected_skin_folder['button_bg_color_clicked'] = cv.button_bg_color_clicked
 
+    print('saved')
+
     save_settings(settings_data)
+
+# MESSAGE BOX - SAVING
+def messagebox_save_adv_sett():
+    mbox_save_adv_sett = QMessageBox()
+    mbox_save_adv_sett.setWindowTitle('Confirmation')
+    mbox_save_adv_sett.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
+    mbox_save_adv_sett.setIcon(QMessageBox.Icon.Question)
+    mbox_save_adv_sett.setText('Saving changes?')
+    mbox_save_adv_sett.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
+    mbox_save_adv_sett.accepted.connect(save_advanced_settings)
+    mbox_save_adv_sett.move(cv.window_main_pos_x + int(WINDOW_WIDTH/2)-50, cv.window_main_pos_y + int(WINDOW_HEIGHT/2)-50)
+    mbox_save_adv_sett.exec()
 
 
 button_save_adv_sett = QPushButton(window_main, text='SAVE SETTINGS')
@@ -854,7 +899,7 @@ button_save_adv_sett.setGeometry(
     BUTTON_ADV_HEIGHT
     )
 button_save_adv_sett.setCursor(Qt.CursorShape.PointingHandCursor)
-button_save_adv_sett.clicked.connect(save_advanced_settings)
+button_save_adv_sett.clicked.connect(messagebox_save_adv_sett)
 button_save_adv_sett.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 
@@ -866,7 +911,7 @@ def delete_skin():
 button_delete_skin = QPushButton(window_main, text='DELETE SKIN')
 button_delete_skin.setGeometry(
     ADV_NON_IMG_POS_X,
-    ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF *9 + 20,
+    ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF *9 + 15,
     ADV_WIDGETS_WIDTH,
     BUTTON_ADV_HEIGHT
     )

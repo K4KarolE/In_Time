@@ -3,11 +3,8 @@ Original from: https://pythonpyqt.com/pyqt-gif/
 Cheers lads!
 '''
 
-from PyQt6.QtCore import QDir 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtGui import QMovie
-
-from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
 
 import sys
 
