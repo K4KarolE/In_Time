@@ -1,14 +1,18 @@
 {
   "skin_selected": "__test__",
-  "music_on": false,
+  "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
-    "x": 1267,
-    "y": 455
+    "x": 1023,
+    "y": 431
   },
   "window_settings": {
     "x": 1711,
     "y": 504
+  },
+  "delete_skin": {
+    "enabled": false,
+    "target_skin": ""
   },
   "skins": {
     "back_to_the_future": {
@@ -20,23 +24,23 @@
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
       "json_widg_params": {
         "button_settings": {
-          "x": 307,
+          "x": 420,
           "y": 372
         },
         "button_music": {
-          "x": 307,
+          "x": 420,
           "y": 403
         },
         "hours_and_mins": {
-          "x": 464,
-          "y": 298,
+          "x": 457,
+          "y": 292,
           "size": 100,
           "color": "#675C7C",
           "style": "Pristina"
         },
         "hours_and_mins_shadow": {
-          "x": 466,
-          "y": 311,
+          "x": 454,
+          "y": 312,
           "size": 100
         },
         "seconds": {
@@ -191,7 +195,7 @@
           "x": 330,
           "y": 96,
           "size": 100,
-          "color": "pink",
+          "color": "blue",
           "style": "Showcard Gothic"
         },
         "hours_and_mins_shadow": {

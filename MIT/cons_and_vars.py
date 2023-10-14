@@ -25,9 +25,20 @@ PATH_JSON = Path(WORKING_DIRECTORY, 'settings_db_pyqt.json')
 settings_data, skin_selected, selected_skin_folder = load_info()
 
 
+## DELETE SKIN
+if settings_data['delete_skin']['enabled']:
+
+    del settings_data['skins'][settings_data['delete_skin']['target_skin']]
+    settings_data['delete_skin']['enabled'] = False
+    settings_data['delete_skin']['target_skin'] = 'None'
+
+    save_settings(settings_data)
+    settings_data, skin_selected, selected_skin_folder = load_info()
+
 
 @dataclass
 class Data:
+
     # MUSIC
     music_on = settings_data['music_on']
     music_volume = selected_skin_folder['music_volume']

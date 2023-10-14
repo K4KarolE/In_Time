@@ -18,8 +18,8 @@ from pathlib import Path
 
 from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
-from MIT import save_settings, load_info
-from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder 
+from MIT import save_settings, load_info, restart
+from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder
 
 
 
@@ -944,9 +944,42 @@ button_save_adv_sett.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 
 ''' BUTTON - DELETE SKIN - ADV '''
-def delete_skin():
-    pass
+def delete_skin_setup():
+    settings_data['delete_skin']['enabled'] = True
+    settings_data['delete_skin']['target_skin'] = settings_data['skin_selected']
+
+    if settings_data['delete_skin']['target_skin'] == list(settings_data['skins'].keys())[0]:
+        settings_data['skin_selected'] = list(settings_data['skins'].keys())[1]
+
+    else:
+        settings_data['skin_selected'] = list(settings_data['skins'].keys())[0]
+
+    save_settings(settings_data)
+    restart()
+
+
+
+# MESSAGE BOX - DELETE SKIN
+def messagebox_delete_skin():
+
+    if len(list(settings_data['skins'].keys())) == 1:
     
+        MyMessageBoxError(
+                        'Sorry, not allowed to delete the last skin.  ',
+                        WINDOW_CENTER_X - 100,
+                        WINDOW_CENTER_Y
+                        )
+    else:
+
+        MyMessageBoxConfReq(
+                            'Are you sure you want to delete the current skin?  ',
+                            delete_skin_setup,
+                            WINDOW_CENTER_X - 100,
+                            WINDOW_CENTER_Y
+                            )
+
+
+
 button_delete_skin = QPushButton(window_main, text='DELETE SKIN')
 button_delete_skin.setGeometry(
     ADV_NON_IMG_POS_X,
@@ -955,7 +988,7 @@ button_delete_skin.setGeometry(
     BUTTON_ADV_HEIGHT
     )
 button_delete_skin.setCursor(Qt.CursorShape.PointingHandCursor)
-button_delete_skin.clicked.connect(delete_skin)
+button_delete_skin.clicked.connect(messagebox_delete_skin)
 button_delete_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 
