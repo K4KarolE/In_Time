@@ -52,7 +52,7 @@ def save_settings(settings_data):
 
 # DIRECTORY AND JSON PATH
 working_directory = Path(__file__).parent
-path_json = Path(working_directory, 'settings_db.json')
+path_json = Path(working_directory, 'settings_db_tkinter.json')
 
 # MIXER
 mixer.init()
