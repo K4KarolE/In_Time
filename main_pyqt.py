@@ -36,6 +36,28 @@ class Music:
 
 
 
+def skin_deletion_confirmaiton():
+    # DELETING SKIN STATUS AFTER RESTART
+    if settings_data['delete_skin']['enabled']:
+
+        if settings_data['delete_skin']['del_proc_completed']:
+            MyMessageBoxConfirmation(
+                'Skin deleted.',
+                WINDOW_CENTER_X,
+                WINDOW_CENTER_Y
+                )
+        else:
+            MyMessageBoxError(
+            'Sorry, something went wrong.',
+            WINDOW_CENTER_X,
+            WINDOW_CENTER_Y
+            )
+        
+        settings_data['delete_skin']['enabled'] = False
+        save_settings(settings_data)
+        # settings_data, skin_selected, selected_skin_folder = load_info()  
+
+
 
 def music_switch_on_off():
     
@@ -100,9 +122,34 @@ cv = Data()
 # MUSIC
 music= Music()
 
+# CONSTANTS
+WINDOW_WIDTH, WINDOW_HEIGHT = 720, 486
+WINDOW_ADVANCED_ADD_WIDTH = 305
+WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
+ADV_WIDGETS_WIDTH = 200
+FONT_WIDG_GROUP_Y_DIFF = 20
+
+IMAGE_SIZE = 25
+ADV_IMG_POS_X = WINDOW_WIDTH + 25
+ADV_IMG_POS_Y = 23
+ADV_IMG_POS_Y_DIFF = IMAGE_SIZE + 20
+
+ADV_NON_IMG_POS_X = ADV_IMG_POS_X + 40
+ADV_NON_IMG_POS_Y = 30
+ADV_NON_IMG_POS_Y_DIFF = 40
+
+BUTTON_ADV_HEIGHT = 28
+BUTTON_ADV_TEXT_SIZE = 10
+
+WINDOW_CENTER_X = cv.window_main_pos_x + int(WINDOW_WIDTH/2) - 50
+WINDOW_CENTER_Y = cv.window_main_pos_y + int(WINDOW_HEIGHT/2) - 50
+
 
 ''' APP '''
 app = QApplication(sys.argv)
+
+''' DELETING SKIN - CONFIRMATION MESSAGE '''
+skin_deletion_confirmaiton()
 
 '''
 ########################################
@@ -110,7 +157,6 @@ app = QApplication(sys.argv)
 ########################################
 '''
 window_main = QMainWindow()
-WINDOW_WIDTH, WINDOW_HEIGHT = 720, 486
 window_main.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
 window_main.setWindowTitle(selected_skin_folder['window_title'])
 window_main.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
@@ -154,7 +200,7 @@ else:
 
 # ANIMATION LABEL - before the TIME and BUTTONS
 label_animation = QLabel(window_main)
-    
+ 
 
 ''' 
 ####################
@@ -381,7 +427,7 @@ slider_animation_speed = MySlider(
     SWITCH SKIN - COMBOBOX - SETT               
 #####################################
 '''
-MyComboBoxSkins(window_settings, SETT_WIDGETS_WIDTH, False, slider_pos_x, slider_pos_y*5 - 9)
+select_skin_cb = MyComboBoxSkins(window_settings, SETT_WIDGETS_WIDTH, False, slider_pos_x, slider_pos_y*5 - 9)
 
 
 
@@ -420,27 +466,6 @@ button_advanced.setFont(QFont('Times', 10, 600))
 ########################################
 * still in main window       
 '''
-
-# CONSTANTS
-WINDOW_ADVANCED_ADD_WIDTH = 305
-WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
-ADV_WIDGETS_WIDTH = 200
-FONT_WIDG_GROUP_Y_DIFF = 20
-
-IMAGE_SIZE = 25
-ADV_IMG_POS_X = WINDOW_WIDTH + 25
-ADV_IMG_POS_Y = 23
-ADV_IMG_POS_Y_DIFF = IMAGE_SIZE + 20
-
-ADV_NON_IMG_POS_X = ADV_IMG_POS_X + 40
-ADV_NON_IMG_POS_Y = 30
-ADV_NON_IMG_POS_Y_DIFF = 40
-
-BUTTON_ADV_HEIGHT = 28
-BUTTON_ADV_TEXT_SIZE = 10
-
-WINDOW_CENTER_X = cv.window_main_pos_x + int(WINDOW_WIDTH/2) - 50
-WINDOW_CENTER_Y = cv.window_main_pos_y + int(WINDOW_HEIGHT/2) - 50
 
 
 def butt_and_win_settings_enable(value):
@@ -972,7 +997,10 @@ def messagebox_delete_skin():
     else:
 
         MyMessageBoxConfReq(
-                            'Are you sure you want to delete the current skin?  ',
+                            "Are you sure you want to delete the current skin?\n\n"
+                            f"                       {select_skin_cb.currentText()}\n\n"
+                            "The skin`s folder will be permanently deleted:\n"
+                            f"{Path(WORKING_DIRECTORY, 'skins', settings_data['skin_selected'])}    ",
                             delete_skin_setup,
                             WINDOW_CENTER_X - 100,
                             WINDOW_CENTER_Y

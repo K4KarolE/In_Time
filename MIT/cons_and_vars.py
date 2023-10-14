@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from pathlib import Path
 from json import load, dump
+import shutil
+
 
 def open_settings():
     with open(PATH_JSON) as f:
@@ -25,20 +27,34 @@ PATH_JSON = Path(WORKING_DIRECTORY, 'settings_db_pyqt.json')
 settings_data, skin_selected, selected_skin_folder = load_info()
 
 
-## DELETE SKIN
-if settings_data['delete_skin']['enabled']:
-
-    del settings_data['skins'][settings_data['delete_skin']['target_skin']]
-    settings_data['delete_skin']['enabled'] = False
-    settings_data['delete_skin']['target_skin'] = 'None'
-
-    save_settings(settings_data)
-    settings_data, skin_selected, selected_skin_folder = load_info()
 
 
 @dataclass
 class Data:
 
+    ''' DELETE SKIN '''
+    if settings_data['delete_skin']['enabled']:
+
+        try:
+            # FOLDER
+            shutil.rmtree(Path(WORKING_DIRECTORY, 'skins', settings_data['delete_skin']['target_skin']))
+            
+            # JSON
+            del settings_data['skins'][settings_data['delete_skin']['target_skin']]
+            settings_data['delete_skin']['del_proc_completed'] = True
+            settings_data['delete_skin']['target_skin'] = 'None'
+            
+
+        except:
+            settings_data['delete_skin']['del_proc_completed'] = False
+            
+            # pop-up message set up in main
+            print(' Error occured while deleting the skin.')
+    
+        save_settings(settings_data)
+
+    settings_data, skin_selected, selected_skin_folder = load_info()
+    
     # MUSIC
     music_on = settings_data['music_on']
     music_volume = selected_skin_folder['music_volume']

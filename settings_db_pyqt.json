@@ -1,6 +1,6 @@
 {
-  "skin_selected": "__test__",
-  "music_on": true,
+  "skin_selected": "back_to_the_future",
+  "music_on": false,
   "is_skin_switch_advanced": false,
   "window_main": {
     "x": 1023,
@@ -12,7 +12,8 @@
   },
   "delete_skin": {
     "enabled": false,
-    "target_skin": ""
+    "target_skin": "None",
+    "del_proc_completed": true
   },
   "skins": {
     "back_to_the_future": {
