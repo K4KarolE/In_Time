@@ -97,19 +97,9 @@ def time_display():
     hours_and_mins_shadow.setText(hours_and_mins_time)
     seconds_shadow.setText(seconds_time)
 
+
     time_repositioning()
 
-
-    for item in widget_list[4:8]:
-        widget_dic[item]['widget'].adjustSize()
-
-        ''' IF THE UPDATED TIME(GET BIGGER) OVERLAPPING THE MAIN WINDOW:
-            REPOSITION + SAVE NEW X VALUE
-        '''
-        new_style_time_width = widget_dic[item]['widget'].rect().width()
-        if (new_style_time_width + widget_dic[item]['x']) > WINDOW_WIDTH:
-            widget_dic[item]['widget'].move(WINDOW_WIDTH - new_style_time_width, widget_dic[item]['y'])
-            widget_dic[item]['x'] = WINDOW_WIDTH - new_style_time_width
 
     # TIME REFRESH - 1000=1sec
     timer.setInterval(1000)
@@ -514,7 +504,7 @@ image_arrow_size.setDisabled(True)
 MyImage(window_main, 'font.png', IMAGE_SIZE, ADV_IMG_POS_X-2, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*5 - FONT_WIDG_GROUP_Y_DIFF)
 
 # COLOR
-MyImage(window_main, 'color.png', IMAGE_SIZE, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*6 - FONT_WIDG_GROUP_Y_DIFF-15)
+MyImage(window_main, 'color.png', IMAGE_SIZE-3, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*6 - FONT_WIDG_GROUP_Y_DIFF-15)
 
 
 
@@ -686,11 +676,16 @@ def time_repositioning():
     '''
     for item in widget_list[4:8]:
             widget_dic[item]['widget'].adjustSize()
-            new_style_time_width = widget_dic[item]['widget'].rect().width()
+            new_format_width = widget_dic[item]['widget'].size().width()
+            new_format_height = widget_dic[item]['widget'].size().height()
 
-            if (new_style_time_width + widget_dic[item]['x']) > WINDOW_WIDTH:
-                widget_dic[item]['widget'].move(WINDOW_WIDTH - new_style_time_width, widget_dic[item]['y'])
-                widget_dic[item]['x'] = WINDOW_WIDTH - new_style_time_width
+            if (new_format_width + widget_dic[item]['x']) > WINDOW_WIDTH:
+                widget_dic[item]['widget'].move(WINDOW_WIDTH - new_format_width, widget_dic[item]['y'])
+                widget_dic[item]['x'] = WINDOW_WIDTH - new_format_width
+            
+            if (new_format_height + widget_dic[item]['y']) > WINDOW_HEIGHT:
+                widget_dic[item]['widget'].move(widget_dic[item]['x'], WINDOW_HEIGHT - new_format_height)
+                widget_dic[item]['y'] = WINDOW_HEIGHT - new_format_height
 
 
 
@@ -704,7 +699,17 @@ def selected_font_action():
     seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
     seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 
+    # POSITION UPDATE
     time_repositioning()
+
+    # SLIDER UPDATE
+    selected_widget = select_widget_cb.currentText()
+    if selected_widget in widget_list[4:8]:
+        slider_time_size.setValue(widget_dic[selected_widget]['size'])
+        slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
+        slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
+        slider_pos_x.setValue(widget_dic[selected_widget]['x'])
+        slider_pos_y.setValue(widget_dic[selected_widget]['y'])
 
 
 select_font_cb = MyComboBoxFont(
@@ -1025,7 +1030,7 @@ button_delete_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 def save_new_skin():
     pass
 
-button_save_new_skin = QPushButton(window_main, text='ADD NEW SKIN')
+button_save_new_skin = QPushButton(window_main, text='ADD / EDIT SKIN')
 button_save_new_skin.setGeometry(
     ADV_NON_IMG_POS_X,
     WINDOW_HEIGHT - BUTTON_ADV_HEIGHT - 20,
