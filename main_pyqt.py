@@ -16,6 +16,7 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
+from MIT import MySettingsWindow, window_settings_set_style
 from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
 from MIT import save_settings, load_info, restart
@@ -112,8 +113,13 @@ cv = Data()
 # MUSIC
 music= Music()
 
-# CONSTANTS
+## CONSTANTS
+# WINDOW MAIN
 WINDOW_WIDTH, WINDOW_HEIGHT = 720, 486
+WINDOW_CENTER_X = cv.window_main_pos_x + int(WINDOW_WIDTH/2) - 50
+WINDOW_CENTER_Y = cv.window_main_pos_y + int(WINDOW_HEIGHT/2) - 50
+
+# WINDWO ADVANCED (STILL IN MAIN)
 WINDOW_ADVANCED_ADD_WIDTH = 305
 WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
 ADV_WIDGETS_WIDTH = 200
@@ -131,8 +137,10 @@ ADV_NON_IMG_POS_Y_DIFF = 40
 BUTTON_ADV_HEIGHT = 28
 BUTTON_ADV_TEXT_SIZE = 10
 
-WINDOW_CENTER_X = cv.window_main_pos_x + int(WINDOW_WIDTH/2) - 50
-WINDOW_CENTER_Y = cv.window_main_pos_y + int(WINDOW_HEIGHT/2) - 50
+
+# WINDOW SETTINGS
+SETT_WIDGETS_WIDTH = 160
+WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
 
 
 ''' APP '''
@@ -142,9 +150,13 @@ app = QApplication(sys.argv)
 skin_deletion_confirmaiton()
 
 '''
-########################################
-              MAIN WINDOW                                      
-########################################
+###########################
+###########################
+
+        MAIN WINDOW
+
+###########################
+###########################
 '''
 window_main = QMainWindow()
 window_main.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
@@ -190,8 +202,37 @@ else:
 
 # ANIMATION LABEL - before the TIME and BUTTONS
 label_animation = QLabel(window_main)
- 
 
+
+'''
+################################## 
+##################################
+
+    WINDOW SETTINGS - CREATION 
+
+##################################
+##################################
+'''    
+window_settings = MySettingsWindow(
+                                    'Settings',
+                                    cv.button_bg_color,
+                                    cv.button_bg_color_clicked,
+                                    WINDOW_SETTINGS_WIDTH,
+                                    WINDOW_SETTINGS_HEIGHT,
+                                    cv.window_settings_pos_x,
+                                    cv.window_settings_pos_y) 
+
+
+
+''' 
+#############################
+#############################
+
+    WINDOW MAIN - WIDGETS   
+
+#############################
+#############################
+'''  
 ''' 
 ####################
         TIME                    
@@ -250,9 +291,7 @@ button_music.clicked.connect(music_switch_on_off)
 
 
 ''' BUTTON - SETTING '''
-window_settings = QMainWindow()
-# window_settings configured later
-# (window) --> SETTINGS WINDOW default launch in center of the main window
+# button(window) --> SETTINGS WINDOW default launch in center of the main window
 button_image_settings = QIcon('skins/_images/settings.png')
 button_settings = QPushButton(window_main, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(ICON_SIZE, ICON_SIZE))       # icon sizing
@@ -261,8 +300,7 @@ button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
 
 
-
-# ANIMATION
+''' ANIMATION '''
 movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
 label_animation.setMovie(movie)
 label_animation.resize(720,486)
@@ -276,61 +314,11 @@ movie.setSpeed(cv.animation_speed)
 ########################################
 ########################################
 
-            SETTINGS WINDOW         
+        SETTINGS WINDOW - WIDGETS                  
 
-########################################
-########################################
+#######################################
+#######################################
 '''
-'''
-Qt.WindowType:
-
-Sheet: closing the main window --> closing settings window as well
-WindowStaysOnTopHint: settings window stays on top
-    - even when clicked elsewhere
-    - even when the main window get minimized
-'''
-SETT_WIDGETS_WIDTH = 160
-WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
-# window_settings object created in the SETTINGS BUTTON section
-window_settings.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Sheet)
-window_settings.resize(WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT)
-window_settings.setFixedWidth(WINDOW_SETTINGS_WIDTH)
-window_settings.setFixedHeight(WINDOW_SETTINGS_HEIGHT)
-window_settings.setWindowTitle('Settings')
-window_settings.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
-window_settings.move(cv.window_settings_pos_x, cv.window_settings_pos_y)
-
-def window_settings_set_style(button_color, button_color_clicked):
-    window_settings.setStyleSheet(
-                                "QMainWindow"
-                                    "{"
-                                    f"background-color : {button_color};"
-                                    "border-radius: 10px;"
-                                    "border: 4px solid black;"
-                                    "}"
-
-                                "QPushButton"
-                                    "{"
-                                    # f"background-color : {button_color};"
-                                    f"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {cv.button_bg_color}, stop: 0.6 {cv.button_bg_color}, stop: 1 {cv.button_bg_color_clicked} );"
-                                    "border-radius: 5px;"          # corner roundness
-                                    "border: 2px solid black;"
-                                    "}"
-
-                                "QPushButton::pressed"
-                                    "{"
-                                    f"background-color : {cv.button_bg_color_clicked};"
-                                    "}"
-
-                                "QSlider::handle"
-                                    "{"
-                                    f"background-color : 'black';"
-                                    "}"
-                                )
-window_settings_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
-
-
-
 ''' 
 #############################
     IMAGES AND TEXT - SETT        
@@ -447,13 +435,13 @@ button_advanced.setFont(QFont('Times', 10, 600))
 
 
 '''
-########################################
-########################################
+#########################################
+#########################################
 
         ADVANCED SETTINGS WINDOW*       
 
-########################################
-########################################
+#########################################
+#########################################
 * still in main window       
 '''
 
@@ -886,7 +874,7 @@ def update_color():
             cv.button_bg_color_clicked = input_field_color.text()
         
         window_main_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
-        window_settings_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
+        window_settings_set_style(window_settings, cv.button_bg_color, cv.button_bg_color_clicked)
    
     
      
