@@ -16,7 +16,7 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import MySettingsWindow, window_settings_set_style
+from MIT import MySettingsWindow, window_settings_set_style, MyMainWindow, window_main_set_style
 from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
 from MIT import save_settings, load_info, restart
@@ -158,36 +158,13 @@ skin_deletion_confirmaiton()
 ###########################
 ###########################
 '''
-window_main = QMainWindow()
-window_main.resize(WINDOW_WIDTH, WINDOW_HEIGHT)
-window_main.setWindowTitle(selected_skin_folder['window_title'])
-window_main.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
-window_main.setFixedWidth(WINDOW_WIDTH)
-window_main.setFixedHeight(WINDOW_HEIGHT)
 
-def window_main_set_style(button_color, button_color_clicked):
-    window_main.setStyleSheet(
-                        "QMainWindow"
-                            "{"
-                            f"background-color : {button_color};"
-                            "border-radius: 10px;"
-                            "}"
-                        "QPushButton"
-                            "{"
-                            f"background-color : QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {cv.button_bg_color}, stop: 0.6 {cv.button_bg_color}, stop: 1 {cv.button_bg_color_clicked});"
-                            "border-radius: 6px;"          # corner roundness
-                            "border: 3px solid black;"
-                            "}"
-                        "QPushButton::pressed"
-                            "{"
-                            f"background-color : {button_color_clicked};"
-                            "}"
-                        "QSlider::handle"
-                            "{"
-                            f"background-color : 'black';"
-                            "}"
-                        )
-window_main_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
+window_main = MyMainWindow(
+                        cv.button_bg_color,
+                        cv.button_bg_color_clicked,
+                        WINDOW_WIDTH,
+                        WINDOW_HEIGHT,
+                        ) 
 
 # MAIN WINDOW POSITION
 SCREEN = QApplication.primaryScreen()
@@ -200,8 +177,6 @@ if SCREEN_RECT.width() < cv.window_main_pos_x or SCREEN_RECT.height() < cv.windo
 else:
     window_main.move(cv.window_main_pos_x, cv.window_main_pos_y)
 
-# ANIMATION LABEL - before the TIME and BUTTONS
-label_animation = QLabel(window_main)
 
 
 '''
@@ -232,7 +207,21 @@ window_settings = MySettingsWindow(
 
 #############################
 #############################
-'''  
+'''
+
+''' 
+#########################
+        ANIMATION                   
+#########################
+'''
+label_animation = QLabel(window_main)
+movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
+label_animation.setMovie(movie)
+label_animation.resize(720,486)
+movie.start()
+movie.setSpeed(cv.animation_speed)  
+
+
 ''' 
 ####################
         TIME                    
@@ -300,12 +289,7 @@ button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
 
 
-''' ANIMATION '''
-movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
-label_animation.setMovie(movie)
-label_animation.resize(720,486)
-movie.start()
-movie.setSpeed(cv.animation_speed)
+
 
 
 
@@ -660,7 +644,7 @@ def time_repositioning():
         - FONT STYLE UPDATE OR
         - TIME CHANGE: 11:11-->12:24
     IT CAN OVERREACH THE MAIN WINDOW:
-    REPOSITION + SAVE NEW 'X' VALUE
+    REPOSITION + SAVE NEW VALUE
     '''
     for item in widget_list[4:8]:
             widget_dic[item]['widget'].adjustSize()
@@ -873,7 +857,7 @@ def update_color():
         if selected_widgets == color_list[2]:
             cv.button_bg_color_clicked = input_field_color.text()
         
-        window_main_set_style(cv.button_bg_color, cv.button_bg_color_clicked)
+        window_main_set_style(window_main, cv.button_bg_color, cv.button_bg_color_clicked)
         window_settings_set_style(window_settings, cv.button_bg_color, cv.button_bg_color_clicked)
    
     

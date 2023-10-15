@@ -8,15 +8,14 @@ def window_settings_set_style(self, button_color, button_color_clicked):
                     "QMainWindow"
                         "{"
                         f"background-color : {button_color};"
-                        "border-radius: 10px;"
-                        "border: 4px solid black;"
+                        "border-radius: 5px;"
+                        "border: 2px solid black;"
                         "}"
 
                     "QPushButton"
                         "{"
-                        # f"background-color : {button_color};"
                         f"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {button_color}, stop: 0.6 {button_color}, stop: 1 {button_color_clicked} );"
-                        "border-radius: 5px;"          # corner roundness
+                        "border-radius: 5px;"
                         "border: 2px solid black;"
                         "}"
 
