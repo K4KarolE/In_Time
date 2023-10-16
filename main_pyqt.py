@@ -6,8 +6,8 @@ Work in progress
 
 '''
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PyQt6.QtWidgets import QSlider, QLineEdit
+from PyQt6.QtWidgets import QApplication, QTabWidget, QLabel, QPushButton
+from PyQt6.QtWidgets import QSlider, QLineEdit, QWidget, QGridLayout, QVBoxLayout
 from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
@@ -143,6 +143,11 @@ SETT_WIDGETS_WIDTH = 160
 WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
 
 
+# WINDOW ADD SKIN
+WINDOW_ADD_SKIN_WIDTH, WINDOW_ADD_SKIN_HEIGHT = 320, 250
+
+
+
 ''' APP '''
 app = QApplication(sys.argv)
 
@@ -194,6 +199,25 @@ window_settings = MySettingsWindow(
                                     cv.button_bg_color_clicked,
                                     WINDOW_SETTINGS_WIDTH,
                                     WINDOW_SETTINGS_HEIGHT,
+                                    cv.window_settings_pos_x,
+                                    cv.window_settings_pos_y) 
+
+
+'''
+################################## 
+##################################
+
+    WINDOW ADD SKIN - CREATION 
+
+##################################
+##################################
+'''    
+window_add_skin = MySettingsWindow(
+                                    'Skins',
+                                    cv.button_bg_color,
+                                    cv.button_bg_color_clicked,
+                                    WINDOW_ADD_SKIN_WIDTH,
+                                    WINDOW_ADD_SKIN_HEIGHT,
                                     cv.window_settings_pos_x,
                                     cv.window_settings_pos_y) 
 
@@ -1010,8 +1034,49 @@ button_save_new_skin.setGeometry(
     BUTTON_ADV_HEIGHT
     )
 button_save_new_skin.setCursor(Qt.CursorShape.PointingHandCursor)
-button_save_new_skin.clicked.connect(save_new_skin)
+button_save_new_skin.clicked.connect(window_add_skin.show)
 button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
+
+
+
+''' 
+#################################
+#################################
+
+    WINDOW ADD/EDIT SKIN - WIDGETS   
+
+#################################
+#################################
+'''
+
+# window_add_skin.layout = QGridLayout(window_add_skin)
+
+TABS_POS_X = 20
+TABS_POS_Y = 20
+
+tabs = QTabWidget(window_add_skin)
+tab_add_skin = QWidget() 
+tab_edit_skin = QWidget() 
+tabs.addTab(tab_add_skin, 'Add Skin')
+tabs.addTab(tab_edit_skin, 'Edit Current Skin')
+tabs.resize(WINDOW_ADD_SKIN_WIDTH-TABS_POS_X*2, WINDOW_ADD_SKIN_HEIGHT-TABS_POS_Y*2) 
+tabs.move(20, 20)
+# tabs.setStyleSheet(f"background: {cv.button_bg_color};")
+
+
+'''
+###################################
+    EDIT CURRENT SKIN - WIDGETS   
+###################################
+'''
+skin_title = QLineEdit(tab_edit_skin)
+skin_title.setText(select_skin_cb.currentText())
+skin_title.move(20, 20)
+
+
+
+
+
 
 
 
