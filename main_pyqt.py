@@ -7,7 +7,7 @@ Work in progress
 '''
 
 from PyQt6.QtWidgets import QApplication, QTabWidget, QLabel, QPushButton
-from PyQt6.QtWidgets import QSlider, QLineEdit, QWidget, QGridLayout, QVBoxLayout
+from PyQt6.QtWidgets import QSlider, QLineEdit, QWidget, QFileDialog
 from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
@@ -16,7 +16,7 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 import sys
 from pathlib import Path
 
-from MIT import MySettingsWindow, window_settings_set_style, MyMainWindow, window_main_set_style
+from MIT import MySettingsWindow, window_settings_set_style, window_skin_set_style, MyMainWindow, window_main_set_style
 from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
 from MIT import save_settings, load_info, restart
@@ -55,8 +55,7 @@ def skin_deletion_confirmaiton():
             )
         
         settings_data['delete_skin']['enabled'] = False
-        save_settings(settings_data)
-        # settings_data, skin_selected, selected_skin_folder = load_info()  
+        save_settings(settings_data)  
 
 
 
@@ -144,7 +143,7 @@ WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
 
 
 # WINDOW ADD SKIN
-WINDOW_ADD_SKIN_WIDTH, WINDOW_ADD_SKIN_HEIGHT = 320, 250
+WINDOW_SKIN_WIDTH, WINDOW_SKIN_HEIGHT = 245, 350
 
 
 
@@ -207,17 +206,17 @@ window_settings = MySettingsWindow(
 ################################## 
 ##################################
 
-    WINDOW ADD SKIN - CREATION 
+    WINDOW SKIN - CREATION 
 
 ##################################
 ##################################
 '''    
-window_add_skin = MySettingsWindow(
+window_skin = MySettingsWindow(
                                     'Skins',
                                     cv.button_bg_color,
                                     cv.button_bg_color_clicked,
-                                    WINDOW_ADD_SKIN_WIDTH,
-                                    WINDOW_ADD_SKIN_HEIGHT,
+                                    WINDOW_SKIN_WIDTH,
+                                    WINDOW_SKIN_HEIGHT,
                                     cv.window_settings_pos_x,
                                     cv.window_settings_pos_y) 
 
@@ -1034,7 +1033,7 @@ button_save_new_skin.setGeometry(
     BUTTON_ADV_HEIGHT
     )
 button_save_new_skin.setCursor(Qt.CursorShape.PointingHandCursor)
-button_save_new_skin.clicked.connect(window_add_skin.show)
+button_save_new_skin.clicked.connect(window_skin.show)
 button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 
@@ -1043,7 +1042,7 @@ button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 #################################
 #################################
 
-    WINDOW ADD/EDIT SKIN - WIDGETS   
+    WINDOW SKIN - WIDGETS   
 
 #################################
 #################################
@@ -1053,33 +1052,164 @@ button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 TABS_POS_X = 20
 TABS_POS_Y = 20
+SKIN_WIDGET_POS_X = 20
+SKIN_WIDEGT_POS_Y = 20
+SKIN_WIDEGT_POS_Y_diff = 40
+SKIN_WIDGET_WIDTH = 160
+BUTTON_SKIN_HEIGHT = 25
 
-tabs = QTabWidget(window_add_skin)
+tabs = QTabWidget(window_skin)
 tab_add_skin = QWidget() 
 tab_edit_skin = QWidget() 
-tabs.addTab(tab_add_skin, 'Add Skin')
 tabs.addTab(tab_edit_skin, 'Edit Current Skin')
-tabs.resize(WINDOW_ADD_SKIN_WIDTH-TABS_POS_X*2, WINDOW_ADD_SKIN_HEIGHT-TABS_POS_Y*2) 
+tabs.addTab(tab_add_skin, ' Add Skin ')
+tabs.resize(WINDOW_SKIN_WIDTH-TABS_POS_X*2, WINDOW_SKIN_HEIGHT-TABS_POS_Y*2) 
 tabs.move(20, 20)
-# tabs.setStyleSheet(f"background: {cv.button_bg_color};")
-
+tabs.setTabShape(QTabWidget.TabShape.Triangular)
+tabs.setFont(QFont('Times', 10, 500))
+window_skin_set_style(tabs, 'lightgrey', 'darkgrey')
+# tabs.setStyleSheet(f"background-color : {cv.button_bg_color};")
 
 '''
 ###################################
     EDIT CURRENT SKIN - WIDGETS   
 ###################################
 '''
-skin_title = QLineEdit(tab_edit_skin)
-skin_title.setText(select_skin_cb.currentText())
-skin_title.move(20, 20)
+
+''' SKIN NAME - TEXT '''
+skin_name_lable = QLabel(tab_edit_skin, text='Name of the skin')
+skin_name_lable.move(SKIN_WIDGET_POS_X, SKIN_WIDEGT_POS_Y)
+skin_name_lable.setFont(QFont('Times', 10, 600))
+
+
+''' SKIN NAME - INPUT FIELD '''
+input_field_skin_name = QLineEdit(tab_edit_skin)
+input_field_skin_name.setText(select_skin_cb.currentText())
+input_field_skin_name.setGeometry(
+    SKIN_WIDGET_POS_X,
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff-22, 
+    SKIN_WIDGET_WIDTH,
+    20)
+input_field_skin_name.setFont(QFont('Times', 10, 500))
+input_field_skin_name.setCursor(Qt.CursorShape.PointingHandCursor)
+
+
+''' WINDOW TITLE - TEXT '''
+skin_window_title_lable = QLabel(tab_edit_skin, text='Window Title')
+skin_window_title_lable.move(
+    SKIN_WIDGET_POS_X,
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff + 10)
+skin_window_title_lable.setFont(QFont('Times', 10, 600))
+
+''' WINDOW TITLE - INPUT FIELD '''
+input_field_window_title = QLineEdit(tab_edit_skin)
+input_field_window_title.setText(selected_skin_folder['window_title'])
+input_field_window_title.setGeometry(
+    SKIN_WIDGET_POS_X,
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff * 2 - 10, 
+    SKIN_WIDGET_WIDTH,
+    20)
+input_field_window_title.setFont(QFont('Times', 10, 500))
+input_field_window_title.setCursor(Qt.CursorShape.PointingHandCursor)
 
 
 
+''' BUTTON - GIF UPDATE '''
+def button_gif_update_clicked():
+    dialog_gif_update = QFileDialog()
+    dialog_gif_update.setWindowTitle("Select a GIF file")
+    dialog_gif_update.setNameFilter("GIF files (*.gif)")
+    dialog_gif_update.exec()
+    if dialog_gif_update.exec:
+        gif_path = dialog_gif_update.selectedFiles()
+        button_gif_update.setText(f"{button_gif_update.text()} \u2713")
+
+button_gif_update = QPushButton(tab_edit_skin, text='ANIMATION - GIF')
+button_gif_update.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*2.7),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_gif_update.setCursor(Qt.CursorShape.PointingHandCursor)
+button_gif_update.clicked.connect(button_gif_update_clicked)
+button_gif_update.setFont(QFont('Times', 10, 600))
+
+
+''' BUTTON - MUSIC UPDATE '''
+button_music_update = QPushButton(tab_edit_skin, text='MUSIC - MP3')
+button_music_update.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*3.5),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_music_update.setCursor(Qt.CursorShape.PointingHandCursor)
+button_music_update.clicked.connect(update_color)
+button_music_update.setFont(QFont('Times', 10, 600))
+
+
+''' BUTTON - WINDOW ICON UPDATE '''
+button_icon_update = QPushButton(tab_edit_skin, text='WINDOW ICON')
+button_icon_update.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*4.3),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_icon_update.setCursor(Qt.CursorShape.PointingHandCursor)
+button_icon_update.clicked.connect(update_color)
+button_icon_update.setFont(QFont('Times', 10, 600))
 
 
 
+def update_skin_action():
+    any_change = False
+    settings_data, skin_selected, selected_skin_folder = load_info()
+    
+    # SKIN NAME
+    if input_field_skin_name.text() != selected_skin_folder['title']:
+        if len(input_field_skin_name.text().strip()) > 0:
+            selected_skin_folder['title'] = input_field_skin_name.text()[0:30]
+            any_change = True
+        else:
+            MyMessageBoxError(
+                'The name field can not be empty!  ',
+                WINDOW_CENTER_X,
+                WINDOW_CENTER_Y
+                )
+    
+    # WINDOW TITLE
+    if input_field_window_title.text() != selected_skin_folder['window_title']:
+        selected_skin_folder['window_title'] = input_field_window_title.text()[0:108]
+        any_change = True
+    
+    if not input_field_window_title.text():
+        selected_skin_folder['window_title'] = 'It`s Python baby!'
+        any_change = True
+
+    if any_change:
+        save_settings(settings_data)
+        restart()
 
 
+
+''' BUTTON - UPDATE '''
+button_skin_update = QPushButton(tab_edit_skin, text='UPDATE')
+button_skin_update.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*5.6),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_skin_update.setCursor(Qt.CursorShape.PointingHandCursor)
+button_skin_update.clicked.connect(update_skin_action)
+button_skin_update.setFont(QFont('Times', 10, 600))
+
+
+
+# testing
+window_skin.show()
 
 window_main.show()
 if cv.music_on: music.player.play()

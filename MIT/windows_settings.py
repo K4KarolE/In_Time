@@ -28,9 +28,18 @@ def window_settings_set_style(self, button_color, button_color_clicked):
                         "{"
                         f"background-color : 'black';"
                         "}"
+                    
                     )
 
 
+'''
+Qt.WindowType:
+
+Sheet: closing the main window --> closing settings window as well
+WindowStaysOnTopHint: settings window stays on top
+    - even when clicked elsewhere
+    - even when the main window get minimized
+'''
 class MySettingsWindow(QMainWindow):
     def __init__(self, window_title, button_color, button_color_clicked, width, height, pos_x, pos_y):
         super().__init__()
@@ -43,11 +52,29 @@ class MySettingsWindow(QMainWindow):
         self.move(pos_x, pos_y)
         window_settings_set_style(self, button_color, button_color_clicked)
 
-'''
-Qt.WindowType:
 
-Sheet: closing the main window --> closing settings window as well
-WindowStaysOnTopHint: settings window stays on top
-    - even when clicked elsewhere
-    - even when the main window get minimized
-'''
+
+def window_skin_set_style(self, button_color, button_color_clicked):
+    self.setStyleSheet(
+                    "QPushButton"
+                        "{"
+                        f"background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {button_color}, stop: 0.6 {button_color}, stop: 1 {button_color_clicked} );"
+                        "border-radius: 5px;"
+                        "border: 1px solid black;"
+                        "}"
+
+                    "QPushButton::pressed"
+                        "{"
+                        f"background-color : {button_color_clicked};"
+                        "}"
+
+                    "QTabWidget"
+                        "{"
+                        f"background: {button_color_clicked};"
+                        "}"
+                    
+                    )
+
+
+
+
