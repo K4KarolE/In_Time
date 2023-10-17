@@ -1,6 +1,6 @@
 {
   "skin_selected": "terminator",
-  "music_on": false,
+  "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
     "x": 1023,
@@ -173,6 +173,46 @@
           "x": 324,
           "y": 336,
           "size": 81
+        }
+      }
+    },
+    "Interstellar": {
+      "title": "Interstellar",
+      "button_bg_color": "#C39E71",
+      "button_bg_color_clicked": "#463625",
+      "music_volume": 1.0,
+      "animation_speed": 66,
+      "window_title": "test",
+      "json_widg_params": {
+        "button_settings": {
+          "x": 7,
+          "y": 415
+        },
+        "button_music": {
+          "x": 7,
+          "y": 449
+        },
+        "hours_and_mins": {
+          "x": 455,
+          "y": 292,
+          "size": 100,
+          "color": "#FCF3DF",
+          "style": "Pristina"
+        },
+        "hours_and_mins_shadow": {
+          "x": 454,
+          "y": 311,
+          "size": 100
+        },
+        "seconds": {
+          "x": 554,
+          "y": 419,
+          "size": 30
+        },
+        "seconds_shadow": {
+          "x": 558,
+          "y": 424,
+          "size": 30
         }
       }
     },

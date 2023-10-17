@@ -31,7 +31,7 @@
     - On the Deliver page:
         - Format: GIF
         - Codec Animated GIF
-        - Resolution: Custom - 720 x 518
+        - Resolution: Custom - 720 x 486
 - `PyQt6`:
     - The GIF/animation playback is handled by PyQt's own `QMovie` module
     - No additional steps required

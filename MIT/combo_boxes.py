@@ -29,6 +29,7 @@ class MyComboBoxSkins(QComboBox):
         skins_options = []
         for _ in skins_dic:
             skins_options.append(settings_data['skins'][_]['title'])
+        skins_options.sort()
 
         self.setParent(window_type)
         self.addItems(skins_options)

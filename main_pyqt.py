@@ -2,8 +2,6 @@
 
 Motion in Time - PyQt6 version
 
-Work in progress
-
 '''
 
 from PyQt6.QtWidgets import QApplication, QTabWidget, QLabel, QPushButton
@@ -15,6 +13,7 @@ from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 import sys
 import shutil
+import os
 from pathlib import Path
 
 from MIT import MySettingsWindow, MyMainWindow, window_main_set_style, window_skin_set_style
@@ -762,7 +761,7 @@ def update_xy():
 
 
 slider_pos_x = QSlider(window_main)
-slider_pos_x.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2, ADV_WIDGETS_WIDTH, 20))
+slider_pos_x.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2, ADV_WIDGETS_WIDTH, 20)
 slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_pos_x.setMinimum(0)
 slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
@@ -773,7 +772,7 @@ slider_pos_x.valueChanged.connect(update_xy)
 
 ''' Y - MOVE - SLIDER - ADV '''
 slider_pos_y = QSlider(window_main)
-slider_pos_y.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*3, ADV_WIDGETS_WIDTH, 20))
+slider_pos_y.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*3, ADV_WIDGETS_WIDTH, 20)
 slider_pos_y.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_pos_y.setMinimum(0)
 slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
@@ -806,7 +805,7 @@ def update_size():
 
 
 slider_time_size = QSlider(window_main)
-slider_time_size.setGeometry(QtCore.QRect(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*4, ADV_WIDGETS_WIDTH, 20))
+slider_time_size.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*4, ADV_WIDGETS_WIDTH, 20)
 slider_time_size.setOrientation(QtCore.Qt.Orientation.Horizontal)
 slider_time_size.setMinimum(20)
 slider_time_size.setMaximum(100)
@@ -884,6 +883,8 @@ def update_color():
         
         window_main_set_style(window_main, cv.button_bg_color, cv.button_bg_color_clicked)
         window_settings_set_style(window_settings, cv.button_bg_color, cv.button_bg_color_clicked)
+        button_set_style(button_settings, cv.button_bg_color, cv.button_bg_color_clicked)
+        button_set_style(button_music, cv.button_bg_color, cv.button_bg_color_clicked)
    
     
      
@@ -1061,8 +1062,8 @@ BUTTON_SKIN_HEIGHT = 25
 tabs = QTabWidget(window_skin)
 tab_add_skin = QWidget() 
 tab_edit_skin = QWidget() 
-tabs.addTab(tab_edit_skin, 'Edit Current Skin')
 tabs.addTab(tab_add_skin, ' Add Skin ')
+tabs.addTab(tab_edit_skin, 'Edit Current Skin')
 tabs.resize(WINDOW_SKIN_WIDTH-TABS_POS_X*2, WINDOW_SKIN_HEIGHT-TABS_POS_Y*2) 
 tabs.move(20, 20)
 tabs.setTabShape(QTabWidget.TabShape.Triangular)
@@ -1197,7 +1198,7 @@ button_icon_update.clicked.connect(button_icon_update_clicked)
 button_icon_update.setFont(QFont('Times', 10, 600))
 
 
-
+''' BUTTON - UPDATE '''
 def update_skin_action():
     any_change = False
     db_save_needed = False
@@ -1256,7 +1257,6 @@ def update_skin_action():
 
 
 
-''' BUTTON - UPDATE '''
 button_skin_update = QPushButton(tab_edit_skin, text='UPDATE')
 button_skin_update.setGeometry(
     SKIN_WIDGET_POS_X,
@@ -1276,9 +1276,207 @@ button_skin_update.setFont(QFont('Times', 10, 600))
 ###################################
 '''
 
+''' SKIN NAME - TEXT '''
+skin_name_lable_add = QLabel(tab_add_skin, text='Name of the skin')
+skin_name_lable_add.move(SKIN_WIDGET_POS_X, SKIN_WIDEGT_POS_Y)
+skin_name_lable_add.setFont(QFont('Times', 10, 600))
 
-# testing
-window_skin.show()
+
+''' SKIN NAME - INPUT FIELD '''
+input_field_skin_name_add = QLineEdit(tab_add_skin)
+input_field_skin_name_add.setGeometry(
+    SKIN_WIDGET_POS_X,
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff-22, 
+    SKIN_WIDGET_WIDTH,
+    20)
+input_field_skin_name_add.setFont(QFont('Times', 10, 500))
+input_field_skin_name_add.setCursor(Qt.CursorShape.PointingHandCursor)
+
+
+''' WINDOW TITLE - TEXT '''
+skin_window_title_lable_add = QLabel(tab_add_skin, text='Window Title')
+skin_window_title_lable_add.move(
+    SKIN_WIDGET_POS_X,
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff + 10)
+skin_window_title_lable_add.setFont(QFont('Times', 10, 600))
+
+
+''' WINDOW TITLE - INPUT FIELD '''
+input_field_window_title_add = QLineEdit(tab_add_skin)
+input_field_window_title_add.setGeometry(
+    SKIN_WIDGET_POS_X,
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff * 2 - 10, 
+    SKIN_WIDGET_WIDTH,
+    20)
+input_field_window_title_add.setFont(QFont('Times', 10, 500))
+input_field_window_title_add.setCursor(Qt.CursorShape.PointingHandCursor)
+
+
+''' BUTTON - ADD GIF '''
+def button_gif_update_clicked():
+    dialog_gif_add = QFileDialog()
+    dialog_gif_add.setWindowTitle("Select a GIF file")
+    dialog_gif_add.setNameFilter("GIF files (*.gif)")
+    dialog_gif_add.exec()
+    if dialog_gif_add.exec:
+        skin_dic['gif']['path'] = dialog_gif_add.selectedFiles()
+        button_gif_add.setText(f"{skin_dic['gif']['button_title']} \u2713")
+
+button_gif_add = QPushButton(tab_add_skin, text=skin_dic['gif']['button_title'])
+button_gif_add.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*2.7),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_gif_add.setCursor(Qt.CursorShape.PointingHandCursor)
+button_gif_add.clicked.connect(button_gif_update_clicked)
+button_gif_add.setFont(QFont('Times', 10, 600))
+
+
+''' BUTTON - ADD MUSIC '''
+def button_music_update_clicked():
+    dialog_music_add = QFileDialog()
+    dialog_music_add.setWindowTitle("Select an MP3 file")
+    dialog_music_add.setNameFilter("MP3 files (*.mp3)")
+    dialog_music_add.exec()
+    if dialog_music_add.exec:
+        skin_dic['music']['path'] = dialog_music_add.selectedFiles()
+        button_music_add.setText(f"{skin_dic['music']['button_title']} \u2713")
+
+button_music_add = QPushButton(tab_add_skin, text=skin_dic['music']['button_title'])
+button_music_add.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*3.5),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_music_add.setCursor(Qt.CursorShape.PointingHandCursor)
+button_music_add.clicked.connect(button_music_update_clicked)
+button_music_add.setFont(QFont('Times', 10, 600))
+
+
+''' BUTTON - ADD ICON '''
+def button_icon_update_clicked():
+    dialog_icon_add = QFileDialog()
+    dialog_icon_add.setWindowTitle("Select a PNG file")
+    dialog_icon_add.setNameFilter("PNG files (*.png)")
+    dialog_icon_add.exec()
+    if dialog_icon_add.exec:
+        skin_dic['icon']['path'] = dialog_icon_add.selectedFiles()
+        button_icon_add.setText(f"{skin_dic['icon']['button_title']} \u2713")
+
+button_icon_add = QPushButton(tab_add_skin, text=skin_dic['icon']['button_title'])
+button_icon_add.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*4.3),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_icon_add.setCursor(Qt.CursorShape.PointingHandCursor)
+button_icon_add.clicked.connect(button_icon_update_clicked)
+button_icon_add.setFont(QFont('Times', 10, 600))
+
+
+
+''' BUTTON - ADD SKIN '''
+def add_skin_action():
+    all_set = False
+
+    settings_data, skin_selected, selected_skin_folder = load_info()
+    
+    ''' SKIN NAME '''
+    # INPUT --> FOLDER NAME
+    if len(input_field_skin_name_add.text().strip().lower()) > 0:
+        # TRANSFORM INPUT
+        folder_name =''
+        for letter in input_field_skin_name_add.text():
+            if len(folder_name) < 20:
+                if letter.isalpha() or letter.isdecimal():
+                    folder_name = f'{folder_name}{letter}'
+
+        # CHECKING IF THE FOLDER NAME ALREADY EXISTS
+        for existing_title in settings_data['skins'].keys():
+            if existing_title == folder_name:
+                folder_name = f'{folder_name}_'
+
+        # CREATING JSON DIC.
+        settings_data['skins'][folder_name] = settings_data['skins'][settings_data['skin_selected']]
+
+
+        all_set = True
+
+
+    if len(input_field_skin_name_add.text().strip()) == 0:
+        MyMessageBoxError(
+            'The name field can not be empty!  ',
+            WINDOW_CENTER_X,
+            WINDOW_CENTER_Y
+                )
+    
+
+    if all_set:
+
+        if skin_dic['gif']['path'] and skin_dic['music']['path'] and skin_dic['icon']['path']:
+            
+
+            os.mkdir(Path(Path().resolve(), 'skins', folder_name))
+
+            shutil.copy(skin_dic['gif']['path'][0], f'skins/{folder_name}/GIF.GIF')
+            
+            shutil.copy(skin_dic['music']['path'][0], f'skins/{folder_name}/music.mp3')
+
+            shutil.copy(skin_dic['icon']['path'][0], f'skins/{folder_name}/icon.png')
+            
+            all_set = True
+        
+        else:
+            MyMessageBoxError(
+            'All file types need to be added!  ',
+            WINDOW_CENTER_X,
+            WINDOW_CENTER_Y
+                )
+            all_set = False
+        
+
+
+    if all_set:
+        # CREATING NEW JSON DIC.
+        save_settings(settings_data)    
+
+        # ABLE TO REACH THE NEW JSON DIC (WITHOUT AFFECTING THE ORIGINAL ONE)
+        settings_data, skin_selected, selected_skin_folder = load_info()
+        
+        ''' SKIN NAME '''
+        settings_data['skins'][folder_name]['title'] = input_field_skin_name_add.text().strip()
+
+        ''' WINDOW TITLE '''
+        if len(input_field_window_title_add.text().strip()) > 0:
+            settings_data['skins'][folder_name]['window_title'] = input_field_window_title_add.text()[0:108]
+        
+        if len(input_field_window_title_add.text().strip()) == 0:
+            settings_data['skins'][folder_name]['window_title'] = 'It`s Python baby!'
+        
+        ''' SKIN SELECTED '''
+        settings_data['skin_selected'] = folder_name
+        
+        save_settings(settings_data)
+
+        restart()
+
+
+button_skin_add = QPushButton(tab_add_skin, text='CREATE SKIN')
+button_skin_add.setGeometry(
+    SKIN_WIDGET_POS_X,
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*5.6),
+    SKIN_WIDGET_WIDTH,
+    BUTTON_SKIN_HEIGHT
+    )
+button_skin_add.setCursor(Qt.CursorShape.PointingHandCursor)
+button_skin_add.clicked.connect(add_skin_action)
+button_skin_add.setFont(QFont('Times', 10, 600))
+
+
 
 window_main.show()
 if cv.music_on: music.player.play()

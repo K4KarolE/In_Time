@@ -6,7 +6,7 @@ class MySlider(QSlider):
         super().__init__()
         
         self.setParent(window_type)
-        self.setGeometry(QRect(pos_x, pos_y, width, 20))
+        self.setGeometry(pos_x, pos_y, width, 20)
         self.setOrientation(Qt.Orientation.Horizontal)
         self.setMinimum(min)
         self.setMaximum(max)
