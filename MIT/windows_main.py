@@ -14,8 +14,8 @@ def window_main_set_style(self, button_color, button_color_clicked):
                     "QPushButton"
                         "{"
                         f"background-color : QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 white, stop: 0.3 {button_color}, stop: 0.6 {button_color}, stop: 1 {button_color_clicked});"
-                        "border-radius: 6px;"
-                        "border: 3px solid black;"
+                        "border-radius: 5px;"
+                        "border: 1px solid black;"
                         "}"
                     "QPushButton::pressed"
                         "{"
@@ -35,5 +35,5 @@ class MyMainWindow(QMainWindow):
         self.setFixedWidth(width)
         self.setFixedHeight(height)
         self.setWindowTitle(selected_skin_folder['window_title'])
-        self.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.ico'))
+        self.setWindowIcon(QIcon(f'skins/{skin_selected}/icon.png'))
         window_main_set_style(self, button_color, button_color_clicked)

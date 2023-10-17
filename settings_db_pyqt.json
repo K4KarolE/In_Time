@@ -1,5 +1,5 @@
 {
-  "skin_selected": "back_to_the_future",
+  "skin_selected": "terminator",
   "music_on": false,
   "is_skin_switch_advanced": false,
   "window_main": {
@@ -7,13 +7,13 @@
     "y": 431
   },
   "window_settings": {
-    "x": 1711,
-    "y": 504
+    "x": 1418,
+    "y": 480
   },
   "delete_skin": {
     "enabled": false,
     "target_skin": "None",
-    "del_proc_completed": true
+    "del_proc_completed": false
   },
   "skins": {
     "back_to_the_future": {
@@ -145,12 +145,12 @@
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
       "json_widg_params": {
         "button_settings": {
-          "x": 0,
-          "y": 0
+          "x": 15,
+          "y": 19
         },
         "button_music": {
-          "x": 0,
-          "y": 31
+          "x": 15,
+          "y": 51
         },
         "hours_and_mins": {
           "x": 12,

@@ -6,7 +6,7 @@ class MyMessageBoxConfReq(QMessageBox):
         super().__init__()
 
         self.setWindowTitle('Confirmation needed')
-        self.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
+        self.setWindowIcon(QIcon(f'skins/_images/settings.png'))
         self.setIcon(QMessageBox.Icon.Question)
         self.setText(question)
         self.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
@@ -21,7 +21,7 @@ class MyMessageBoxConfirmation(QMessageBox):
         super().__init__()
 
         self.setWindowTitle('All set')
-        self.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
+        self.setWindowIcon(QIcon(f'skins/_images/settings.png'))
         self.setIcon(QMessageBox.Icon.Information)
         self.setText(message)
         self.setStandardButtons(QMessageBox.StandardButton.Ok)
@@ -36,7 +36,7 @@ class MyMessageBoxError(QMessageBox):
         super().__init__()
 
         self.setWindowTitle('ERROR')
-        self.setWindowIcon(QIcon(f'skins/_images/window_settings.ico'))
+        self.setWindowIcon(QIcon(f'skins/_images/settings.png'))
         self.setIcon(QMessageBox.Icon.Warning)
         self.setText(message)
         self.setStandardButtons(QMessageBox.StandardButton.Close)

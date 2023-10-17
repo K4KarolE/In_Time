@@ -14,9 +14,11 @@ from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 import sys
+import shutil
 from pathlib import Path
 
-from MIT import MySettingsWindow, window_settings_set_style, window_skin_set_style, MyMainWindow, window_main_set_style
+from MIT import MySettingsWindow, MyMainWindow, window_main_set_style, window_skin_set_style
+from MIT import window_settings_set_style, button_set_style
 from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
 from MIT import save_settings, load_info, restart
@@ -300,6 +302,7 @@ button_music.setIconSize(QSize(ICON_SIZE, ICON_SIZE))
 button_music.setGeometry(cv.button_music_pos_x, cv.button_music_pos_y, 29, 29)     # pos, pos, size, size
 button_music.setCursor(Qt.CursorShape.PointingHandCursor)
 button_music.clicked.connect(music_switch_on_off)
+button_set_style(button_music, cv.button_bg_color, cv.button_bg_color_clicked)
 
 
 ''' BUTTON - SETTING '''
@@ -310,7 +313,7 @@ button_settings.setIconSize(QSize(ICON_SIZE, ICON_SIZE))       # icon sizing
 button_settings.setGeometry(cv.button_settings_pos_x, cv.button_settings_pos_y, 30, 30)     # pos, pos, size, size
 button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
-
+button_set_style(button_settings, cv.button_bg_color, cv.button_bg_color_clicked)
 
 
 
@@ -658,9 +661,8 @@ select_widget_cb = MyComboBoxWidgetUpdate(
                                         ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF
                                         )
 
+
 ''' FONT UPDATE - COMBOBOX - ADV '''
-
-
 def time_repositioning():
     ''' 
     IF THE TIME GET BIGGER FROM:
@@ -1048,8 +1050,6 @@ button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 #################################
 '''
 
-# window_add_skin.layout = QGridLayout(window_add_skin)
-
 TABS_POS_X = 20
 TABS_POS_Y = 20
 SKIN_WIDGET_POS_X = 20
@@ -1068,7 +1068,7 @@ tabs.move(20, 20)
 tabs.setTabShape(QTabWidget.TabShape.Triangular)
 tabs.setFont(QFont('Times', 10, 500))
 window_skin_set_style(tabs, 'lightgrey', 'darkgrey')
-# tabs.setStyleSheet(f"background-color : {cv.button_bg_color};")
+
 
 '''
 ###################################
@@ -1101,6 +1101,7 @@ skin_window_title_lable.move(
     SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff + 10)
 skin_window_title_lable.setFont(QFont('Times', 10, 600))
 
+
 ''' WINDOW TITLE - INPUT FIELD '''
 input_field_window_title = QLineEdit(tab_edit_skin)
 input_field_window_title.setText(selected_skin_folder['window_title'])
@@ -1112,6 +1113,20 @@ input_field_window_title.setGeometry(
 input_field_window_title.setFont(QFont('Times', 10, 500))
 input_field_window_title.setCursor(Qt.CursorShape.PointingHandCursor)
 
+skin_dic = {
+            'gif': {
+                    'button_title': 'ANIMATION - GIF',
+                    'path': ''
+                    },
+            'music': {
+                    'button_title': 'MUSIC - MP3',
+                    'path': ''
+                    },
+            'icon': {
+                    'button_title': 'ICON - PNG',
+                    'path': ''
+                    }
+            }
 
 
 ''' BUTTON - GIF UPDATE '''
@@ -1121,10 +1136,10 @@ def button_gif_update_clicked():
     dialog_gif_update.setNameFilter("GIF files (*.gif)")
     dialog_gif_update.exec()
     if dialog_gif_update.exec:
-        gif_path = dialog_gif_update.selectedFiles()
-        button_gif_update.setText(f"{button_gif_update.text()} \u2713")
+        skin_dic['gif']['path'] = dialog_gif_update.selectedFiles()
+        button_gif_update.setText(f"{skin_dic['gif']['button_title']} \u2713")
 
-button_gif_update = QPushButton(tab_edit_skin, text='ANIMATION - GIF')
+button_gif_update = QPushButton(tab_edit_skin, text=skin_dic['gif']['button_title'])
 button_gif_update.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*2.7),
@@ -1136,8 +1151,18 @@ button_gif_update.clicked.connect(button_gif_update_clicked)
 button_gif_update.setFont(QFont('Times', 10, 600))
 
 
+
 ''' BUTTON - MUSIC UPDATE '''
-button_music_update = QPushButton(tab_edit_skin, text='MUSIC - MP3')
+def button_music_update_clicked():
+    dialog_music_update = QFileDialog()
+    dialog_music_update.setWindowTitle("Select an MP3 file")
+    dialog_music_update.setNameFilter("MP3 files (*.mp3)")
+    dialog_music_update.exec()
+    if dialog_music_update.exec:
+        skin_dic['music']['path'] = dialog_music_update.selectedFiles()
+        button_music_update.setText(f"{skin_dic['music']['button_title']} \u2713")
+
+button_music_update = QPushButton(tab_edit_skin, text=skin_dic['music']['button_title'])
 button_music_update.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*3.5),
@@ -1145,12 +1170,22 @@ button_music_update.setGeometry(
     BUTTON_SKIN_HEIGHT
     )
 button_music_update.setCursor(Qt.CursorShape.PointingHandCursor)
-button_music_update.clicked.connect(update_color)
+button_music_update.clicked.connect(button_music_update_clicked)
 button_music_update.setFont(QFont('Times', 10, 600))
 
 
+
 ''' BUTTON - WINDOW ICON UPDATE '''
-button_icon_update = QPushButton(tab_edit_skin, text='WINDOW ICON')
+def button_icon_update_clicked():
+    dialog_icon_update = QFileDialog()
+    dialog_icon_update.setWindowTitle("Select a PNG file")
+    dialog_icon_update.setNameFilter("PNG files (*.png)")
+    dialog_icon_update.exec()
+    if dialog_icon_update.exec:
+        skin_dic['icon']['path'] = dialog_icon_update.selectedFiles()
+        button_icon_update.setText(f"{skin_dic['icon']['button_title']} \u2713")
+
+button_icon_update = QPushButton(tab_edit_skin, text=skin_dic['icon']['button_title'])
 button_icon_update.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*4.3),
@@ -1158,20 +1193,24 @@ button_icon_update.setGeometry(
     BUTTON_SKIN_HEIGHT
     )
 button_icon_update.setCursor(Qt.CursorShape.PointingHandCursor)
-button_icon_update.clicked.connect(update_color)
+button_icon_update.clicked.connect(button_icon_update_clicked)
 button_icon_update.setFont(QFont('Times', 10, 600))
 
 
 
 def update_skin_action():
     any_change = False
+    db_save_needed = False
+
     settings_data, skin_selected, selected_skin_folder = load_info()
     
-    # SKIN NAME
+    ''' SKIN NAME '''
     if input_field_skin_name.text() != selected_skin_folder['title']:
         if len(input_field_skin_name.text().strip()) > 0:
             selected_skin_folder['title'] = input_field_skin_name.text()[0:30]
             any_change = True
+            db_save_needed = True
+
         else:
             MyMessageBoxError(
                 'The name field can not be empty!  ',
@@ -1179,17 +1218,40 @@ def update_skin_action():
                 WINDOW_CENTER_Y
                 )
     
-    # WINDOW TITLE
+
+    ''' WINDOW TITLE '''
     if input_field_window_title.text() != selected_skin_folder['window_title']:
         selected_skin_folder['window_title'] = input_field_window_title.text()[0:108]
         any_change = True
+        db_save_needed = True
     
     if not input_field_window_title.text():
         selected_skin_folder['window_title'] = 'It`s Python baby!'
         any_change = True
+        db_save_needed = True
+
+
+    ''' GIF '''
+    if skin_dic['gif']['path']:
+        shutil.copy(skin_dic['gif']['path'][0], f'skins/{skin_selected}/GIF.GIF')
+        print(skin_dic['gif']['path'])
+        any_change = True
+    
+    ''' MUSIC '''
+    if skin_dic['music']['path']:
+        shutil.copy(skin_dic['music']['path'][0], f'skins/{skin_selected}/music.mp3')
+        any_change = True
+
+    ''' ICON '''
+    if skin_dic['icon']['path']:
+        shutil.copy(skin_dic['icon']['path'][0], f'skins/{skin_selected}/icon.png')
+        any_change = True
+
+
+    if db_save_needed:
+        save_settings(settings_data)
 
     if any_change:
-        save_settings(settings_data)
         restart()
 
 
@@ -1206,6 +1268,13 @@ button_skin_update.setCursor(Qt.CursorShape.PointingHandCursor)
 button_skin_update.clicked.connect(update_skin_action)
 button_skin_update.setFont(QFont('Times', 10, 600))
 
+
+
+'''
+###################################
+    ADD NEW SKIN - WIDGETS   
+###################################
+'''
 
 
 # testing
