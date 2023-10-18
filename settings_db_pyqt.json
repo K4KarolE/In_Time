@@ -1,5 +1,5 @@
 {
-  "skin_selected": "terminator",
+  "skin_selected": "Interstellar",
   "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
@@ -8,7 +8,7 @@
   },
   "window_settings": {
     "x": 1418,
-    "y": 480
+    "y": 461
   },
   "delete_skin": {
     "enabled": false,
@@ -25,34 +25,36 @@
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
       "json_widg_params": {
         "button_settings": {
-          "x": 420,
-          "y": 372
+          "x": 679,
+          "y": 14
         },
         "button_music": {
-          "x": 420,
-          "y": 403
+          "x": 679,
+          "y": 46
         },
         "hours_and_mins": {
-          "x": 457,
-          "y": 292,
+          "x": 347,
+          "y": 307,
           "size": 100,
           "color": "#675C7C",
-          "style": "Pristina"
+          "style": "Pristina",
+          "anchor_point": 598
         },
         "hours_and_mins_shadow": {
-          "x": 454,
-          "y": 312,
-          "size": 100
+          "x": 355,
+          "y": 311,
+          "size": 100,
+          "anchor_point": 606
         },
         "seconds": {
-          "x": 554,
-          "y": 419,
+          "x": 656,
+          "y": 428,
           "size": 30
         },
         "seconds_shadow": {
-          "x": 558,
-          "y": 424,
-          "size": 30
+          "x": 659,
+          "y": 431,
+          "size": 31
         }
       }
     },
@@ -62,7 +64,7 @@
       "button_bg_color_clicked": "#475A77",
       "music_volume": 0.21,
       "animation_speed": 79,
-      "window_title": "Back, in time, to pie",
+      "window_title": "Back, in time, to die",
       "json_widg_params": {
         "button_settings": {
           "x": 672,
@@ -73,16 +75,18 @@
           "y": 48
         },
         "hours_and_mins": {
-          "x": 417,
+          "x": 390,
           "y": 311,
           "size": 100,
           "color": "#3E4E6A",
-          "style": "Chiller"
+          "style": "Chiller",
+          "anchor_point": 663
         },
         "hours_and_mins_shadow": {
-          "x": 423,
+          "x": 395,
           "y": 318,
-          "size": 100
+          "size": 100,
+          "anchor_point": 668
         },
         "seconds": {
           "x": 535,
@@ -100,8 +104,8 @@
       "title": "Idiocracy",
       "button_bg_color": "#9E8263",
       "button_bg_color_clicked": "#4D3500",
-      "music_volume": 0.58,
-      "animation_speed": 189,
+      "music_volume": 0.18,
+      "animation_speed": 95,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha.",
       "json_widg_params": {
         "button_settings": {
@@ -113,16 +117,18 @@
           "y": 46
         },
         "hours_and_mins": {
-          "x": 2,
-          "y": 309,
-          "size": 100,
+          "x": 202,
+          "y": 247,
+          "size": 72,
           "color": "#AE580A",
-          "style": "Segoe UI Black"
+          "style": "Impact",
+          "anchor_point": 419
         },
         "hours_and_mins_shadow": {
-          "x": 10,
-          "y": 309,
-          "size": 100
+          "x": 259,
+          "y": 94,
+          "size": 100,
+          "anchor_point": 560
         },
         "seconds": {
           "x": 344,
@@ -153,24 +159,26 @@
           "y": 51
         },
         "hours_and_mins": {
-          "x": 12,
+          "x": 293,
           "y": 304,
           "size": 100,
           "color": "red",
-          "style": "Felix Titling"
+          "style": "Felix Titling",
+          "anchor_point": 590
         },
         "hours_and_mins_shadow": {
-          "x": 18,
-          "y": 314,
-          "size": 100
+          "x": 300,
+          "y": 313,
+          "size": 100,
+          "anchor_point": 597
         },
         "seconds": {
-          "x": 316,
+          "x": 108,
           "y": 330,
           "size": 81
         },
         "seconds_shadow": {
-          "x": 324,
+          "x": 116,
           "y": 336,
           "size": 81
         }
@@ -180,39 +188,41 @@
       "title": "Interstellar",
       "button_bg_color": "#C39E71",
       "button_bg_color_clicked": "#463625",
-      "music_volume": 1.0,
-      "animation_speed": 66,
-      "window_title": "test",
+      "music_volume": 0.48,
+      "animation_speed": 74,
+      "window_title": "We used to look up at the sky and wonder at our place in the stars. Now we just look down, and worry about our place in the dirt.",
       "json_widg_params": {
         "button_settings": {
-          "x": 7,
-          "y": 415
+          "x": 44,
+          "y": 434
         },
         "button_music": {
-          "x": 7,
-          "y": 449
+          "x": 11,
+          "y": 434
         },
         "hours_and_mins": {
-          "x": 455,
-          "y": 292,
+          "x": 464,
+          "y": 345,
           "size": 100,
           "color": "#FCF3DF",
-          "style": "Pristina"
+          "style": "Niagara Engraved",
+          "anchor_point": 629
         },
         "hours_and_mins_shadow": {
-          "x": 454,
-          "y": 311,
-          "size": 100
+          "x": 473,
+          "y": 345,
+          "size": 100,
+          "anchor_point": 634
         },
         "seconds": {
-          "x": 554,
-          "y": 419,
-          "size": 30
+          "x": 632,
+          "y": 386,
+          "size": 63
         },
         "seconds_shadow": {
-          "x": 558,
-          "y": 424,
-          "size": 30
+          "x": 636,
+          "y": 386,
+          "size": 63
         }
       }
     },
@@ -221,7 +231,7 @@
       "button_bg_color": "purple",
       "button_bg_color_clicked": "orange",
       "music_volume": 0.34,
-      "animation_speed": 139,
+      "animation_speed": 79,
       "window_title": " - TEST TITLE - ",
       "json_widg_params": {
         "button_settings": {
@@ -233,16 +243,18 @@
           "y": 294
         },
         "hours_and_mins": {
-          "x": 330,
-          "y": 96,
+          "x": 190,
+          "y": 27,
           "size": 100,
           "color": "blue",
-          "style": "Showcard Gothic"
+          "style": "Showcard Gothic",
+          "anchor_point": 511
         },
         "hours_and_mins_shadow": {
-          "x": 333,
-          "y": 189,
-          "size": 92
+          "x": 284,
+          "y": 194,
+          "size": 92,
+          "anchor_point": 605
         },
         "seconds": {
           "x": 205,

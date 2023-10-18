@@ -82,6 +82,11 @@ class Data:
 
 
     ## POSITIONS
+
+    # ANCHOR POINTS
+    anchor_point = selected_skin_folder['json_widg_params']['hours_and_mins']['anchor_point']
+    anchor_point_shadow = selected_skin_folder['json_widg_params']['hours_and_mins_shadow']['anchor_point']
+
     # HOURS & MINUTES
     time_hm_pos_x = selected_skin_folder['json_widg_params']['hours_and_mins']['x']
     time_hm_pos_y = selected_skin_folder['json_widg_params']['hours_and_mins']['y']

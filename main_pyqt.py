@@ -93,7 +93,7 @@ def time_display():
     # TOP
     hours_and_mins.setText(hours_and_mins_time)
     seconds.setText(seconds_time)
-    
+
     # BACk - SHADOW
     hours_and_mins_shadow.setText(hours_and_mins_time)
     seconds_shadow.setText(seconds_time)
@@ -258,24 +258,23 @@ timer.start()
 ## BACK - SHADOWS
 # HOURS:MINUTES
 hours_and_mins_shadow = QLabel(window_main)
-hours_and_mins_shadow.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+hours_and_mins_shadow.setAlignment(Qt.AlignmentFlag.AlignCenter)
 hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_shad_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_shadow.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
 # SECONDS
 seconds_shadow = QLabel(window_main) 
-seconds_shadow.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+seconds_shadow.setAlignment(Qt.AlignmentFlag.AlignCenter)
 seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_shad_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds_shadow.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
 ## TOP
 # HOURS:MINUTES
 hours_and_mins = QLabel(window_main)
-hours_and_mins.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+hours_and_mins.setAlignment(Qt.AlignmentFlag.AlignCenter)
 hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
-
 # SECONDS
 seconds = QLabel(window_main) 
-seconds.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+seconds.setAlignment(Qt.AlignmentFlag.AlignCenter)
 seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
 
@@ -309,7 +308,7 @@ button_set_style(button_music, cv.button_bg_color, cv.button_bg_color_clicked)
 button_image_settings = QIcon('skins/_images/settings.png')
 button_settings = QPushButton(window_main, text=None, icon=button_image_settings)
 button_settings.setIconSize(QSize(ICON_SIZE, ICON_SIZE))       # icon sizing
-button_settings.setGeometry(cv.button_settings_pos_x, cv.button_settings_pos_y, 30, 30)     # pos, pos, size, size
+button_settings.setGeometry(cv.button_settings_pos_x, cv.button_settings_pos_y, 29, 29)     # pos, pos, size, size
 button_settings.setCursor(Qt.CursorShape.PointingHandCursor)
 button_settings.clicked.connect(window_settings.show)
 button_set_style(button_settings, cv.button_bg_color, cv.button_bg_color_clicked)
@@ -557,7 +556,8 @@ widget_dic = {
                 "y": cv.time_hm_pos_y,
                 "size": cv.time_hm_font_size,
                 "color": cv.time_font_color,
-                "style": cv.time_font_style
+                "style": cv.time_font_style,
+                "anchor_point": cv.anchor_point  # = pos_x + rect.width after move
                 },
             'Time: HRS:MINS - Shadow': {        #5
                 "widget": hours_and_mins_shadow,
@@ -565,7 +565,8 @@ widget_dic = {
                 "x": cv.time_hm_shadow_pos_x,
                 "y": cv.time_hm_shadow_pos_y,
                 "size": cv.time_hm_shad_font_size,
-                "color": 'black'
+                "color": 'black',
+                "anchor_point": cv.anchor_point_shadow
                 },
             'Time: SEC': {                      #6
                 "widget": seconds,
@@ -682,7 +683,15 @@ def time_repositioning():
             if (new_format_height + widget_dic[item]['y']) > WINDOW_HEIGHT:
                 widget_dic[item]['widget'].move(widget_dic[item]['x'], WINDOW_HEIGHT - new_format_height)
                 widget_dic[item]['y'] = WINDOW_HEIGHT - new_format_height
+    
+    ''' REPOSITION TO TO RIGHT ANCHOR - CREATED WHEN THE HRS:MINS/SHADOW MOVED WITH THE SLIDER '''
+    if select_widget_cb.currentText() != widget_list[4]:  
+        if widget_dic[widget_list[4]]["anchor_point"] != widget_dic[widget_list[4]]['x'] + hours_and_mins.size().width():
+            hours_and_mins.move(widget_dic[widget_list[4]]["anchor_point"] - hours_and_mins.size().width(), widget_dic[widget_list[4]]['y'])
 
+    if select_widget_cb.currentText() != widget_list[5]:
+        if widget_dic[widget_list[5]]["anchor_point"] != widget_dic[widget_list[5]]['x'] + hours_and_mins_shadow.size().width():
+            hours_and_mins_shadow.move(widget_dic[widget_list[5]]["anchor_point"] - hours_and_mins_shadow.size().width(), widget_dic[widget_list[5]]['y'])
 
 
 def selected_font_action():
@@ -758,6 +767,14 @@ def update_xy():
         widget_dic[selected_widget]['widget'].move(slider_pos_x.value(), slider_pos_y.value())
         widget_dic[selected_widget]['x'] = slider_pos_x.value()
         widget_dic[selected_widget]['y'] = slider_pos_y.value()
+        
+        # Time: HRS:MINS
+        if select_widget_cb.currentText() == widget_list[4]:
+            widget_dic[widget_list[4]]["anchor_point"] = slider_pos_x.value() + hours_and_mins.size().width()
+        
+        # HRS:MINS - Shadow
+        if select_widget_cb.currentText() == widget_list[5]:
+            widget_dic[widget_list[5]]["anchor_point"] = slider_pos_x.value() + hours_and_mins_shadow.size().width()
 
 
 slider_pos_x = QSlider(window_main)
@@ -838,7 +855,6 @@ input_field_color.setFont(QFont('Times', 10, 500))
     BUTTONS - ADV   
 #######################
 '''
-
 
 ''' BUTTON - CLOSE - ADV '''
 def close_advanced_window():
@@ -1062,8 +1078,8 @@ BUTTON_SKIN_HEIGHT = 25
 tabs = QTabWidget(window_skin)
 tab_add_skin = QWidget() 
 tab_edit_skin = QWidget() 
-tabs.addTab(tab_add_skin, ' Add Skin ')
 tabs.addTab(tab_edit_skin, 'Edit Current Skin')
+tabs.addTab(tab_add_skin, ' Add Skin ')
 tabs.resize(WINDOW_SKIN_WIDTH-TABS_POS_X*2, WINDOW_SKIN_HEIGHT-TABS_POS_Y*2) 
 tabs.move(20, 20)
 tabs.setTabShape(QTabWidget.TabShape.Triangular)
@@ -1222,7 +1238,7 @@ def update_skin_action():
 
     ''' WINDOW TITLE '''
     if input_field_window_title.text() != selected_skin_folder['window_title']:
-        selected_skin_folder['window_title'] = input_field_window_title.text()[0:108]
+        selected_skin_folder['window_title'] = input_field_window_title.text()[0:160]
         any_change = True
         db_save_needed = True
     
@@ -1452,7 +1468,7 @@ def add_skin_action():
 
         ''' WINDOW TITLE '''
         if len(input_field_window_title_add.text().strip()) > 0:
-            settings_data['skins'][folder_name]['window_title'] = input_field_window_title_add.text()[0:108]
+            settings_data['skins'][folder_name]['window_title'] = input_field_window_title_add.text()[0:160]
         
         if len(input_field_window_title_add.text().strip()) == 0:
             settings_data['skins'][folder_name]['window_title'] = 'It`s Python baby!'
