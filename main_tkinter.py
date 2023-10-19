@@ -213,11 +213,11 @@ def main():
         canvas.after(animation.speed, lambda:animation_func(animation_param, count))
 
 
-
+    ''' ICONS SWITCHED TO PNG FOR THE PYQT VERSION '''
     # WINDOW ICON - left, top corner - better window load time when this is after animation section
-    if platform.system() == 'Windows':      # will not be visible on Linux, macOS
-        path_icon = Path(working_directory, 'skins', skin_selected, 'icon.ico')
-        window.iconbitmap(path_icon)
+    # if platform.system() == 'Windows':      # will not be visible on Linux, macOS
+    #     path_icon = Path(working_directory, 'skins', skin_selected, 'icon.ico')
+    #     window.iconbitmap(path_icon)
 
 
     ## TIME
