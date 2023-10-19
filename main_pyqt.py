@@ -646,8 +646,13 @@ def selected_widget_action():
 
     # MOVE THE HANDLE TO THE LATEST POSITION
     # HAS TO BE AFTER THE SLIDER RANGE ADJUSTMENT
-    slider_pos_x.setValue(widget_dic[selected_widget]['x'])
-    slider_pos_y.setValue(widget_dic[selected_widget]['y']) 
+    if selected_widget in widget_list[4:6]:
+        slider_pos_x.setValue(widget_dic[selected_widget]['anchor_point'] - widget_dic[selected_widget]['widget'].size().width())
+        slider_pos_y.setValue(widget_dic[selected_widget]['y']) 
+
+    if selected_widget not in widget_list[4:6]:
+        slider_pos_x.setValue(widget_dic[selected_widget]['x'])
+        slider_pos_y.setValue(widget_dic[selected_widget]['y']) 
 
     cv.selected_widg_changed = False
 
@@ -863,6 +868,14 @@ def close_advanced_window():
 
     for size_decr in range(0, WINDOW_ADVANCED_ADD_WIDTH+2, 2):
         window_main.setFixedWidth(WINDOW_ADVANCED_WIDTH - size_decr)
+    
+    ''' 
+        SET THE COMBOBOX BACK TO THE 1ST WIDGET (BUTTON:SETTINGS)
+        SO THE AUTOCORRECTIO(time_repositioning()) CAN HAPPEN FOR THE HRS:MINS/SHADOW 
+    '''
+    if select_widget_cb.currentText() in widget_list[4:6]:
+        select_widget_cb.setCurrentText(widget_list[0])
+        selected_widget_action()
 
 
 button_image_close = QIcon('skins/_images/close.png')

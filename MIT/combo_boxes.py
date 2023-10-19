@@ -47,7 +47,6 @@ class MyComboBoxWidgetUpdate(QComboBox):
 
         self.setParent(window_type)
         self.addItems(widgets_list)
-        self.setCurrentText(widgets_list[0])
         self.setGeometry(pos_x, pos_y, width, 20)
         self.currentTextChanged.connect(selected_widget_action)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
