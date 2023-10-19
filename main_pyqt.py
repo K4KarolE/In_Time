@@ -258,23 +258,23 @@ timer.start()
 ## BACK - SHADOWS
 # HOURS:MINUTES
 hours_and_mins_shadow = QLabel(window_main)
-hours_and_mins_shadow.setAlignment(Qt.AlignmentFlag.AlignCenter)
+hours_and_mins_shadow.setAlignment(Qt.AlignmentFlag.AlignRight)
 hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_shad_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins_shadow.move(cv.time_hm_shadow_pos_x, cv.time_hm_shadow_pos_y)
 # SECONDS
 seconds_shadow = QLabel(window_main) 
-seconds_shadow.setAlignment(Qt.AlignmentFlag.AlignCenter)
+seconds_shadow.setAlignment(Qt.AlignmentFlag.AlignLeft)
 seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_shad_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds_shadow.move(cv.time_sec_shadow_pos_x, cv.time_sec_shadow_pos_y)
 ## TOP
 # HOURS:MINUTES
 hours_and_mins = QLabel(window_main)
-hours_and_mins.setAlignment(Qt.AlignmentFlag.AlignCenter)
+hours_and_mins.setAlignment(Qt.AlignmentFlag.AlignRight)
 hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
 hours_and_mins.move(cv.time_hm_pos_x, cv.time_hm_pos_y)
 # SECONDS
 seconds = QLabel(window_main) 
-seconds.setAlignment(Qt.AlignmentFlag.AlignCenter)
+seconds.setAlignment(Qt.AlignmentFlag.AlignLeft)
 seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
 seconds.move(cv.time_sec_pos_x, cv.time_sec_pos_y) # background: black;
 
@@ -442,6 +442,7 @@ button_advanced.clicked.connect(button_advanced_launch)
 button_advanced.setFont(QFont('Times', 10, 600))
 
 
+
 '''
 #########################################
 #########################################
@@ -453,7 +454,7 @@ button_advanced.setFont(QFont('Times', 10, 600))
 * still in main window       
 '''
 
-
+# IF ADVANCED WINDOW ACTIVE --> DISABLE WINDOW/BUTTON SETTINGS
 def butt_and_win_settings_enable(value):
     window_settings.setEnabled(value)
     button_settings.setEnabled(value)
@@ -461,6 +462,16 @@ def butt_and_win_settings_enable(value):
         label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
     else:
         label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
+
+
+# SKIN SWITCH IN THE ADVANCED WINDOW -->
+# MAIN RESTART WITH THE ADVENCED SETTINGS "WINDOW"
+if settings_data['is_skin_switch_advanced']:
+    window_main.setFixedWidth(WINDOW_ADVANCED_WIDTH)
+    butt_and_win_settings_enable(False)
+    settings_data['is_skin_switch_advanced'] = False
+    save_settings(settings_data)
+
 
 ''' 
 ###################
@@ -511,14 +522,6 @@ MyImage(window_main, 'color.png', IMAGE_SIZE-3, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV
 '''
 
 ''' SKIN SWITCH - COMBOBOX - ADV '''
-# RELAUNCHING THE ADVENCED SETTINGS "WINDOW"
-# AFTER ADVANCED SKIN SWITCH
-if settings_data['is_skin_switch_advanced']:
-    window_main.setFixedWidth(WINDOW_WIDTH+WINDOW_ADVANCED_ADD_WIDTH)
-    butt_and_win_settings_enable(False)
-    settings_data['is_skin_switch_advanced'] = False
-    save_settings(settings_data)
-
 MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y)
 
 
@@ -557,7 +560,7 @@ widget_dic = {
                 "size": cv.time_hm_font_size,
                 "color": cv.time_font_color,
                 "style": cv.time_font_style,
-                "anchor_point": cv.anchor_point  # = pos_x + rect.width after move
+                "anchor_point": cv.anchor_point  # = pos_x + width after move
                 },
             'Time: HRS:MINS - Shadow': {        #5
                 "widget": hours_and_mins_shadow,

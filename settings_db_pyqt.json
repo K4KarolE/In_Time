@@ -1,5 +1,5 @@
 {
-  "skin_selected": "Interstellar",
+  "skin_selected": "back_to_the_future",
   "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
@@ -7,8 +7,8 @@
     "y": 431
   },
   "window_settings": {
-    "x": 1418,
-    "y": 461
+    "x": 1076,
+    "y": 480
   },
   "delete_skin": {
     "enabled": false,
@@ -33,28 +33,28 @@
           "y": 46
         },
         "hours_and_mins": {
-          "x": 347,
-          "y": 307,
+          "x": 395,
+          "y": 271,
           "size": 100,
           "color": "#675C7C",
           "style": "Pristina",
-          "anchor_point": 598
+          "anchor_point": 654
         },
         "hours_and_mins_shadow": {
-          "x": 355,
-          "y": 311,
+          "x": 407,
+          "y": 276,
           "size": 100,
-          "anchor_point": 606
+          "anchor_point": 659
         },
         "seconds": {
-          "x": 656,
-          "y": 428,
-          "size": 30
+          "x": 606,
+          "y": 385,
+          "size": 53
         },
         "seconds_shadow": {
-          "x": 659,
-          "y": 431,
-          "size": 31
+          "x": 614,
+          "y": 386,
+          "size": 52
         }
       }
     },
@@ -75,28 +75,28 @@
           "y": 48
         },
         "hours_and_mins": {
-          "x": 390,
-          "y": 311,
-          "size": 100,
+          "x": 394,
+          "y": 344,
+          "size": 78,
           "color": "#3E4E6A",
           "style": "Chiller",
-          "anchor_point": 663
+          "anchor_point": 589
         },
         "hours_and_mins_shadow": {
-          "x": 395,
-          "y": 318,
-          "size": 100,
-          "anchor_point": 668
+          "x": 376,
+          "y": 345,
+          "size": 78,
+          "anchor_point": 592
         },
         "seconds": {
-          "x": 535,
-          "y": 430,
-          "size": 30
+          "x": 589,
+          "y": 348,
+          "size": 73
         },
         "seconds_shadow": {
-          "x": 537,
-          "y": 442,
-          "size": 25
+          "x": 584,
+          "y": 349,
+          "size": 81
         }
       }
     },
@@ -117,28 +117,28 @@
           "y": 46
         },
         "hours_and_mins": {
-          "x": 202,
-          "y": 247,
-          "size": 72,
+          "x": 19,
+          "y": 364,
+          "size": 77,
           "color": "#AE580A",
-          "style": "Impact",
-          "anchor_point": 419
+          "style": "Bauhaus 93",
+          "anchor_point": 299
         },
         "hours_and_mins_shadow": {
-          "x": 259,
-          "y": 94,
-          "size": 100,
-          "anchor_point": 560
+          "x": 21,
+          "y": 369,
+          "size": 78,
+          "anchor_point": 301
         },
         "seconds": {
-          "x": 344,
-          "y": 405,
-          "size": 30
+          "x": 300,
+          "y": 411,
+          "size": 39
         },
         "seconds_shadow": {
-          "x": 348,
-          "y": 409,
-          "size": 30
+          "x": 305,
+          "y": 414,
+          "size": 38
         }
       }
     },
@@ -159,60 +159,60 @@
           "y": 51
         },
         "hours_and_mins": {
-          "x": 293,
-          "y": 304,
-          "size": 100,
+          "x": 19,
+          "y": 324,
+          "size": 90,
           "color": "red",
-          "style": "Felix Titling",
-          "anchor_point": 590
+          "style": "Impact",
+          "anchor_point": 330
         },
         "hours_and_mins_shadow": {
-          "x": 300,
-          "y": 313,
+          "x": 18,
+          "y": 324,
           "size": 100,
-          "anchor_point": 597
+          "anchor_point": 330
         },
         "seconds": {
-          "x": 108,
-          "y": 330,
-          "size": 81
+          "x": 339,
+          "y": 354,
+          "size": 75
         },
         "seconds_shadow": {
-          "x": 116,
-          "y": 336,
-          "size": 81
+          "x": 339,
+          "y": 354,
+          "size": 75
         }
       }
     },
     "Interstellar": {
       "title": "Interstellar",
-      "button_bg_color": "#C39E71",
+      "button_bg_color": "#C28D4E",
       "button_bg_color_clicked": "#463625",
-      "music_volume": 0.48,
+      "music_volume": 0.54,
       "animation_speed": 74,
       "window_title": "We used to look up at the sky and wonder at our place in the stars. Now we just look down, and worry about our place in the dirt.",
       "json_widg_params": {
         "button_settings": {
-          "x": 44,
-          "y": 434
+          "x": 47,
+          "y": 442
         },
         "button_music": {
-          "x": 11,
-          "y": 434
+          "x": 15,
+          "y": 442
         },
         "hours_and_mins": {
           "x": 464,
           "y": 345,
           "size": 100,
-          "color": "#FCF3DF",
+          "color": "#C28D4E",
           "style": "Niagara Engraved",
           "anchor_point": 629
         },
         "hours_and_mins_shadow": {
-          "x": 473,
+          "x": 509,
           "y": 345,
           "size": 100,
-          "anchor_point": 634
+          "anchor_point": 632
         },
         "seconds": {
           "x": 632,
@@ -220,9 +220,9 @@
           "size": 63
         },
         "seconds_shadow": {
-          "x": 636,
-          "y": 386,
-          "size": 63
+          "x": 637,
+          "y": 390,
+          "size": 61
         }
       }
     },
