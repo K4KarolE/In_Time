@@ -1,5 +1,5 @@
 {
-  "skin_selected": "back_to_the_future",
+  "skin_selected": "terminator",
   "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
@@ -18,8 +18,8 @@
   "skins": {
     "back_to_the_future": {
       "title": "Back to the Future I.",
-      "button_bg_color": "#675C7C",
-      "button_bg_color_clicked": "#F5D2A5",
+      "button_bg_color": "#7A6E91",
+      "button_bg_color_clicked": "#423A51",
       "music_volume": 0.11,
       "animation_speed": 129,
       "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
@@ -36,7 +36,7 @@
           "x": 395,
           "y": 271,
           "size": 100,
-          "color": "#675C7C",
+          "color": "#7A6E91",
           "style": "Pristina",
           "anchor_point": 654
         },
@@ -62,8 +62,8 @@
       "title": "Donnie Darko",
       "button_bg_color": "#6F8191",
       "button_bg_color_clicked": "#475A77",
-      "music_volume": 0.21,
-      "animation_speed": 79,
+      "music_volume": 0.25,
+      "animation_speed": 48,
       "window_title": "Back, in time, to die",
       "json_widg_params": {
         "button_settings": {
@@ -103,7 +103,7 @@
     "idiocracy": {
       "title": "Idiocracy",
       "button_bg_color": "#9E8263",
-      "button_bg_color_clicked": "#4D3500",
+      "button_bg_color_clicked": "#6F5740",
       "music_volume": 0.18,
       "animation_speed": 95,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha.",
@@ -126,7 +126,7 @@
         },
         "hours_and_mins_shadow": {
           "x": 21,
-          "y": 369,
+          "y": 368,
           "size": 78,
           "anchor_point": 301
         },
@@ -144,8 +144,8 @@
     },
     "terminator": {
       "title": "Terminator I.",
-      "button_bg_color": "#AF0000",
-      "button_bg_color_clicked": "#400000",
+      "button_bg_color": "#D70000",
+      "button_bg_color_clicked": "#8E0000",
       "music_volume": 0.36,
       "animation_speed": 99,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
@@ -159,27 +159,27 @@
           "y": 51
         },
         "hours_and_mins": {
-          "x": 19,
-          "y": 324,
+          "x": 54,
+          "y": 339,
           "size": 90,
           "color": "red",
           "style": "Impact",
-          "anchor_point": 330
+          "anchor_point": 303
         },
         "hours_and_mins_shadow": {
-          "x": 18,
-          "y": 324,
-          "size": 100,
-          "anchor_point": 330
+          "x": 57,
+          "y": 339,
+          "size": 90,
+          "anchor_point": 306
         },
         "seconds": {
-          "x": 339,
-          "y": 354,
+          "x": 306,
+          "y": 358,
           "size": 75
         },
         "seconds_shadow": {
-          "x": 339,
-          "y": 354,
+          "x": 309,
+          "y": 360,
           "size": 75
         }
       }
@@ -187,9 +187,9 @@
     "Interstellar": {
       "title": "Interstellar",
       "button_bg_color": "#C28D4E",
-      "button_bg_color_clicked": "#463625",
-      "music_volume": 0.54,
-      "animation_speed": 74,
+      "button_bg_color_clicked": "#916031",
+      "music_volume": 0.38,
+      "animation_speed": 72,
       "window_title": "We used to look up at the sky and wonder at our place in the stars. Now we just look down, and worry about our place in the dirt.",
       "json_widg_params": {
         "button_settings": {
@@ -220,9 +220,9 @@
           "size": 63
         },
         "seconds_shadow": {
-          "x": 637,
-          "y": 390,
-          "size": 61
+          "x": 634,
+          "y": 386,
+          "size": 63
         }
       }
     },

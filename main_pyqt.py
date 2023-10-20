@@ -8,8 +8,7 @@ from PyQt6.QtWidgets import QApplication, QTabWidget, QLabel, QPushButton
 from PyQt6.QtWidgets import QSlider, QLineEdit, QWidget, QFileDialog
 from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, QTimer, QTime, Qt, QUrl
-from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
+from PyQt6.QtCore import QSize, QTimer, QTime, Qt
 
 import sys
 import shutil
@@ -18,30 +17,15 @@ from pathlib import Path
 
 from MIT import MySettingsWindow, MyMainWindow, window_main_set_style, window_skin_set_style
 from MIT import window_settings_set_style, button_set_style
-from MIT import Data, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
+from MIT import Data, Music, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
 from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
 from MIT import save_settings, load_info, restart
 from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder
 
 
-
-
-class Music:
-    def __init__(self):
-        self.path_music = Path(WORKING_DIRECTORY, 'skins', skin_selected, 'music.mp3')
-        self.player = QMediaPlayer()
-        self.audio_output = QAudioOutput()
-        self.player.setAudioOutput(self.audio_output)
-        self.player.setSource(QUrl.fromLocalFile(str(self.path_music)))
-        self.player.setLoops(-1) # -1=infinite
-        self.audio_output.setVolume(cv.music_volume)
-
-
-
 def skin_deletion_confirmaiton():
     # DELETING SKIN STATUS AFTER RESTART
     if settings_data['delete_skin']['enabled']:
-
         if settings_data['delete_skin']['del_proc_completed']:
             MyMessageBoxConfirmation(
                 'Skin deleted.',
@@ -50,18 +34,15 @@ def skin_deletion_confirmaiton():
                 )
         else:
             MyMessageBoxError(
-            'Sorry, something went wrong.',
-            WINDOW_CENTER_X,
-            WINDOW_CENTER_Y
-            )
-        
+                'Sorry, something went wrong.',
+                WINDOW_CENTER_X,
+                WINDOW_CENTER_Y
+                )
         settings_data['delete_skin']['enabled'] = False
         save_settings(settings_data)  
 
 
-
-def music_switch_on_off():
-    
+def music_switch_on_off(): 
     settings_data, skin_selected, selected_skin_folder = load_info()
     
     # MUSIC ON --> OFF
@@ -76,50 +57,39 @@ def music_switch_on_off():
         music.player.play()
         settings_data['music_on'] = True
         button_music.setIcon(button_image_stop)
-
     save_settings(settings_data)
 
 
-
 def time_display():
-    
     # CURRENT TIME
-    current_time = QTime.currentTime()
-    
+    current_time = QTime.currentTime()   
     # TIMES
     hours_and_mins_time = current_time.toString('hh:mm')
     seconds_time = current_time.toString(':ss')
-    
     # TOP
     hours_and_mins.setText(hours_and_mins_time)
     seconds.setText(seconds_time)
-
     # BACk - SHADOW
     hours_and_mins_shadow.setText(hours_and_mins_time)
     seconds_shadow.setText(seconds_time)
-
-
+    # POSITION CORRECTION
     time_repositioning()
-
-
     # TIME REFRESH - 1000=1sec
     timer.setInterval(1000)
-
 
 
 # LOADING DATA FROM JSON
 cv = Data()
 
 # MUSIC
-music= Music()
+music= Music(cv.music_volume)
 
-## CONSTANTS
 # WINDOW MAIN
 WINDOW_WIDTH, WINDOW_HEIGHT = 720, 486
 WINDOW_CENTER_X = cv.window_main_pos_x + int(WINDOW_WIDTH/2) - 50
 WINDOW_CENTER_Y = cv.window_main_pos_y + int(WINDOW_HEIGHT/2) - 50
 
-# WINDWO ADVANCED (STILL IN MAIN)
+# WINDOW ADVANCED (STILL IN MAIN)
 WINDOW_ADVANCED_ADD_WIDTH = 305
 WINDOW_ADVANCED_WIDTH = WINDOW_WIDTH + WINDOW_ADVANCED_ADD_WIDTH
 ADV_WIDGETS_WIDTH = 200
@@ -138,21 +108,13 @@ BUTTON_ADV_HEIGHT = 28
 BUTTON_ADV_TEXT_SIZE = 10
 
 
-# WINDOW SETTINGS
-SETT_WIDGETS_WIDTH = 160
-WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223
-
-
-# WINDOW ADD SKIN
-WINDOW_SKIN_WIDTH, WINDOW_SKIN_HEIGHT = 245, 350
-
-
-
 ''' APP '''
 app = QApplication(sys.argv)
 
+
 ''' DELETING SKIN - CONFIRMATION MESSAGE '''
 skin_deletion_confirmaiton()
+
 
 '''
 ###########################
@@ -165,11 +127,11 @@ skin_deletion_confirmaiton()
 '''
 
 window_main = MyMainWindow(
-                        cv.button_bg_color,
-                        cv.button_bg_color_clicked,
-                        WINDOW_WIDTH,
-                        WINDOW_HEIGHT,
-                        ) 
+                cv.button_bg_color,
+                cv.button_bg_color_clicked,
+                WINDOW_WIDTH,
+                WINDOW_HEIGHT,
+                ) 
 
 # MAIN WINDOW POSITION
 SCREEN = QApplication.primaryScreen()
@@ -183,7 +145,6 @@ else:
     window_main.move(cv.window_main_pos_x, cv.window_main_pos_y)
 
 
-
 '''
 ################################## 
 ##################################
@@ -192,15 +153,17 @@ else:
 
 ##################################
 ##################################
-'''    
+'''
+WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223    
 window_settings = MySettingsWindow(
-                                    'Settings',
-                                    cv.button_bg_color,
-                                    cv.button_bg_color_clicked,
-                                    WINDOW_SETTINGS_WIDTH,
-                                    WINDOW_SETTINGS_HEIGHT,
-                                    cv.window_settings_pos_x,
-                                    cv.window_settings_pos_y) 
+                    'Settings',
+                    cv.button_bg_color,
+                    cv.button_bg_color_clicked,
+                    WINDOW_SETTINGS_WIDTH,
+                    WINDOW_SETTINGS_HEIGHT,
+                    cv.window_settings_pos_x,
+                    cv.window_settings_pos_y
+                    ) 
 
 
 '''
@@ -211,16 +174,17 @@ window_settings = MySettingsWindow(
 
 ##################################
 ##################################
-'''    
+'''
+WINDOW_SKIN_WIDTH, WINDOW_SKIN_HEIGHT = 245, 350    
 window_skin = MySettingsWindow(
-                                    'Skins',
-                                    cv.button_bg_color,
-                                    cv.button_bg_color_clicked,
-                                    WINDOW_SKIN_WIDTH,
-                                    WINDOW_SKIN_HEIGHT,
-                                    cv.window_settings_pos_x,
-                                    cv.window_settings_pos_y) 
-
+                'Skins',
+                cv.button_bg_color,
+                cv.button_bg_color_clicked,
+                WINDOW_SKIN_WIDTH,
+                WINDOW_SKIN_HEIGHT,
+                cv.window_settings_pos_x,
+                cv.window_settings_pos_y
+                ) 
 
 
 ''' 
@@ -294,7 +258,6 @@ if cv.music_on:
 else:
     music_start_stop_img = button_image_start
 
-
 button_music = QPushButton(window_main, text=None, icon=music_start_stop_img)
 button_music.setIconSize(QSize(ICON_SIZE, ICON_SIZE))
 button_music.setGeometry(cv.button_music_pos_x, cv.button_music_pos_y, 29, 29)     # pos, pos, size, size
@@ -314,10 +277,6 @@ button_settings.clicked.connect(window_settings.show)
 button_set_style(button_settings, cv.button_bg_color, cv.button_bg_color_clicked)
 
 
-
-
-
-
 '''
 ########################################
 ########################################
@@ -327,28 +286,30 @@ button_set_style(button_settings, cv.button_bg_color, cv.button_bg_color_clicked
 #######################################
 #######################################
 '''
+SETT_WIDGETS_WIDTH = 160
+
 ''' 
 #############################
     IMAGES AND TEXT - SETT        
 #############################
 '''
-IMAGE_SIZE = 30
-pos_x = 20
-pos_y = 20
-pos_y_diff = IMAGE_SIZE + 20
+IMAGE_SIZE_SETT = 30
+POS_X = 20
+POS_Y = 20
+POS_Y_DIFF = IMAGE_SIZE_SETT + 20
 
 # VOLUME - IMAGE - SETT
-MyImage(window_settings, 'volume.png', IMAGE_SIZE, pos_x, pos_y)
+MyImage(window_settings, 'volume.png', IMAGE_SIZE_SETT, POS_X, POS_Y)
 
 # ANIMATION SPEED - IMAGE
-MyImage(window_settings, 'animation_speed.png', IMAGE_SIZE, pos_x, pos_y+pos_y_diff)
+MyImage(window_settings, 'animation_speed.png', IMAGE_SIZE_SETT, POS_X, POS_Y+POS_Y_DIFF)
 
 # SKIN SWITCH - IMAGE - SETT
-MyImage(window_settings, 'skin_switch.png', IMAGE_SIZE+8, pos_x-3, pos_y+pos_y_diff*2-3)
+MyImage(window_settings, 'skin_switch.png', IMAGE_SIZE_SETT+8, POS_X-3, POS_Y+POS_Y_DIFF*2-3)
 
 # A - ADVANCED - TEXT- SETT
 label_A = QLabel(window_settings, text='A')
-label_A.move(pos_x+3, pos_y + pos_y_diff*3)
+label_A.move(POS_X+3, POS_Y + POS_Y_DIFF*3)
 label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
 # another solution, no color info: label_A.setFont(QFont('Times', 30, 800))   # style, size, bold
 
@@ -360,7 +321,6 @@ label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
 '''
 slider_pos_x = 60
 slider_pos_y = 27
-
 
 def save_volume():
     settings_data, skin_selected, selected_skin_folder = load_info()
@@ -390,7 +350,6 @@ slider_volume = MySlider(
     pos_y=slider_pos_y)
 
 
-
 ''' ANIMATION SPEED - SLIDER - SETT '''
 def change_animation_speed():
     movie.setSpeed(slider_animation_speed.value())
@@ -407,14 +366,12 @@ slider_animation_speed = MySlider(
     pos_y=slider_pos_y*3 - 5)
 
 
-
 '''
 #####################################
     SWITCH SKIN - COMBOBOX - SETT               
 #####################################
 '''
 select_skin_cb = MyComboBoxSkins(window_settings, SETT_WIDGETS_WIDTH, False, slider_pos_x, slider_pos_y*5 - 9)
-
 
 
 '''
@@ -442,7 +399,6 @@ button_advanced.clicked.connect(button_advanced_launch)
 button_advanced.setFont(QFont('Times', 10, 600))
 
 
-
 '''
 #########################################
 #########################################
@@ -462,7 +418,6 @@ def butt_and_win_settings_enable(value):
         label_A.setStyleSheet("color:'black';font: 30pt 'Times'; font-weight: bold;")
     else:
         label_A.setStyleSheet("color:'#5E5E5D';font: 30pt 'Times'; font-weight: bold;")
-
 
 # SKIN SWITCH IN THE ADVANCED WINDOW -->
 # MAIN RESTART WITH THE ADVENCED SETTINGS "WINDOW"
@@ -488,7 +443,6 @@ frame_adv_window.setStyleSheet("border: 2px solid black; border-radius: 5px;")
     IMAGES AND TEXT - ADV        
 #############################
 '''
-
 # SKIN SWITCH
 MyImage(window_main, 'skin_switch.png', IMAGE_SIZE+8, ADV_IMG_POS_X-3, ADV_IMG_POS_Y)
 
@@ -514,7 +468,6 @@ MyImage(window_main, 'font.png', IMAGE_SIZE, ADV_IMG_POS_X-2, ADV_IMG_POS_Y+ADV_
 MyImage(window_main, 'color.png', IMAGE_SIZE-3, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV_IMG_POS_Y_DIFF*6 - FONT_WIDG_GROUP_Y_DIFF-15)
 
 
-
 '''
 #########################
     COMBOBOXES - ADV               
@@ -523,7 +476,6 @@ MyImage(window_main, 'color.png', IMAGE_SIZE-3, ADV_IMG_POS_X, ADV_IMG_POS_Y+ADV
 
 ''' SKIN SWITCH - COMBOBOX - ADV '''
 MyComboBoxSkins(window_main, ADV_WIDGETS_WIDTH, True, ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y)
-
 
 
 ''' WIDGETS UPDATE - COMBOBOX - ADV '''
@@ -560,7 +512,7 @@ widget_dic = {
                 "size": cv.time_hm_font_size,
                 "color": cv.time_font_color,
                 "style": cv.time_font_style,
-                "anchor_point": cv.anchor_point  # = pos_x + width after move
+                "anchor_point": cv.anchor_point  # = pos_x + width /after move
                 },
             'Time: HRS:MINS - Shadow': {        #5
                 "widget": hours_and_mins_shadow,
@@ -592,26 +544,22 @@ widget_dic = {
 widget_list = list(widget_dic.keys())
 
 def selected_widget_action():
-
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     cv.selected_widg_changed = True
-
     selected_widget = select_widget_cb.currentText()
+    SLIDER_POS_X_DIFF = 30
 
     ## ADJUSTING THE SLIDERS` MIN, MAX
     # WINDOW MAIN
     if selected_widget == widget_list[2]:
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_ADVANCED_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_HEIGHT)
-
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Vertical)
-        SLIDER_POS_X_DIFF = 30
         slider_pos_x.setGeometry(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF - 5,
                                 40,
                                 20,
                                 ADV_WIDGETS_WIDTH)
         
-    
     if selected_widget != widget_list[2]:
         slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
         slider_pos_x.setGeometry(ADV_NON_IMG_POS_X,
@@ -632,8 +580,8 @@ def selected_widget_action():
     
     # NOT MAIN, SETTING WINDOW
     if selected_widget in [widget_list[0], widget_list[1]]:
-        slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
-        slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
+        slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
+        slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
     
     ## TIME
     if selected_widget in widget_list[4:8]:
@@ -656,9 +604,7 @@ def selected_widget_action():
     if selected_widget not in widget_list[4:6]:
         slider_pos_x.setValue(widget_dic[selected_widget]['x'])
         slider_pos_y.setValue(widget_dic[selected_widget]['y']) 
-
     cv.selected_widg_changed = False
-
 
 select_widget_cb = MyComboBoxWidgetUpdate(
                                         window_main,
@@ -703,18 +649,15 @@ def time_repositioning():
 
 
 def selected_font_action():
-
     cv.time_font_style = select_font_cb.currentText()
-    widget_dic[widget_list[4]]['style'] = select_font_cb.currentText()
-    
+    widget_dic[widget_list[4]]['style'] = select_font_cb.currentText() 
+
     hours_and_mins.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
     hours_and_mins_shadow.setStyleSheet(f'color: black; font: {cv.time_hm_font_size}pt {cv.time_font_style}; font-weight: bold;')
     seconds.setStyleSheet(f'color:{cv.time_font_color}; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
     seconds_shadow.setStyleSheet(f'color:black; font: {cv.time_sec_font_size}pt {cv.time_font_style}; font-weight: bold;')
-
     # POSITION UPDATE
     time_repositioning()
-
     # SLIDER UPDATE
     selected_widget = select_widget_cb.currentText()
     if selected_widget in widget_list[4:8]:
@@ -726,12 +669,12 @@ def selected_font_action():
 
 
 select_font_cb = MyComboBoxFont(
-                                window_main,
-                                selected_font_action,
-                                ADV_WIDGETS_WIDTH,
-                                ADV_NON_IMG_POS_X,
-                                ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*5
-                                )
+                    window_main,
+                    selected_font_action,
+                    ADV_WIDGETS_WIDTH,
+                    ADV_NON_IMG_POS_X,
+                    ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*5
+                    )
 
 
 
@@ -741,23 +684,21 @@ color_dic = {
             'Color: Buttons, windows': {"color": cv.button_bg_color},
             'Color: Buttons clicked': {"color": cv.button_bg_color_clicked}
             }   
-
 color_list = list(color_dic.keys())
 
+
 def select_color_action():
-    
     input_field_color.setText(color_dic[select_color_cb.currentText()]['color'])
 
 
 select_color_cb = MyComboBoxWidgetUpdate(
-                                        window_main,
-                                        color_list,
-                                        select_color_action,
-                                        ADV_WIDGETS_WIDTH,
-                                        ADV_NON_IMG_POS_X,
-                                        ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*6-FONT_WIDG_GROUP_Y_DIFF+10
-                                        )
-
+                    window_main,
+                    color_list,
+                    select_color_action,
+                    ADV_WIDGETS_WIDTH,
+                    ADV_NON_IMG_POS_X,
+                    ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*6-FONT_WIDG_GROUP_Y_DIFF+10
+                    )
 
 
 '''
@@ -765,7 +706,6 @@ select_color_cb = MyComboBoxWidgetUpdate(
     SLIDERS - ADV
 #####################
 '''
-adv_slider_pos_x = ADV_IMG_POS_X + 15
 
 ''' X - MOVE - SLIDER - ADV '''
 def update_xy():
@@ -775,15 +715,12 @@ def update_xy():
         widget_dic[selected_widget]['widget'].move(slider_pos_x.value(), slider_pos_y.value())
         widget_dic[selected_widget]['x'] = slider_pos_x.value()
         widget_dic[selected_widget]['y'] = slider_pos_y.value()
-        
         # Time: HRS:MINS
         if select_widget_cb.currentText() == widget_list[4]:
             widget_dic[widget_list[4]]["anchor_point"] = slider_pos_x.value() + hours_and_mins.size().width()
-        
         # HRS:MINS - Shadow
         if select_widget_cb.currentText() == widget_list[5]:
             widget_dic[widget_list[5]]["anchor_point"] = slider_pos_x.value() + hours_and_mins_shadow.size().width()
-
 
 slider_pos_x = QSlider(window_main)
 slider_pos_x.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2, ADV_WIDGETS_WIDTH, 20)
@@ -808,26 +745,19 @@ slider_pos_y.valueChanged.connect(update_xy)
 
 ''' SIZE - SLIDER - ADV '''
 def update_size():
-    
     if not cv.selected_widg_changed:
-
         selected_widget = select_widget_cb.currentText()
-        
+
         if selected_widget in widget_list[4:8]:
-            
             widget_dic[selected_widget]['widget'].setStyleSheet(
                 f"color:{widget_dic[selected_widget]['color']};font: {slider_time_size.value()}pt {cv.time_font_style}; font-weight: bold;")
-        
             # SLIDER --> VARIABLE
             widget_dic[selected_widget]['size'] = slider_time_size.value()
-            
             # RESIZE TEXT LABEL
             widget_dic[selected_widget]['widget'].adjustSize()
-
             # AVAILABLE POSITION UPDATE
             slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
             slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
-
 
 slider_time_size = QSlider(window_main)
 slider_time_size.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*4, ADV_WIDGETS_WIDTH, 20)
@@ -880,7 +810,6 @@ def close_advanced_window():
         select_widget_cb.setCurrentText(widget_list[0])
         selected_widget_action()
 
-
 button_image_close = QIcon('skins/_images/close.png')
 button_close = QPushButton(window_main, text=None, icon=button_image_close)
 button_close.setIconSize(QSize(10,10))
@@ -888,7 +817,6 @@ button_close.setGeometry(WINDOW_ADVANCED_WIDTH-30, 12, 16, 16)     # pos, pos, s
 button_close.setCursor(Qt.CursorShape.PointingHandCursor)
 button_close.clicked.connect(close_advanced_window)
 button_close.setStyleSheet("border-radius: 4px; border: 2px solid black;")
-
 
 
 
@@ -917,8 +845,6 @@ def update_color():
         window_settings_set_style(window_settings, cv.button_bg_color, cv.button_bg_color_clicked)
         button_set_style(button_settings, cv.button_bg_color, cv.button_bg_color_clicked)
         button_set_style(button_music, cv.button_bg_color, cv.button_bg_color_clicked)
-   
-    
      
 button_update_color = QPushButton(window_main, text='UPDATE')
 button_update_color.setGeometry(
@@ -935,7 +861,6 @@ button_update_color.setFont(QFont('Times', 10, 600))
 
 ''' BUTTON - SAVE - ADV '''
 def save_advanced_settings():
-
     try:
         settings_data, skin_selected, selected_skin_folder = load_info()
 
@@ -944,8 +869,7 @@ def save_advanced_settings():
             widget_name = widget_dic[item]['name']
             
             # BUTTONS(MUSIC, SETTINGS), TIMES
-            if index not in [2, 3]:      # no window main
-                        
+            if index not in [2, 3]:      # no window main       
                 for var_name in selected_skin_folder['json_widg_params'][widget_name]:
                     selected_skin_folder['json_widg_params'][widget_name][var_name] = widget_dic[item][var_name]
 
@@ -953,7 +877,6 @@ def save_advanced_settings():
             if index in [2, 3]:
                 for var_name in settings_data[widget_name]:
                     settings_data[widget_name][var_name] = widget_dic[item][var_name]
-
 
         # BUTTONS COLOR
         selected_skin_folder['button_bg_color'] = cv.button_bg_color
@@ -967,7 +890,6 @@ def save_advanced_settings():
             WINDOW_CENTER_Y
             )
         
-
     except:
         MyMessageBoxError(
             'Sorry, something went wrong.\n\nChanges are not saved!',
@@ -977,18 +899,15 @@ def save_advanced_settings():
 
 
 
-
-
 # MESSAGE BOX - SAVING
 def messagebox_save_adv_sett():
 
     MyMessageBoxConfReq(
-                        'Saving changes?',
-                        save_advanced_settings,
-                        WINDOW_CENTER_X,
-                        WINDOW_CENTER_Y
-                        )
-
+        'Saving changes?',
+        save_advanced_settings,
+        WINDOW_CENTER_X,
+        WINDOW_CENTER_Y
+        )
 
 button_save_adv_sett = QPushButton(window_main, text='SAVE SETTINGS')
 button_save_adv_sett.setGeometry(
@@ -1018,7 +937,6 @@ def delete_skin_setup():
     restart()
 
 
-
 # MESSAGE BOX - DELETE SKIN
 def messagebox_delete_skin():
 
@@ -1041,8 +959,6 @@ def messagebox_delete_skin():
                             WINDOW_CENTER_Y
                             )
 
-
-
 button_delete_skin = QPushButton(window_main, text='DELETE SKIN')
 button_delete_skin.setGeometry(
     ADV_NON_IMG_POS_X,
@@ -1055,11 +971,7 @@ button_delete_skin.clicked.connect(messagebox_delete_skin)
 button_delete_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 
-
 ''' BUTTON - ADD NEW SKIN - ADV '''
-def save_new_skin():
-    pass
-
 button_save_new_skin = QPushButton(window_main, text='ADD / EDIT SKIN')
 button_save_new_skin.setGeometry(
     ADV_NON_IMG_POS_X,
@@ -1072,7 +984,6 @@ button_save_new_skin.clicked.connect(window_skin.show)
 button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 
 
-
 ''' 
 #################################
 #################################
@@ -1082,12 +993,13 @@ button_save_new_skin.setFont(QFont('Times', BUTTON_ADV_TEXT_SIZE, 600))
 #################################
 #################################
 '''
-
+# TABS
 TABS_POS_X = 20
 TABS_POS_Y = 20
+# WIDGETS
 SKIN_WIDGET_POS_X = 20
 SKIN_WIDEGT_POS_Y = 20
-SKIN_WIDEGT_POS_Y_diff = 40
+SKIN_WIDEGT_POS_Y_DIFF = 40
 SKIN_WIDGET_WIDTH = 160
 BUTTON_SKIN_HEIGHT = 25
 
@@ -1120,7 +1032,7 @@ input_field_skin_name = QLineEdit(tab_edit_skin)
 input_field_skin_name.setText(select_skin_cb.currentText())
 input_field_skin_name.setGeometry(
     SKIN_WIDGET_POS_X,
-    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff-22, 
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF-22, 
     SKIN_WIDGET_WIDTH,
     20)
 input_field_skin_name.setFont(QFont('Times', 10, 500))
@@ -1131,7 +1043,7 @@ input_field_skin_name.setCursor(Qt.CursorShape.PointingHandCursor)
 skin_window_title_lable = QLabel(tab_edit_skin, text='Window Title')
 skin_window_title_lable.move(
     SKIN_WIDGET_POS_X,
-    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff + 10)
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF + 10)
 skin_window_title_lable.setFont(QFont('Times', 10, 600))
 
 
@@ -1140,7 +1052,7 @@ input_field_window_title = QLineEdit(tab_edit_skin)
 input_field_window_title.setText(selected_skin_folder['window_title'])
 input_field_window_title.setGeometry(
     SKIN_WIDGET_POS_X,
-    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff * 2 - 10, 
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF * 2 - 10, 
     SKIN_WIDGET_WIDTH,
     20)
 input_field_window_title.setFont(QFont('Times', 10, 500))
@@ -1175,7 +1087,7 @@ def button_gif_update_clicked():
 button_gif_update = QPushButton(tab_edit_skin, text=skin_dic['gif']['button_title'])
 button_gif_update.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*2.7),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*2.7),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
@@ -1198,7 +1110,7 @@ def button_music_update_clicked():
 button_music_update = QPushButton(tab_edit_skin, text=skin_dic['music']['button_title'])
 button_music_update.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*3.5),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*3.5),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
@@ -1221,7 +1133,7 @@ def button_icon_update_clicked():
 button_icon_update = QPushButton(tab_edit_skin, text=skin_dic['icon']['button_title'])
 button_icon_update.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*4.3),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*4.3),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
@@ -1250,8 +1162,7 @@ def update_skin_action():
                 WINDOW_CENTER_X,
                 WINDOW_CENTER_Y
                 )
-    
-
+   
     ''' WINDOW TITLE '''
     if input_field_window_title.text() != selected_skin_folder['window_title']:
         selected_skin_folder['window_title'] = input_field_window_title.text()[0:160]
@@ -1262,7 +1173,6 @@ def update_skin_action():
         selected_skin_folder['window_title'] = 'It`s Python baby!'
         any_change = True
         db_save_needed = True
-
 
     ''' GIF '''
     if skin_dic['gif']['path']:
@@ -1280,26 +1190,22 @@ def update_skin_action():
         shutil.copy(skin_dic['icon']['path'][0], f'skins/{skin_selected}/icon.png')
         any_change = True
 
-
     if db_save_needed:
         save_settings(settings_data)
 
     if any_change:
         restart()
 
-
-
 button_skin_update = QPushButton(tab_edit_skin, text='UPDATE')
 button_skin_update.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*5.6),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*5.6),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
 button_skin_update.setCursor(Qt.CursorShape.PointingHandCursor)
 button_skin_update.clicked.connect(update_skin_action)
 button_skin_update.setFont(QFont('Times', 10, 600))
-
 
 
 '''
@@ -1313,36 +1219,32 @@ skin_name_lable_add = QLabel(tab_add_skin, text='Name of the skin')
 skin_name_lable_add.move(SKIN_WIDGET_POS_X, SKIN_WIDEGT_POS_Y)
 skin_name_lable_add.setFont(QFont('Times', 10, 600))
 
-
 ''' SKIN NAME - INPUT FIELD '''
 input_field_skin_name_add = QLineEdit(tab_add_skin)
 input_field_skin_name_add.setGeometry(
     SKIN_WIDGET_POS_X,
-    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff-22, 
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF-22, 
     SKIN_WIDGET_WIDTH,
     20)
 input_field_skin_name_add.setFont(QFont('Times', 10, 500))
 input_field_skin_name_add.setCursor(Qt.CursorShape.PointingHandCursor)
 
-
 ''' WINDOW TITLE - TEXT '''
 skin_window_title_lable_add = QLabel(tab_add_skin, text='Window Title')
 skin_window_title_lable_add.move(
     SKIN_WIDGET_POS_X,
-    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff + 10)
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF + 10)
 skin_window_title_lable_add.setFont(QFont('Times', 10, 600))
-
 
 ''' WINDOW TITLE - INPUT FIELD '''
 input_field_window_title_add = QLineEdit(tab_add_skin)
 input_field_window_title_add.setGeometry(
     SKIN_WIDGET_POS_X,
-    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff * 2 - 10, 
+    SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF * 2 - 10, 
     SKIN_WIDGET_WIDTH,
     20)
 input_field_window_title_add.setFont(QFont('Times', 10, 500))
 input_field_window_title_add.setCursor(Qt.CursorShape.PointingHandCursor)
-
 
 ''' BUTTON - ADD GIF '''
 def button_gif_update_clicked():
@@ -1357,7 +1259,7 @@ def button_gif_update_clicked():
 button_gif_add = QPushButton(tab_add_skin, text=skin_dic['gif']['button_title'])
 button_gif_add.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*2.7),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*2.7),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
@@ -1379,7 +1281,7 @@ def button_music_update_clicked():
 button_music_add = QPushButton(tab_add_skin, text=skin_dic['music']['button_title'])
 button_music_add.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*3.5),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*3.5),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
@@ -1401,14 +1303,13 @@ def button_icon_update_clicked():
 button_icon_add = QPushButton(tab_add_skin, text=skin_dic['icon']['button_title'])
 button_icon_add.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*4.3),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*4.3),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
 button_icon_add.setCursor(Qt.CursorShape.PointingHandCursor)
 button_icon_add.clicked.connect(button_icon_update_clicked)
 button_icon_add.setFont(QFont('Times', 10, 600))
-
 
 
 ''' BUTTON - ADD SKIN '''
@@ -1435,9 +1336,7 @@ def add_skin_action():
         # CREATING JSON DIC.
         settings_data['skins'][folder_name] = settings_data['skins'][settings_data['skin_selected']]
 
-
         all_set = True
-
 
     if len(input_field_skin_name_add.text().strip()) == 0:
         MyMessageBoxError(
@@ -1446,36 +1345,24 @@ def add_skin_action():
             WINDOW_CENTER_Y
                 )
     
-
     if all_set:
-
         if skin_dic['gif']['path'] and skin_dic['music']['path'] and skin_dic['icon']['path']:
-            
-
             os.mkdir(Path(Path().resolve(), 'skins', folder_name))
-
             shutil.copy(skin_dic['gif']['path'][0], f'skins/{folder_name}/GIF.GIF')
-            
             shutil.copy(skin_dic['music']['path'][0], f'skins/{folder_name}/music.mp3')
-
             shutil.copy(skin_dic['icon']['path'][0], f'skins/{folder_name}/icon.png')
-            
             all_set = True
-        
         else:
             MyMessageBoxError(
-            'All file types need to be added!  ',
-            WINDOW_CENTER_X,
-            WINDOW_CENTER_Y
+                'All file types need to be added!  ',
+                WINDOW_CENTER_X,
+                WINDOW_CENTER_Y
                 )
             all_set = False
         
-
-
     if all_set:
         # CREATING NEW JSON DIC.
         save_settings(settings_data)    
-
         # ABLE TO REACH THE NEW JSON DIC (WITHOUT AFFECTING THE ORIGINAL ONE)
         settings_data, skin_selected, selected_skin_folder = load_info()
         
@@ -1485,7 +1372,6 @@ def add_skin_action():
         ''' WINDOW TITLE '''
         if len(input_field_window_title_add.text().strip()) > 0:
             settings_data['skins'][folder_name]['window_title'] = input_field_window_title_add.text()[0:160]
-        
         if len(input_field_window_title_add.text().strip()) == 0:
             settings_data['skins'][folder_name]['window_title'] = 'It`s Python baby!'
         
@@ -1493,21 +1379,19 @@ def add_skin_action():
         settings_data['skin_selected'] = folder_name
         
         save_settings(settings_data)
-
         restart()
 
 
 button_skin_add = QPushButton(tab_add_skin, text='CREATE SKIN')
 button_skin_add.setGeometry(
     SKIN_WIDGET_POS_X,
-    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_diff*5.6),
+    int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*5.6),
     SKIN_WIDGET_WIDTH,
     BUTTON_SKIN_HEIGHT
     )
 button_skin_add.setCursor(Qt.CursorShape.PointingHandCursor)
 button_skin_add.clicked.connect(add_skin_action)
 button_skin_add.setFont(QFont('Times', 10, 600))
-
 
 
 window_main.show()
