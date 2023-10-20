@@ -5,7 +5,7 @@ Motion in Time - PyQt6 version
 '''
 
 from PyQt6.QtWidgets import QApplication, QTabWidget, QLabel, QPushButton
-from PyQt6.QtWidgets import QSlider, QLineEdit, QWidget, QFileDialog
+from PyQt6.QtWidgets import QLineEdit, QWidget, QFileDialog
 from PyQt6.QtGui import QMovie, QIcon, QFont
 from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt
@@ -13,13 +13,13 @@ from PyQt6.QtCore import QSize, QTimer, QTime, Qt
 import sys
 import shutil
 import os
-from pathlib import Path
 
-from MIT import MySettingsWindow, MyMainWindow, window_main_set_style, window_skin_set_style
-from MIT import window_settings_set_style, button_set_style
-from MIT import Data, Music, MyImage, MySlider, MyMessageBoxConfReq, MyMessageBoxConfirmation
-from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont, MyMessageBoxError
-from MIT import save_settings, load_info, restart
+from MIT import MySettingsWindow, MyMainWindow 
+from MIT import window_main_set_style, window_settings_set_style, window_skin_set_style, button_set_style
+from MIT import Data, Music, MyImage, MySlider, MySliderSettingsWindow 
+from MIT import MyMessageBoxConfReq, MyMessageBoxConfirmation, MyMessageBoxError
+from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
+from MIT import Path, save_settings, load_info, restart
 from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder
 
 
@@ -338,32 +338,34 @@ def save_animation_speed():
 def change_volume():
     music.audio_output.setVolume(slider_volume.value()/100)
     
-slider_volume = MySlider(
+slider_volume = MySliderSettingsWindow(
     window_settings,
     min=0,
     max=100,
     setValue=int(cv.music_volume*100),
     valueChanged=change_volume,
-    sliderReleased=save_volume,
     width=SETT_WIDGETS_WIDTH,
     pos_x=slider_pos_x,
-    pos_y=slider_pos_y)
+    pos_y=slider_pos_y,
+    sliderReleased=save_volume
+    )
 
 
 ''' ANIMATION SPEED - SLIDER - SETT '''
 def change_animation_speed():
     movie.setSpeed(slider_animation_speed.value())
 
-slider_animation_speed = MySlider(
+slider_animation_speed = MySliderSettingsWindow(
     window_settings,
     min=0,
     max=300,
     setValue=cv.animation_speed,
     valueChanged=change_animation_speed,
-    sliderReleased=save_animation_speed,
     width=SETT_WIDGETS_WIDTH,
     pos_x=slider_pos_x,
-    pos_y=slider_pos_y*3 - 5)
+    pos_y=slider_pos_y*3 - 5,
+    sliderReleased=save_animation_speed
+    )
 
 
 '''
@@ -638,13 +640,16 @@ def time_repositioning():
                 widget_dic[item]['widget'].move(widget_dic[item]['x'], WINDOW_HEIGHT - new_format_height)
                 widget_dic[item]['y'] = WINDOW_HEIGHT - new_format_height
     
-    ''' REPOSITION TO TO RIGHT ANCHOR - CREATED WHEN THE HRS:MINS/SHADOW MOVED WITH THE SLIDER '''
-    if select_widget_cb.currentText() != widget_list[4]:  
-        if widget_dic[widget_list[4]]["anchor_point"] != widget_dic[widget_list[4]]['x'] + hours_and_mins.size().width():
+    ''' 
+        REPOSITION TO TO RIGHT ANCHOR
+        ANCHOR IS CREATED WHEN THE HRS:MINS/SHADOW MOVED WITH THE SLIDER
+    '''
+    if (select_widget_cb.currentText() != widget_list[4] and
+        widget_dic[widget_list[4]]["anchor_point"] != widget_dic[widget_list[4]]['x'] + hours_and_mins.size().width()):
             hours_and_mins.move(widget_dic[widget_list[4]]["anchor_point"] - hours_and_mins.size().width(), widget_dic[widget_list[4]]['y'])
 
-    if select_widget_cb.currentText() != widget_list[5]:
-        if widget_dic[widget_list[5]]["anchor_point"] != widget_dic[widget_list[5]]['x'] + hours_and_mins_shadow.size().width():
+    if (select_widget_cb.currentText() != widget_list[5] and
+        widget_dic[widget_list[5]]["anchor_point"] != widget_dic[widget_list[5]]['x'] + hours_and_mins_shadow.size().width()):
             hours_and_mins_shadow.move(widget_dic[widget_list[5]]["anchor_point"] - hours_and_mins_shadow.size().width(), widget_dic[widget_list[5]]['y'])
 
 
@@ -675,7 +680,6 @@ select_font_cb = MyComboBoxFont(
                     ADV_NON_IMG_POS_X,
                     ADV_NON_IMG_POS_Y+ADV_NON_IMG_POS_Y_DIFF*5
                     )
-
 
 
 ''' COLOR UPDATE - COMBOBOX - ADV '''
@@ -722,25 +726,34 @@ def update_xy():
         if select_widget_cb.currentText() == widget_list[5]:
             widget_dic[widget_list[5]]["anchor_point"] = slider_pos_x.value() + hours_and_mins_shadow.size().width()
 
-slider_pos_x = QSlider(window_main)
-slider_pos_x.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2, ADV_WIDGETS_WIDTH, 20)
-slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
-slider_pos_x.setMinimum(0)
-slider_pos_x.setMaximum(WINDOW_WIDTH - 30)
-slider_pos_x.setValue(cv.button_settings_pos_x)
-slider_pos_x.setCursor(Qt.CursorShape.PointingHandCursor)
-slider_pos_x.valueChanged.connect(update_xy)
+slider_pos_x = MySlider(
+    window_main,
+    min=0,
+    # BUTTON SETTINGS 1ST IN THE WIDGETS LIST
+    # SELECTED BY DEFAULT
+    max=WINDOW_WIDTH - button_settings.size().width(),
+    setValue=cv.button_settings_pos_x,
+    valueChanged=update_xy,
+    width=ADV_WIDGETS_WIDTH,
+    pos_x=ADV_NON_IMG_POS_X,
+    pos_y=ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2
+    )
 
 
 ''' Y - MOVE - SLIDER - ADV '''
-slider_pos_y = QSlider(window_main)
-slider_pos_y.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*3, ADV_WIDGETS_WIDTH, 20)
-slider_pos_y.setOrientation(QtCore.Qt.Orientation.Horizontal)
-slider_pos_y.setMinimum(0)
-slider_pos_y.setMaximum(WINDOW_HEIGHT - 30)
-slider_pos_y.setValue(cv.button_settings_pos_y)
-slider_pos_y.setCursor(Qt.CursorShape.PointingHandCursor)
-slider_pos_y.valueChanged.connect(update_xy)
+slider_pos_y = MySlider(
+    window_main,
+    min=0,
+    # BUTTON SETTINGS 1ST IN THE WIDGETS LIST
+    # SELECTED BY DEFAULT
+    max=WINDOW_HEIGHT - button_settings.size().height(),
+    setValue=cv.button_settings_pos_y,
+    valueChanged=update_xy,
+    width=ADV_WIDGETS_WIDTH,
+    pos_x=ADV_NON_IMG_POS_X,
+    pos_y=ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*3
+    )
+
 
 
 ''' SIZE - SLIDER - ADV '''
@@ -759,14 +772,19 @@ def update_size():
             slider_pos_x.setMaximum(WINDOW_WIDTH - widget_dic[selected_widget]['widget'].size().width())
             slider_pos_y.setMaximum(WINDOW_HEIGHT - widget_dic[selected_widget]['widget'].size().height())
 
-slider_time_size = QSlider(window_main)
-slider_time_size.setGeometry(ADV_NON_IMG_POS_X, ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*4, ADV_WIDGETS_WIDTH, 20)
-slider_time_size.setOrientation(QtCore.Qt.Orientation.Horizontal)
-slider_time_size.setMinimum(20)
-slider_time_size.setMaximum(100)
-slider_time_size.setValue(cv.button_settings_pos_y)
-slider_time_size.setCursor(Qt.CursorShape.PointingHandCursor)
-slider_time_size.valueChanged.connect(update_size)
+
+# BUTTON SETTINGS 1ST IN THE WIDGETS LIST
+# SELECTED BY DEFAULT --> DEFAULT VALUE TO MIDDLE / DISABLED
+slider_time_size = MySlider(
+    window_main,
+    min=20,
+    max=100,
+    setValue=60,
+    valueChanged=update_size,
+    width=ADV_WIDGETS_WIDTH,
+    pos_x=ADV_NON_IMG_POS_X,
+    pos_y=ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*4
+    )
 slider_time_size.setDisabled(True)
 
 
