@@ -203,7 +203,7 @@ window_skin = MySettingsWindow(
 #########################
 '''
 label_animation = QLabel(window_main)
-movie = QMovie(f'skins/{skin_selected}/GIF.GIF')
+movie = QMovie(f'skins/{skin_selected}/gif.gif')
 label_animation.setMovie(movie)
 label_animation.resize(720,486)
 movie.start()
@@ -1176,7 +1176,7 @@ def update_skin_action():
 
     ''' GIF '''
     if skin_dic['gif']['path']:
-        shutil.copy(skin_dic['gif']['path'][0], f'skins/{skin_selected}/GIF.GIF')
+        shutil.copy(skin_dic['gif']['path'][0], f'skins/{skin_selected}/gif.gif')
         print(skin_dic['gif']['path'])
         any_change = True
     
@@ -1348,7 +1348,7 @@ def add_skin_action():
     if all_set:
         if skin_dic['gif']['path'] and skin_dic['music']['path'] and skin_dic['icon']['path']:
             os.mkdir(Path(Path().resolve(), 'skins', folder_name))
-            shutil.copy(skin_dic['gif']['path'][0], f'skins/{folder_name}/GIF.GIF')
+            shutil.copy(skin_dic['gif']['path'][0], f'skins/{folder_name}/gif.gif')
             shutil.copy(skin_dic['music']['path'][0], f'skins/{folder_name}/music.mp3')
             shutil.copy(skin_dic['icon']['path'][0], f'skins/{folder_name}/icon.png')
             all_set = True

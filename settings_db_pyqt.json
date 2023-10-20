@@ -22,7 +22,7 @@
       "button_bg_color_clicked": "#423A51",
       "music_volume": 0.11,
       "animation_speed": 129,
-      "window_title": "I know Marty, believe me. But, it is your mom, okay?!",
+      "window_title": "I know Marty, believe me. But, she is your mom, okay?!",
       "json_widg_params": {
         "button_settings": {
           "x": 679,
@@ -63,7 +63,7 @@
       "button_bg_color": "#6F8191",
       "button_bg_color_clicked": "#475A77",
       "music_volume": 0.25,
-      "animation_speed": 48,
+      "animation_speed": 85,
       "window_title": "Back, in time, to die",
       "json_widg_params": {
         "button_settings": {
@@ -147,7 +147,7 @@
       "button_bg_color": "#D70000",
       "button_bg_color_clicked": "#8E0000",
       "music_volume": 0.36,
-      "animation_speed": 99,
+      "animation_speed": 105,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
       "json_widg_params": {
         "button_settings": {
