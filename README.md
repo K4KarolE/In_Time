@@ -8,6 +8,7 @@
         - Back to the Future I.
         - Donnie Darko
         - Idiocracy
+        - Interstellar
         - Terminator I.
 - GUI+:
     - The `PyQt` version with additional features is in progress
@@ -41,13 +42,15 @@
     - It is coming from allocating the same image object for 2 mirrored positions in the image sequence/list:
         - half sized GIF images, faster load time
 
+- The current GIF images are tailored for the faster `PyQt` version
+
 ## Requirements
 ### Python 3 - used: 3.11.6
 - https://www.python.org/
 
 ### Install dependencies
 ## PyQt6
-``` work in progress ```
+``` pip install -r requirements_pyqt.txt ```
 ## Tkinter
 ``` pip install -r requirements_tkinter.txt ```
 

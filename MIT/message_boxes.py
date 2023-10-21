@@ -22,7 +22,7 @@ class MyMessageBoxConfirmation(QMessageBox):
 
         self.setWindowTitle('All set')
         self.setWindowIcon(QIcon(f'skins/_images/settings.png'))
-        self.setIcon(QMessageBox.Icon.Information)
+        # self.setIcon(QMessageBox.Icon.Information) # information icon is broken
         self.setText(message)
         self.setStandardButtons(QMessageBox.StandardButton.Ok)
         self.move(pos_x, pos_y)

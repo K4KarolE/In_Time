@@ -1,13 +1,27 @@
 '''
 
-Motion in Time - PyQt6 version
+Motion in Time - PyQt6
+-----------------------
 
+Structure:
+- Defs
+- Constants and variables
+
+- Main window creation
+- Settings window creation
+- Skin window creation
+
+- Main window widgets
+- Settings window widgets
+- Advanced settings window widgets (still in main)
+- Skin window widgets
+    - "Edit Current Skin" tab widgets
+    - "Add New Skin" tab widgets
 '''
 
 from PyQt6.QtWidgets import QApplication, QTabWidget, QLabel, QPushButton
 from PyQt6.QtWidgets import QLineEdit, QWidget, QFileDialog
 from PyQt6.QtGui import QMovie, QIcon, QFont
-from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, QTimer, QTime, Qt
 
 import sys
@@ -556,14 +570,14 @@ def selected_widget_action():
     if selected_widget == widget_list[2]:
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_ADVANCED_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_HEIGHT)
-        slider_pos_x.setOrientation(QtCore.Qt.Orientation.Vertical)
+        slider_pos_x.setOrientation(Qt.Orientation.Vertical)
         slider_pos_x.setGeometry(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF - 5,
                                 40,
                                 20,
                                 ADV_WIDGETS_WIDTH)
         
     if selected_widget != widget_list[2]:
-        slider_pos_x.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        slider_pos_x.setOrientation(Qt.Orientation.Horizontal)
         slider_pos_x.setGeometry(ADV_NON_IMG_POS_X,
                                 ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2,
                                 ADV_WIDGETS_WIDTH,
@@ -643,13 +657,18 @@ def time_repositioning():
     ''' 
         REPOSITION TO TO RIGHT ANCHOR
         ANCHOR IS CREATED WHEN THE HRS:MINS/SHADOW MOVED WITH THE SLIDER
-    '''
+    # '''
+    # IF WIDGET IS NOT SELECTED IN THE COMBOVBOX
     if (select_widget_cb.currentText() != widget_list[4] and
-        widget_dic[widget_list[4]]["anchor_point"] != widget_dic[widget_list[4]]['x'] + hours_and_mins.size().width()):
+        # AND CHANGE IN SIZE --> CHANGE IN POSITION
+        widget_dic[widget_list[4]]["anchor_point"] != widget_dic[widget_list[4]]['x'] + hours_and_mins.size().width() and
+        # AND WILL NOT RUNNING OUT OF THE SCREEN
+        widget_dic[widget_list[4]]["anchor_point"] - hours_and_mins.size().width() > 0):
             hours_and_mins.move(widget_dic[widget_list[4]]["anchor_point"] - hours_and_mins.size().width(), widget_dic[widget_list[4]]['y'])
 
     if (select_widget_cb.currentText() != widget_list[5] and
-        widget_dic[widget_list[5]]["anchor_point"] != widget_dic[widget_list[5]]['x'] + hours_and_mins_shadow.size().width()):
+        widget_dic[widget_list[5]]["anchor_point"] != widget_dic[widget_list[5]]['x'] + hours_and_mins_shadow.size().width() and
+        widget_dic[widget_list[5]]["anchor_point"] - hours_and_mins_shadow.size().width() > 0):
             hours_and_mins_shadow.move(widget_dic[widget_list[5]]["anchor_point"] - hours_and_mins_shadow.size().width(), widget_dic[widget_list[5]]['y'])
 
 
