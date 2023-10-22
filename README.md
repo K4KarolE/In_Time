@@ -47,7 +47,7 @@
     - Edit the current skin`s
         - Name
         - Title (displayed in the main window)
-        - Files (GIF, mp3, PNG)
+        - Files (gif, mp3, png)
     - Add new skin
 
 ## GIF image creation and how it is used in the animation
