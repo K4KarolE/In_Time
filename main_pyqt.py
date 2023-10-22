@@ -4,6 +4,7 @@ Motion in Time - PyQt6
 -----------------------
 
 Structure:
+----------
 - Defs
 - Constants and variables
 
@@ -1114,10 +1115,10 @@ skin_dic = {
 ''' BUTTON - GIF UPDATE '''
 def button_gif_update_clicked():
     dialog_gif_update = QFileDialog()
-    dialog_gif_update.setWindowTitle("Select a GIF file")
+    dialog_gif_update.setWindowTitle("Select a 720x486 GIF file")
     dialog_gif_update.setNameFilter("GIF files (*.gif)")
     dialog_gif_update.exec()
-    if dialog_gif_update.exec:
+    if dialog_gif_update.exec and dialog_gif_update.selectedFiles():
         skin_dic['gif']['path'] = dialog_gif_update.selectedFiles()
         button_gif_update.setText(f"{skin_dic['gif']['button_title']} \u2713")
 
@@ -1140,7 +1141,7 @@ def button_music_update_clicked():
     dialog_music_update.setWindowTitle("Select an MP3 file")
     dialog_music_update.setNameFilter("MP3 files (*.mp3)")
     dialog_music_update.exec()
-    if dialog_music_update.exec:
+    if dialog_music_update.exec and dialog_music_update.selectedFiles():
         skin_dic['music']['path'] = dialog_music_update.selectedFiles()
         button_music_update.setText(f"{skin_dic['music']['button_title']} \u2713")
 
@@ -1163,7 +1164,7 @@ def button_icon_update_clicked():
     dialog_icon_update.setWindowTitle("Select a PNG file")
     dialog_icon_update.setNameFilter("PNG files (*.png)")
     dialog_icon_update.exec()
-    if dialog_icon_update.exec:
+    if dialog_icon_update.exec and dialog_icon_update.selectedFiles():
         skin_dic['icon']['path'] = dialog_icon_update.selectedFiles()
         button_icon_update.setText(f"{skin_dic['icon']['button_title']} \u2713")
 
@@ -1211,10 +1212,12 @@ def update_skin_action():
         any_change = True
         db_save_needed = True
 
+    # USING QFILEDIALOG --> THE ['PATH'] VALUES ARE:
+    # - PATH
+    # - WITH CORRECT FILE TYPE
     ''' GIF '''
     if skin_dic['gif']['path']:
         shutil.copy(skin_dic['gif']['path'][0], f'skins/{skin_selected}/gif.gif')
-        print(skin_dic['gif']['path'])
         any_change = True
     
     ''' MUSIC '''
@@ -1286,10 +1289,10 @@ input_field_window_title_add.setCursor(Qt.CursorShape.PointingHandCursor)
 ''' BUTTON - ADD GIF '''
 def button_gif_update_clicked():
     dialog_gif_add = QFileDialog()
-    dialog_gif_add.setWindowTitle("Select a GIF file")
+    dialog_gif_add.setWindowTitle("Select a 720x486 GIF file")
     dialog_gif_add.setNameFilter("GIF files (*.gif)")
     dialog_gif_add.exec()
-    if dialog_gif_add.exec:
+    if dialog_gif_add.exec and dialog_gif_add.selectedFiles():
         skin_dic['gif']['path'] = dialog_gif_add.selectedFiles()
         button_gif_add.setText(f"{skin_dic['gif']['button_title']} \u2713")
 
@@ -1311,7 +1314,7 @@ def button_music_update_clicked():
     dialog_music_add.setWindowTitle("Select an MP3 file")
     dialog_music_add.setNameFilter("MP3 files (*.mp3)")
     dialog_music_add.exec()
-    if dialog_music_add.exec:
+    if dialog_music_add.exec and dialog_music_add.selectedFiles():
         skin_dic['music']['path'] = dialog_music_add.selectedFiles()
         button_music_add.setText(f"{skin_dic['music']['button_title']} \u2713")
 
@@ -1333,7 +1336,7 @@ def button_icon_update_clicked():
     dialog_icon_add.setWindowTitle("Select a PNG file")
     dialog_icon_add.setNameFilter("PNG files (*.png)")
     dialog_icon_add.exec()
-    if dialog_icon_add.exec:
+    if dialog_icon_add.exec and dialog_icon_add.selectedFiles():
         skin_dic['icon']['path'] = dialog_icon_add.selectedFiles()
         button_icon_add.setText(f"{skin_dic['icon']['button_title']} \u2713")
 
@@ -1360,7 +1363,7 @@ def add_skin_action():
     if len(input_field_skin_name_add.text().strip().lower()) > 0:
         # TRANSFORM INPUT
         folder_name =''
-        for letter in input_field_skin_name_add.text():
+        for letter in input_field_skin_name_add.text().strip().lower():
             if len(folder_name) < 20:
                 if letter.isalpha() or letter.isdecimal():
                     folder_name = f'{folder_name}{letter}'
@@ -1383,6 +1386,9 @@ def add_skin_action():
                 )
     
     if all_set:
+        # USING QFILEDIALOG --> THE ['PATH'] VALUES ARE:
+        # - PATH
+        # - WITH CORRECT FILE TYPE
         if skin_dic['gif']['path'] and skin_dic['music']['path'] and skin_dic['icon']['path']:
             os.mkdir(Path(Path().resolve(), 'skins', folder_name))
             shutil.copy(skin_dic['gif']['path'][0], f'skins/{folder_name}/gif.gif')
