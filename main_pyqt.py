@@ -1119,7 +1119,7 @@ def button_gif_update_clicked():
     dialog_gif_update.setNameFilter("GIF files (*.gif)")
     dialog_gif_update.exec()
     if dialog_gif_update.exec and dialog_gif_update.selectedFiles():
-        skin_dic['gif']['path'] = dialog_gif_update.selectedFiles()
+        skin_dic['gif']['path'] = dialog_gif_update.selectedFiles()[0]
         button_gif_update.setText(f"{skin_dic['gif']['button_title']} \u2713")
 
 button_gif_update = QPushButton(tab_edit_skin, text=skin_dic['gif']['button_title'])
@@ -1142,7 +1142,7 @@ def button_music_update_clicked():
     dialog_music_update.setNameFilter("MP3 files (*.mp3)")
     dialog_music_update.exec()
     if dialog_music_update.exec and dialog_music_update.selectedFiles():
-        skin_dic['music']['path'] = dialog_music_update.selectedFiles()
+        skin_dic['music']['path'] = dialog_music_update.selectedFiles()[0]
         button_music_update.setText(f"{skin_dic['music']['button_title']} \u2713")
 
 button_music_update = QPushButton(tab_edit_skin, text=skin_dic['music']['button_title'])
@@ -1165,7 +1165,7 @@ def button_icon_update_clicked():
     dialog_icon_update.setNameFilter("PNG files (*.png)")
     dialog_icon_update.exec()
     if dialog_icon_update.exec and dialog_icon_update.selectedFiles():
-        skin_dic['icon']['path'] = dialog_icon_update.selectedFiles()
+        skin_dic['icon']['path'] = dialog_icon_update.selectedFiles()[0]
         button_icon_update.setText(f"{skin_dic['icon']['button_title']} \u2713")
 
 button_icon_update = QPushButton(tab_edit_skin, text=skin_dic['icon']['button_title'])
@@ -1217,17 +1217,17 @@ def update_skin_action():
     # - WITH CORRECT FILE TYPE
     ''' GIF '''
     if skin_dic['gif']['path']:
-        shutil.copy(skin_dic['gif']['path'][0], f'skins/{skin_selected}/gif.gif')
+        shutil.copy(skin_dic['gif']['path'], f'skins/{skin_selected}/gif.gif')
         any_change = True
     
     ''' MUSIC '''
     if skin_dic['music']['path']:
-        shutil.copy(skin_dic['music']['path'][0], f'skins/{skin_selected}/music.mp3')
+        shutil.copy(skin_dic['music']['path'], f'skins/{skin_selected}/music.mp3')
         any_change = True
 
     ''' ICON '''
     if skin_dic['icon']['path']:
-        shutil.copy(skin_dic['icon']['path'][0], f'skins/{skin_selected}/icon.png')
+        shutil.copy(skin_dic['icon']['path'], f'skins/{skin_selected}/icon.png')
         any_change = True
 
     if db_save_needed:
@@ -1293,7 +1293,7 @@ def button_gif_update_clicked():
     dialog_gif_add.setNameFilter("GIF files (*.gif)")
     dialog_gif_add.exec()
     if dialog_gif_add.exec and dialog_gif_add.selectedFiles():
-        skin_dic['gif']['path'] = dialog_gif_add.selectedFiles()
+        skin_dic['gif']['path'] = dialog_gif_add.selectedFiles()[0]
         button_gif_add.setText(f"{skin_dic['gif']['button_title']} \u2713")
 
 button_gif_add = QPushButton(tab_add_skin, text=skin_dic['gif']['button_title'])
@@ -1315,7 +1315,7 @@ def button_music_update_clicked():
     dialog_music_add.setNameFilter("MP3 files (*.mp3)")
     dialog_music_add.exec()
     if dialog_music_add.exec and dialog_music_add.selectedFiles():
-        skin_dic['music']['path'] = dialog_music_add.selectedFiles()
+        skin_dic['music']['path'] = dialog_music_add.selectedFiles()[0]
         button_music_add.setText(f"{skin_dic['music']['button_title']} \u2713")
 
 button_music_add = QPushButton(tab_add_skin, text=skin_dic['music']['button_title'])
@@ -1337,7 +1337,7 @@ def button_icon_update_clicked():
     dialog_icon_add.setNameFilter("PNG files (*.png)")
     dialog_icon_add.exec()
     if dialog_icon_add.exec and dialog_icon_add.selectedFiles():
-        skin_dic['icon']['path'] = dialog_icon_add.selectedFiles()
+        skin_dic['icon']['path'] = dialog_icon_add.selectedFiles()[0]
         button_icon_add.setText(f"{skin_dic['icon']['button_title']} \u2713")
 
 button_icon_add = QPushButton(tab_add_skin, text=skin_dic['icon']['button_title'])
@@ -1391,9 +1391,9 @@ def add_skin_action():
         # - WITH CORRECT FILE TYPE
         if skin_dic['gif']['path'] and skin_dic['music']['path'] and skin_dic['icon']['path']:
             os.mkdir(Path(Path().resolve(), 'skins', folder_name))
-            shutil.copy(skin_dic['gif']['path'][0], f'skins/{folder_name}/gif.gif')
-            shutil.copy(skin_dic['music']['path'][0], f'skins/{folder_name}/music.mp3')
-            shutil.copy(skin_dic['icon']['path'][0], f'skins/{folder_name}/icon.png')
+            shutil.copy(skin_dic['gif']['path'], f'skins/{folder_name}/gif.gif')
+            shutil.copy(skin_dic['music']['path'], f'skins/{folder_name}/music.mp3')
+            shutil.copy(skin_dic['icon']['path'], f'skins/{folder_name}/icon.png')
             all_set = True
         else:
             MyMessageBoxError(

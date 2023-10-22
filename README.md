@@ -1,9 +1,22 @@
 # Motion in Time
-- `Motion in Time` displays the current time while the selected-skin related animation and music are playing in the background
+- `Motion in Time` displays the current time while animation and music are playing in the background
 - Can be updated in the app:
     - Music On/Off
     - Music volume
-    - Animation frequency
+    - Animation speed
+    - Switch between skins
+    - Via `Advanced Settings`:
+        - Times`:
+            - Position
+            - Size
+            - Color
+            - Style
+        - Settings and Play/Stop buttons`:
+            - Position
+            - Color*
+        - Main and Settings windows`
+            - Position on the screen at the app start
+            - Color (* same)
     - Skins, currently available:
         - Back to the Future I.
         - Donnie Darko
@@ -11,19 +24,25 @@
         - Interstellar
         - Terminator I.
 - GUI+:
-    - The `PyQt` version with additional features is in progress
-    - The original created with `Tkinter`, music played with `Pygame`, images created with `Pillow`
+    - Two versions are available:
+        - The `PyQt` version with additional features as previously described
+        - The original version created with `Tkinter`, without the `Advanced Settings` options
 - Launching `Motion in Time` from the `Taskbar`: 
     - With only one click you can enjoy the current time from your bed according to your mood
 
 ## PyQt6:
 <div align="left">
-    <img src="docs/promo/idiocracy_pyqt.png">
+    <img src="docs/promo/interstellar_adv.png">
 </div>
+<br>
+<div align="left">
+    <img src="docs/promo/idiocracy.png">
+</div>
+
 
 ## Tkinter:
 <div align="left">
-    <img src="docs/promo/idiocracy_tkinter.png">
+    <img src="docs/promo/tkinter/idiocracy.png">
 </div>
 
 
