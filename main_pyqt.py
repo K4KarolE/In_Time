@@ -151,11 +151,16 @@ window_main = MyMainWindow(
 # MAIN WINDOW POSITION
 SCREEN = QApplication.primaryScreen()
 SCREEN_RECT = SCREEN.availableGeometry()
-if SCREEN_RECT.width() < cv.window_main_pos_x or SCREEN_RECT.height() < cv.window_main_pos_y:
+# TO MAKE SURE AFTER DISPLAY CHANGE THE
+# APP DOES NOT OPEN OUT OF SCREEN
+if (SCREEN_RECT.width() < cv.window_main_pos_x + WINDOW_WIDTH or 
+    SCREEN_RECT.height() < cv.window_main_pos_y + WINDOW_HEIGHT):
     WINDOW_MAIN_POS_X = int((SCREEN_RECT.width() - WINDOW_WIDTH)/2)
     WINDOW_MAIN_POS_Y = int((SCREEN_RECT.height() - WINDOW_HEIGHT)/2)
     window_main.move(WINDOW_MAIN_POS_X, WINDOW_MAIN_POS_Y)
-    ''' error message needed - window pos saving needed'''
+    # WINDOW SETTINGS / ADD SKIN WINDOW POSITION
+    cv.window_settings_pos_x = WINDOW_MAIN_POS_X
+    cv.window_settings_pos_y = WINDOW_MAIN_POS_Y
 else:
     window_main.move(cv.window_main_pos_x, cv.window_main_pos_y)
 

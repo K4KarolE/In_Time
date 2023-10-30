@@ -25,6 +25,8 @@
 <br>
 
 ## Can be updated via UI:
+<img align="right" src="docs/promo/donnie_darko_edit_skin.png"></img>
+
 - Music On/Off
 - Music volume
 - Animation speed
@@ -49,6 +51,8 @@
         - Title (displayed in the main window)
         - Files (gif, mp3, png)
     - Add new skin
+    - Delete the current skin
+    
 
 ## GIF image creation and how it is used in the animation
 - The GIF images are generated in `DaVinci Resolve`:
