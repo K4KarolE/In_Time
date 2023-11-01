@@ -16,6 +16,10 @@
 <div align="left">
     <img src="docs/promo/idiocracy.png">
 </div>
+<br>
+<div align="left">
+    <img src="docs/promo/idiocracy_adv.png">
+</div>
 
 
 ## Tkinter:
@@ -25,8 +29,6 @@
 <br>
 
 ## Can be updated via UI:
-<img align="right" src="docs/promo/donnie_darko_edit_skin.png"></img>
-
 - Music On/Off
 - Music volume
 - Animation speed
@@ -37,6 +39,7 @@
     - Interstellar
     - Terminator I.
 - Via `Advanced Settings`:
+<img align="right" src="docs/promo/donnie_darko_edit_skin.png"></img>
     - Times`:
         - Position
         - Size
