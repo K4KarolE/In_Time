@@ -9,17 +9,11 @@
 
 
 ## PyQt6:
-<div align="left">
-    <img src="docs/promo/interstellar_adv.png">
-</div>
-<br>
+
 <div align="left">
     <img src="docs/promo/idiocracy.png">
 </div>
-<br>
-<div align="left">
-    <img src="docs/promo/idiocracy_adv.png">
-</div>
+
 
 
 ## Tkinter:
