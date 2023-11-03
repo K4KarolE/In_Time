@@ -10,6 +10,14 @@
 
 ## PyQt6:
 
+
+https://github.com/K4KarolE/Motion_In_Time/assets/89346643/7590ee11-ad88-4655-b06e-1c2431961f8d
+
+
+
+https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2c0-98ab8b436fdb
+
+
 <div align="left">
     <img src="docs/promo/idiocracy.png">
 </div>
