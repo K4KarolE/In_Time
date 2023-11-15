@@ -76,7 +76,7 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
 - The current GIF images are tailored for the faster `PyQt` version
 
 ## Requirements
-### Python 3 - used: 3.11.6
+### Python 3 - used: 3.11.5
 - https://www.python.org/
 
 ### Install dependencies
