@@ -1101,7 +1101,7 @@ input_field_window_title.setGeometry(
 input_field_window_title.setFont(QFont('Times', 10, 500))
 input_field_window_title.setCursor(Qt.CursorShape.PointingHandCursor)
 
-skin_dic = {
+skin_dic_current = {
             'gif': {
                     'button_title': 'ANIMATION - GIF',
                     'path': ''
@@ -1123,11 +1123,11 @@ def button_gif_update_clicked():
     dialog_gif_update.setWindowTitle("Select a 720x486 GIF file")
     dialog_gif_update.setNameFilter("GIF files (*.gif)")
     dialog_gif_update.exec()
-    if dialog_gif_update.exec and dialog_gif_update.selectedFiles():
-        skin_dic['gif']['path'] = dialog_gif_update.selectedFiles()[0]
-        button_gif_update.setText(f"{skin_dic['gif']['button_title']} \u2713")
+    if dialog_gif_update.result():
+        skin_dic_current['gif']['path'] = dialog_gif_update.selectedFiles()[0]
+        button_gif_update.setText(f"{skin_dic_current['gif']['button_title']} \u2713")
 
-button_gif_update = QPushButton(tab_edit_skin, text=skin_dic['gif']['button_title'])
+button_gif_update = QPushButton(tab_edit_skin, text=skin_dic_current['gif']['button_title'])
 button_gif_update.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*2.7),
@@ -1146,11 +1146,11 @@ def button_music_update_clicked():
     dialog_music_update.setWindowTitle("Select an MP3 file")
     dialog_music_update.setNameFilter("MP3 files (*.mp3)")
     dialog_music_update.exec()
-    if dialog_music_update.exec and dialog_music_update.selectedFiles():
-        skin_dic['music']['path'] = dialog_music_update.selectedFiles()[0]
-        button_music_update.setText(f"{skin_dic['music']['button_title']} \u2713")
+    if dialog_music_update.result():
+        skin_dic_current['music']['path'] = dialog_music_update.selectedFiles()[0]
+        button_music_update.setText(f"{skin_dic_current['music']['button_title']} \u2713")
 
-button_music_update = QPushButton(tab_edit_skin, text=skin_dic['music']['button_title'])
+button_music_update = QPushButton(tab_edit_skin, text=skin_dic_current['music']['button_title'])
 button_music_update.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*3.5),
@@ -1169,11 +1169,11 @@ def button_icon_update_clicked():
     dialog_icon_update.setWindowTitle("Select a PNG file")
     dialog_icon_update.setNameFilter("PNG files (*.png)")
     dialog_icon_update.exec()
-    if dialog_icon_update.exec and dialog_icon_update.selectedFiles():
-        skin_dic['icon']['path'] = dialog_icon_update.selectedFiles()[0]
-        button_icon_update.setText(f"{skin_dic['icon']['button_title']} \u2713")
+    if dialog_icon_update.result():
+        skin_dic_current['icon']['path'] = dialog_icon_update.selectedFiles()[0]
+        button_icon_update.setText(f"{skin_dic_current['icon']['button_title']} \u2713")
 
-button_icon_update = QPushButton(tab_edit_skin, text=skin_dic['icon']['button_title'])
+button_icon_update = QPushButton(tab_edit_skin, text=skin_dic_current['icon']['button_title'])
 button_icon_update.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*4.3),
@@ -1221,18 +1221,18 @@ def update_skin_action():
     # - PATH
     # - WITH CORRECT FILE TYPE
     ''' GIF '''
-    if skin_dic['gif']['path']:
-        shutil.copy(skin_dic['gif']['path'], f'skins/{skin_selected}/gif.gif')
+    if skin_dic_current['gif']['path']:
+        shutil.copy(skin_dic_current['gif']['path'], f'skins/{skin_selected}/gif.gif')
         any_change = True
     
     ''' MUSIC '''
-    if skin_dic['music']['path']:
-        shutil.copy(skin_dic['music']['path'], f'skins/{skin_selected}/music.mp3')
+    if skin_dic_current['music']['path']:
+        shutil.copy(skin_dic_current['music']['path'], f'skins/{skin_selected}/music.mp3')
         any_change = True
 
     ''' ICON '''
-    if skin_dic['icon']['path']:
-        shutil.copy(skin_dic['icon']['path'], f'skins/{skin_selected}/icon.png')
+    if skin_dic_current['icon']['path']:
+        shutil.copy(skin_dic_current['icon']['path'], f'skins/{skin_selected}/icon.png')
         any_change = True
 
     if db_save_needed:
@@ -1258,6 +1258,21 @@ button_skin_update.setFont(QFont('Times', 10, 600))
     ADD NEW SKIN - WIDGETS   
 ###################################
 '''
+
+skin_dic_new = {
+            'gif': {
+                    'button_title': 'ANIMATION - GIF',
+                    'path': ''
+                    },
+            'music': {
+                    'button_title': 'MUSIC - MP3',
+                    'path': ''
+                    },
+            'icon': {
+                    'button_title': 'ICON - PNG',
+                    'path': ''
+                    }
+            }
 
 ''' SKIN NAME - TEXT '''
 skin_name_lable_add = QLabel(tab_add_skin, text='Name of the skin')
@@ -1297,11 +1312,11 @@ def button_gif_update_clicked():
     dialog_gif_add.setWindowTitle("Select a 720x486 GIF file")
     dialog_gif_add.setNameFilter("GIF files (*.gif)")
     dialog_gif_add.exec()
-    if dialog_gif_add.exec and dialog_gif_add.selectedFiles():
-        skin_dic['gif']['path'] = dialog_gif_add.selectedFiles()[0]
-        button_gif_add.setText(f"{skin_dic['gif']['button_title']} \u2713")
+    if dialog_gif_add.result():
+        skin_dic_new['gif']['path'] = dialog_gif_add.selectedFiles()[0]
+        button_gif_add.setText(f"{skin_dic_new['gif']['button_title']} \u2713")
 
-button_gif_add = QPushButton(tab_add_skin, text=skin_dic['gif']['button_title'])
+button_gif_add = QPushButton(tab_add_skin, text=skin_dic_new['gif']['button_title'])
 button_gif_add.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*2.7),
@@ -1319,11 +1334,11 @@ def button_music_update_clicked():
     dialog_music_add.setWindowTitle("Select an MP3 file")
     dialog_music_add.setNameFilter("MP3 files (*.mp3)")
     dialog_music_add.exec()
-    if dialog_music_add.exec and dialog_music_add.selectedFiles():
-        skin_dic['music']['path'] = dialog_music_add.selectedFiles()[0]
-        button_music_add.setText(f"{skin_dic['music']['button_title']} \u2713")
+    if dialog_music_add.result():
+        skin_dic_new['music']['path'] = dialog_music_add.selectedFiles()[0]
+        button_music_add.setText(f"{skin_dic_new['music']['button_title']} \u2713")
 
-button_music_add = QPushButton(tab_add_skin, text=skin_dic['music']['button_title'])
+button_music_add = QPushButton(tab_add_skin, text=skin_dic_new['music']['button_title'])
 button_music_add.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*3.5),
@@ -1341,11 +1356,11 @@ def button_icon_update_clicked():
     dialog_icon_add.setWindowTitle("Select a PNG file")
     dialog_icon_add.setNameFilter("PNG files (*.png)")
     dialog_icon_add.exec()
-    if dialog_icon_add.exec and dialog_icon_add.selectedFiles():
-        skin_dic['icon']['path'] = dialog_icon_add.selectedFiles()[0]
-        button_icon_add.setText(f"{skin_dic['icon']['button_title']} \u2713")
+    if dialog_icon_add.result():
+        skin_dic_new['icon']['path'] = dialog_icon_add.selectedFiles()[0]
+        button_icon_add.setText(f"{skin_dic_new['icon']['button_title']} \u2713")
 
-button_icon_add = QPushButton(tab_add_skin, text=skin_dic['icon']['button_title'])
+button_icon_add = QPushButton(tab_add_skin, text=skin_dic_new['icon']['button_title'])
 button_icon_add.setGeometry(
     SKIN_WIDGET_POS_X,
     int(SKIN_WIDEGT_POS_Y + SKIN_WIDEGT_POS_Y_DIFF*4.3),
@@ -1394,11 +1409,11 @@ def add_skin_action():
         # USING QFILEDIALOG --> THE ['PATH'] VALUES ARE:
         # - PATH
         # - WITH CORRECT FILE TYPE
-        if skin_dic['gif']['path'] and skin_dic['music']['path'] and skin_dic['icon']['path']:
+        if skin_dic_new['gif']['path'] and skin_dic_new['music']['path'] and skin_dic_new['icon']['path']:
             os.mkdir(Path(Path().resolve(), 'skins', folder_name))
-            shutil.copy(skin_dic['gif']['path'], f'skins/{folder_name}/gif.gif')
-            shutil.copy(skin_dic['music']['path'], f'skins/{folder_name}/music.mp3')
-            shutil.copy(skin_dic['icon']['path'], f'skins/{folder_name}/icon.png')
+            shutil.copy(skin_dic_new['gif']['path'], f'skins/{folder_name}/gif.gif')
+            shutil.copy(skin_dic_new['music']['path'], f'skins/{folder_name}/music.mp3')
+            shutil.copy(skin_dic_new['icon']['path'], f'skins/{folder_name}/icon.png')
             all_set = True
         else:
             MyMessageBoxError(
