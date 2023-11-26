@@ -5,7 +5,7 @@ from PyQt6.QtGui import QFont
 
 import sys
 
-from MIT.cons_and_vars import save_settings, load_info, settings_data, selected_skin_folder
+from .cons_and_vars import save_settings, load_info, settings_data, selected_skin_folder
 
 
 

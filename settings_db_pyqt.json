@@ -1,19 +1,19 @@
 {
-  "skin_selected": "terminator",
+  "skin_selected": "donnie_darko",
   "music_on": true,
   "is_skin_switch_advanced": false,
   "window_main": {
-    "x": 1023,
-    "y": 431
+    "x": 969,
+    "y": 358
   },
   "window_settings": {
-    "x": 1076,
-    "y": 480
+    "x": 1422,
+    "y": 396
   },
   "delete_skin": {
     "enabled": false,
     "target_skin": "None",
-    "del_proc_completed": false
+    "del_proc_completed": true
   },
   "skins": {
     "back_to_the_future": {
@@ -104,8 +104,8 @@
       "title": "Idiocracy",
       "button_bg_color": "#9E8263",
       "button_bg_color_clicked": "#6F5740",
-      "music_volume": 0.18,
-      "animation_speed": 95,
+      "music_volume": 0.21,
+      "animation_speed": 136,
       "window_title": "DOCTER LEXUS: What I'd do, is just like... like... you know... ha ha, you know what I mean? Like... haha.",
       "json_widg_params": {
         "button_settings": {
@@ -146,8 +146,8 @@
       "title": "Terminator I.",
       "button_bg_color": "#D70000",
       "button_bg_color_clicked": "#8E0000",
-      "music_volume": 0.36,
-      "animation_speed": 105,
+      "music_volume": 0.56,
+      "animation_speed": 38,
       "window_title": "Look, disco lights Sarah! Just for you sweetheart!",
       "json_widg_params": {
         "button_settings": {
@@ -188,8 +188,8 @@
       "title": "Interstellar",
       "button_bg_color": "#C28D4E",
       "button_bg_color_clicked": "#916031",
-      "music_volume": 0.38,
-      "animation_speed": 72,
+      "music_volume": 0.68,
+      "animation_speed": 102,
       "window_title": "We used to look up at the sky and wonder at our place in the stars. Now we just look down, and worry about our place in the dirt.",
       "json_widg_params": {
         "button_settings": {
@@ -223,48 +223,6 @@
           "x": 634,
           "y": 386,
           "size": 63
-        }
-      }
-    },
-    "__test__": {
-      "title": " - TEST - ",
-      "button_bg_color": "purple",
-      "button_bg_color_clicked": "orange",
-      "music_volume": 0.34,
-      "animation_speed": 79,
-      "window_title": " - TEST TITLE - ",
-      "json_widg_params": {
-        "button_settings": {
-          "x": 365,
-          "y": 220
-        },
-        "button_music": {
-          "x": 318,
-          "y": 294
-        },
-        "hours_and_mins": {
-          "x": 190,
-          "y": 27,
-          "size": 100,
-          "color": "blue",
-          "style": "Showcard Gothic",
-          "anchor_point": 511
-        },
-        "hours_and_mins_shadow": {
-          "x": 284,
-          "y": 194,
-          "size": 92,
-          "anchor_point": 605
-        },
-        "seconds": {
-          "x": 205,
-          "y": 131,
-          "size": 45
-        },
-        "seconds_shadow": {
-          "x": 234,
-          "y": 309,
-          "size": 71
         }
       }
     }

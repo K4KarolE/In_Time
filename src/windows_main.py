@@ -23,7 +23,16 @@ def window_main_set_style(self, button_color, button_color_clicked):
                         "}"
                     "QSlider::handle"
                         "{"
-                        f"background-color : 'black';"
+                        "width: 10;"
+                        "border-radius: 3px;"
+                        "background-color : 'black';"
+                        "margin: -5 px;  /* expand outside the groove */"
+                        "}"
+                    "QSlider::groove"
+                        "{"
+                        "height: 5px;"
+                        "border-radius: 2px;"
+                        f"background-color : {button_color_clicked};"
                         "}"
                     )
 

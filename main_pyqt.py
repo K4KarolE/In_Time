@@ -29,13 +29,13 @@ import sys
 import shutil
 import os
 
-from MIT import MySettingsWindow, MyMainWindow 
-from MIT import window_main_set_style, window_settings_set_style, window_skin_set_style, button_set_style
-from MIT import Data, Music, MyImage, MySlider, MySliderSettingsWindow 
-from MIT import MyMessageBoxConfReq, MyMessageBoxConfirmation, MyMessageBoxError
-from MIT import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
-from MIT import Path, save_settings, load_info, restart
-from MIT import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder
+from src import MySettingsWindow, MyMainWindow 
+from src import window_main_set_style, window_settings_set_style, window_skin_set_style, button_set_style
+from src import Data, Music, MyImage, MySlider, MySliderSettingsWindow 
+from src import MyMessageBoxConfReq, MyMessageBoxConfirmation, MyMessageBoxError
+from src import MyComboBoxSkins, MyComboBoxWidgetUpdate, MyComboBoxFont
+from src import Path, save_settings, load_info, restart
+from src import WORKING_DIRECTORY, settings_data, skin_selected, selected_skin_folder
 
 
 def skin_deletion_confirmaiton():
@@ -135,7 +135,7 @@ skin_deletion_confirmaiton()
 ###########################
 ###########################
 
-        MAIN WINDOW
+        WINDOW MAIN
 
 ###########################
 ###########################
@@ -166,13 +166,14 @@ else:
 
 
 '''
-################################## 
-##################################
+################################ 
+################################
 
-    WINDOW SETTINGS - CREATION 
+        WINDOW SETTINGS
+        WINDOW MAIN POS X
 
-##################################
-##################################
+################################
+################################
 '''
 WINDOW_SETTINGS_WIDTH, WINDOW_SETTINGS_HEIGHT = 250, 223    
 window_settings = MySettingsWindow(
@@ -185,15 +186,24 @@ window_settings = MySettingsWindow(
                     cv.window_settings_pos_y
                     ) 
 
+window_main_pos_x = MySettingsWindow(
+                    'Window: Main - Position X',
+                    cv.button_bg_color,
+                    cv.button_bg_color_clicked,
+                    ADV_WIDGETS_WIDTH + 45,
+                    60,
+                    cv.window_main_pos_x + 450,
+                    cv.window_main_pos_y + 130
+                    ) 
 
 '''
-################################## 
-##################################
+###########################
+###########################
 
-    WINDOW SKIN - CREATION 
+        WINDOW SKIN          
 
-##################################
-##################################
+###########################
+###########################
 '''
 WINDOW_SKIN_WIDTH, WINDOW_SKIN_HEIGHT = 245, 350    
 window_skin = MySettingsWindow(
@@ -565,6 +575,8 @@ widget_dic = {
 
 widget_list = list(widget_dic.keys())
 
+
+
 def selected_widget_action():
     # NO SLIDER UPDATE AFTER WIDGET SELECTION COMBOBOX CHANGE
     cv.selected_widg_changed = True
@@ -574,22 +586,24 @@ def selected_widget_action():
     ## ADJUSTING THE SLIDERS` MIN, MAX
     # WINDOW MAIN
     if selected_widget == widget_list[2]:
+        
+        slider_pos_x.setParent(window_main_pos_x)
+        slider_pos_x.move(20,20)
         slider_pos_x.setMaximum(SCREEN_RECT.width() - WINDOW_ADVANCED_WIDTH)
         slider_pos_y.setMaximum(SCREEN_RECT.height() - WINDOW_HEIGHT)
-        slider_pos_x.setOrientation(Qt.Orientation.Vertical)
-        slider_pos_x.setGeometry(WINDOW_ADVANCED_WIDTH - SLIDER_POS_X_DIFF - 5,
-                                40,
-                                20,
-                                ADV_WIDGETS_WIDTH)
+        image_arrow_left_right.setDisabled(True)
+        window_main_pos_x.show()
         
     if selected_widget != widget_list[2]:
-        slider_pos_x.setOrientation(Qt.Orientation.Horizontal)
+        slider_pos_x.setParent(window_main)
         slider_pos_x.setGeometry(ADV_NON_IMG_POS_X,
                                 ADV_NON_IMG_POS_Y + ADV_NON_IMG_POS_Y_DIFF*2,
                                 ADV_WIDGETS_WIDTH,
                                 20)
-    
-    
+        window_main_pos_x.hide()
+        image_arrow_left_right.setDisabled(False)
+        slider_pos_x.show()
+
     # WINDOW SETTINGS
     if selected_widget == widget_list[3]:
         butt_and_win_settings_enable(False)
