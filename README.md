@@ -1,7 +1,7 @@
 # Motion in Time
 - `Motion in Time` displays the current time while animation and music are playing in the background
 - Two versions are available:
-    - The `PyQt` version with `Advanced Settings` options as described below
+    - The `PyQt6` version with `Advanced Settings` options as described below
     - The original version created with `Tkinter`, without additional features
 - Launching `Motion in Time` from the `Taskbar`:
     - With only one click you can enjoy the current time from your bed according to your mood
@@ -20,6 +20,10 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
 
 <div align="left">
     <img src="docs/promo/idiocracy.png">
+</div>
+<br>
+<div align="left">
+    <img src="docs/promo/donnie_darko_adv.png">
 </div>
 
 
