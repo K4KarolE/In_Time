@@ -40,8 +40,8 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
     - Skin
     - Music volume
     - Animation speed
-- Play/Stop button
-    - Start/stop the music
+- Play/Stop toggle button action:
+    - Starts, stops the music
     - Value saved automatically
 - Settings button: launches the `Settings` pop-up window
 
@@ -68,7 +68,7 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
     - After the new selection, app restarts with the selected skin + visible `Advanced settings`
 - Roll-down menu (second):
     - Able to select the widget to use
-    - Once it is selected, it automatically updates the sliders to selected widget's current position, size*(the size only for the timers)
+    - Once it is selected, it automatically updates the sliders to selected widget's current position, size(timers only)
     - Able to change the positions:
         - Home screen buttons (Play, Settings):
         - Settings window (displayed with disabled functionalities)
@@ -78,25 +78,27 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
     - If after a display change the previously selected app position would be outside the current displayed size:
         - App opens at the half of the screen (left-top corner in the middle)
     - Abe to change the size of all Timer instance separately
-- Able to change the colour in the main window:
+- Able to change the colour of the:
     - Timer (shadow remains black)
-    - Windows, buttons
+    - Windows, buttons (same value)
     - Buttons pressed
-<img align="right" src="docs/promo/donnie_darko_edit_skin.png"></img>
         -	Which equals to the colour of the unpressed buttons’ bottom part (contributing the buttons 3D effect)
 - Able to change the Timers font style together
 - Save settings button: after the confirmation able to save all the update actioned on the current skin
+<img align="right" src="docs/promo/donnie_darko_edit_skin.png"></img>
 - Delete skin button (if more than one skin is available):
     - After the confirmation* able to delete the current skin
     - *The skin's title and folder path are displayed in the pop-up window
-    - App automatically restarts, with the first skin in the list
-- Edit the current skin's
-    - Name: field can not be empty
-    - Window Title: not mandatory
-    - Files: no mandatory change needed
-        - If new file selected, checkmark is displayed at the end of the title
-- Add new skin
-    - Apart from the Window Title, all options are mandatory
+    - App automatically restarts, with the first skin in the list (+ confirmation message)
+- Add / Edit skin button:
+    - Launches a new window with two tabs:
+    - Edit Current Skin:
+        - Name: field can not be empty
+        - Window Title: not mandatory
+        - Files: no mandatory change needed
+            - If new file selected, checkmark is displayed at the end of the title
+    - Add Skin:
+        - Apart from the Window Title, all options are mandatory
 
 
 
