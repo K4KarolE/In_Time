@@ -34,34 +34,71 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
 </div>
 <br>
 
-## Can be updated via UI:
-- Music On/Off
-- Music volume
-- Animation speed
-- Switch between skins, currently available:
-    - Back to the Future I.
-    - Donnie Darko
-    - Idiocracy
-    - Interstellar
-    - Terminator I.
-- Via `Advanced Settings`:
+## Guide:
+### Welcome Screen
+- App opens with the latest:
+    - Skin
+    - Music volume
+    - Animation speed
+- Play/Stop button
+    - Start/stop the music
+    - Value saved automatically
+- Settings button: launches the `Settings` pop-up window
+
+### Settings window
+- Using the related sliders, able to change:
+    - Music Volume
+    - Animation speed
+    - Both values are automatically saved
+- Roll-down menu:
+    - Able to switch between skins, currently available:
+        - Back to the Future I.
+        - Donnie Darko
+        - Idiocracy
+        - Interstellar
+        - Terminator I.
+    - After the new selection, app restarts with the selected skin
+- Clicking on the Advanced button:
+    - Closes the `Settings window`
+    - Opens the `Advanced settings` options on the right side of the main window
+
+### Advanced settings "window"
+- Roll-down menu (first):
+    - Able to switch between skins
+    - After the new selection, app restarts with the selected skin + visible `Advanced settings`
+- Roll-down menu (second):
+    - Able to select the widget to use
+    - Once it is selected, it automatically updates the sliders to selected widget's current position, size*(the size only for the timers)
+    - Able to change the positions:
+        - Home screen buttons (Play, Settings):
+        - Settings window (displayed with disabled functionalities)
+        - Main window (slider moved/displayed in a pop-up window for the horizontal adjustment)
+        - Timer: `Hours:Minutes` and `:Seconds` separately
+        - Timer's shadow: `Hours:Minutes` and `:Seconds` separately
+    - If after a display change the previously selected app position would be outside the current displayed size:
+        - App opens at the half of the screen (left-top corner in the middle)
+    - Abe to change the size of all Timer instance separately
+- Able to change the colour in the main window:
+    - Timer (shadow remains black)
+    - Windows, buttons
+    - Buttons pressed
 <img align="right" src="docs/promo/donnie_darko_edit_skin.png"></img>
-    - Times`:
-        - Position
-        - Size
-        - Color
-        - Style
-    - Settings and Play/Stop buttons` position and color*
-    - Main and Settings windows`
-        - Position on the screen at startup
-        - Color (* same)
-    - Edit the current skin`s
-        - Name
-        - Title (displayed in the main window)
-        - Files (gif, mp3, png)
-    - Add new skin
-    - Delete the current skin
-    
+        -	Which equals to the colour of the unpressed buttons’ bottom part (contributing the buttons 3D effect)
+- Able to change the Timers font style together
+- Save settings button: after the confirmation able to save all the update actioned on the current skin
+- Delete skin button (if more than one skin is available):
+    - After the confirmation* able to delete the current skin
+    - *The skin's title and folder path are displayed in the pop-up window
+    - App automatically restarts, with the first skin in the list
+- Edit the current skin's
+    - Name: field can not be empty
+    - Window Title: not mandatory
+    - Files: no mandatory change needed
+        - If new file selected, checkmark is displayed at the end of the title
+- Add new skin
+    - Apart from the Window Title, all options are mandatory
+
+
 
 ## GIF image creation and how it is used in the animation
 - The GIF images are generated in `DaVinci Resolve`:
