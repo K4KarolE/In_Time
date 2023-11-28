@@ -68,15 +68,15 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
     - After the new selection, app restarts with the selected skin + visible `Advanced settings`
 - Roll-down menu (second):
     - Able to select the widget to use
-    - Once it is selected, it automatically updates the sliders to selected widget's current position, size(timers only)
+    - Once it is selected, it automatically updates the sliders to the selected widget's current position and size(timers only)
     - Able to change the positions:
         - Home screen buttons (Play, Settings):
         - Settings window (displayed with disabled functionalities)
-        - Main window (slider moved/displayed in a pop-up window for the horizontal adjustment)
+        - Main window (the top slider moved/displayed in a pop-up window for the horizontal adjustment)
         - Timer: `Hours:Minutes` and `:Seconds` separately
         - Timer's shadow: `Hours:Minutes` and `:Seconds` separately
     - If after a display change the previously selected app position would be outside the current displayed size:
-        - App opens at the half of the screen (left-top corner in the middle)
+        - App opens at the half of the screen (the app`s left-top corner in the middle)
     - Abe to change the size of all Timer instance separately
 - Able to change the colour of the:
     - Timer (shadow remains black)
