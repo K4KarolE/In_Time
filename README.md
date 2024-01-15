@@ -8,7 +8,7 @@
 
 
 
-## PyQt6:
+## PyQt6 - Music On:
 
 
 https://github.com/K4KarolE/Motion_In_Time/assets/89346643/7590ee11-ad88-4655-b06e-1c2431961f8d
