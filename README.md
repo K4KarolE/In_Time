@@ -52,6 +52,7 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
     - Both values are automatically saved
 - Roll-down menu:
     - Able to switch between skins, currently available:
+        - Arrival
         - Back to the Future I.
         - Donnie Darko
         - Idiocracy
