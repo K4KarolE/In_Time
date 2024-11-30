@@ -184,7 +184,7 @@ def main():
 
     # ANIMATION
     def img_seq_creation():
-        path_gif = Path(working_directory, 'skins', skin_selected, 'GIF.GIF')
+        path_gif = Path(working_directory, 'skins', skin_selected, 'gif.gif')
         get_frames_count_all = Image.open(path_gif)
         frames_count_all = get_frames_count_all.n_frames
         # images_list = [PhotoImage(file=path_gif, format=f"gif -index {i}") for i in range(frames_count_all)]

@@ -123,6 +123,13 @@ BUTTON_ADV_HEIGHT = 28
 BUTTON_ADV_TEXT_SIZE = 10
 
 
+'''
+To avoid system theme >> qt app theme
+https://doc.qt.io/qt-6/qguiapplication.html#setDesktopSettingsAware
+'''
+QApplication.setDesktopSettingsAware(False)
+
+
 ''' APP '''
 app = QApplication(sys.argv)
 

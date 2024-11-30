@@ -130,6 +130,6 @@ https://github.com/K4KarolE/Motion_In_Time/assets/89346643/b22ae5fe-a1cf-4658-b2
 ``` pip install -r requirements_tkinter.txt ```
 
 ### OS
-- Tested on Windows 11
+- Tested on `Windows 11`, `Linux Mint 22`
 
 ## Thank you all who worked on the modules used in this project!
